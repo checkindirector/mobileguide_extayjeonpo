@@ -7,7 +7,10 @@
   "verifiedProjectDomain": "extayjeonpo-guide.vercel.app",
   "proposedProductionUrl": "https://extayjeonpo-guide.vercel.app",
   "domainVerified": true,
-  "deploymentStatus": "awaiting_user_url_confirmation",
+  "deploymentStatus": "approved_ready_to_deploy",
   "userInstruction": "배포하기 전에 전체 주소를 사용자에게 확인받을 것. Git 연동을 통한 자동 배포도 확인 전 실행하지 않을 것.",
-  "lastVerifiedDate": "2026-11-10"
+  "lastVerifiedDate": "2026-11-10",
+  "approvedProductionUrl": "https://extayjeonpo-guide.vercel.app",
+  "userApproval": "2026-11-10 사용자가 해당 전체 주소로 배포를 명시적으로 승인함. 모바일 전용 페이지로 유지할 것.",
+  "layout": "mobile-only, maximum width 480px"
 }

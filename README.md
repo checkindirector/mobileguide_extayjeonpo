@@ -1,6 +1,6 @@
 # EXTAY JEONPO · 홈페이지 및 모바일 게스트 가이드
 
-어나더하우스·스테이네모와 같은 게스트 흐름을 따르는 독립 정적 사이트입니다. 전포점 실제 사진에 맞춰 웜화이트·샌드·올리브 그레이를 적용했습니다.
+어나더하우스·스테이네모와 같은 게스트 흐름을 따르는 독립 정적 사이트입니다. 화면 너비는 최대 480px이며 큰 화면에서도 같은 모바일 레이아웃을 유지합니다. 전포점 실제 사진에 맞춰 웜화이트·샌드·올리브 그레이를 적용했습니다.
 
 ## 실행 및 검증
 
@@ -32,8 +32,8 @@ npm test
 
 - GitHub: https://github.com/checkindirector/mobileguide_extayjeonpo
 - Vercel 프로젝트명: `extayjeonpo-guide`
-- 사용자 확인 전 배포하지 않습니다. 프로젝트 생성과 소스 준비만 수행합니다.
+- 사용자가 2026-11-10 승인한 배포 주소: https://extayjeonpo-guide.vercel.app
 - 빌드 명령: `npm run build` / 출력 디렉터리: `.` / 프레임워크: Other
-- 검색 노출은 검토 중이므로 `noindex,nofollow`입니다. 정식 공개 전 `docs/content-review.md`를 확인합니다.
+- 승인된 운영 주소를 canonical 및 sitemap에 반영했으며 검색 수집을 허용합니다. 내용 검토 이력은 `docs/content-review.md`를 참고합니다.
 
 Wi-Fi 비밀번호·출입번호·호스트 개인 전화번호는 공개 소스에 포함하지 않습니다. 서비스 워커는 검토 중 자료를 오래 캐시하지 않도록 적용하지 않았습니다.
