@@ -1,0 +1,38 @@
+@font-face{font-family:Oxanium;src:url('fonts/oxanium-latin.woff2') format('woff2');font-style:normal;font-weight:300 800;font-display:swap}
+
+/* Match Another House's actual title family, weight and tracking. */
+.cover-title h1{font-family:Oxanium,'Arial Narrow',Arial,sans-serif;font-weight:300;letter-spacing:-.02em;font-size:clamp(40px,calc(min(100vw,480px) * .129),62px)}
+.brand>span,.drawer-top>span,.footer-brand>span{font-family:Oxanium,'Arial Narrow',Arial,sans-serif}
+
+/* Guest-facing text stays readable at phone size. */
+.intro-copy>p,.signature-copy>p:not(.eyebrow),.local-copy>p:not(.eyebrow),.page-heading .lead,.info-article>p,.route-overview p:not(.eyebrow),.walking-step>p:not(.eyebrow),.transport-notes p,.local-feature>div>p:not(.eyebrow),.tour-card>p:not(.eyebrow),.steps li,.local-card p:not(.eyebrow),.home-guide .section-heading>p,.booking-section>p:not(.eyebrow),.booking-dialog #bookingBody>p:first-child{font-size:16px;line-height:1.8;color:var(--ink)}
+.help-block p:not(.eyebrow),.arrival-note>span:first-of-type,.travel-alert p,.address-card>p:not(.eyebrow),.guide-message{font-size:14px;line-height:1.8;color:var(--ink)}
+.guide-row{font-size:16px;min-height:76px}.filter-tabs button{min-height:44px;font-size:13px}.text-link,.copy-button,.outline-button{font-size:14px;min-height:44px}.manual-links .text-link{font-size:13px}
+.search-field input,.language-label select{font-size:16px;min-height:44px}.language-label select{min-width:53px}.menu-button{width:44px}
+.bottom-nav>a,.bottom-nav>button{font-size:11px}.gallery-item>span,.image-caption>span{font-size:12px;line-height:1.65}.gallery-item small,.image-caption small,.eyebrow{font-size:10px}.gallery-total{font-size:10px}
+.essential-grid a>span,.stats dt{font-size:12px}.essential-grid strong{font-size:16px}.arrival-note strong,.travel-alert strong{font-size:14px}
+.hero-prev,.hero-next{min-width:44px!important;min-height:44px!important}.photo-index{font-size:11px;align-items:center}.photo-index>span{min-width:0;flex:1;line-height:1.5}.photo-index>div{flex-shrink:0;gap:7px;font-size:11px}
+.cover-caption>span,.scroll-link{font-size:9px}.cover-meta{font-size:9px}.cover-title>p{font-size:11px}.cover-title{gap:14px}
+.footer p{font-size:12px}.footer small,.booking-contact,.booking-facts{font-size:11px}.booking-dialog .primary-button{font-size:14px}.local-card-links .text-link{font-size:12px}.tour-stops .outline-button{font-size:13px}
+html:is(:lang(ja),:lang(zh)) :is(p,li,h1,h2,h3,dd,dt,figcaption,button,a,small,strong,span){word-break:normal;overflow-wrap:break-word;line-break:strict}
+
+/* Room layouts and operational photos retain their complete original frame. */
+.gallery-item img,.gallery-item.wide img{height:auto;aspect-ratio:auto;object-fit:contain}
+.guide-photo,.guide-photo.contain{height:auto;overflow:hidden;background:var(--soft)}
+.guide-photo img,.guide-photo.contain img{width:100%;height:auto;max-height:540px;object-fit:contain;padding:0}
+.walking-step .photo-button{height:auto}.walking-step .photo-button img{height:auto;max-height:none;object-fit:contain}
+.hero-slide{height:auto;min-height:0;max-height:none;aspect-ratio:4/3}.hero-slide img{object-fit:contain}
+.signature-image{height:auto;aspect-ratio:4/3}.signature-image img{object-fit:contain}
+.editorial-mosaic{display:grid;grid-template-columns:1fr 1fr;align-items:start}.editorial-mosaic .photo-button:first-child{height:auto;grid-column:1/-1}.editorial-mosaic .photo-button:nth-child(2),.editorial-mosaic .photo-button:nth-child(3){height:auto;margin-top:0}.editorial-mosaic .photo-button img{height:auto;aspect-ratio:auto;object-fit:contain}
+.local-edit figure img,.local-feature figure>img,.tour-cover>img{height:auto;max-height:none;aspect-ratio:auto;object-fit:contain}
+.building-photo button{height:auto}.building-photo img{height:auto;object-fit:contain}
+
+.wifi-network-grid{display:grid;gap:12px;margin-top:25px}.wifi-network{border:1px solid var(--line);padding:20px}.wifi-network>small{display:block;font-size:12px;color:var(--muted)}.wifi-network code{display:block;font-size:19px;font-family:Oxanium,monospace;overflow-wrap:anywhere;margin-top:8px}.wifi-network .copy-button{font-size:13px;gap:24px;margin-top:10px}
+.faq-section{border-top:1px solid var(--line)}.faq-section h2{font-size:27px;margin-bottom:25px}.faq-list{border-top:1px solid var(--line)}.faq-list details{border-bottom:1px solid var(--line)}.faq-list summary{cursor:pointer;padding:20px 22px 20px 0;position:relative;list-style:none;font-size:16px;line-height:1.65}.faq-list summary::-webkit-details-marker{display:none}.faq-list summary::after{content:'+';position:absolute;right:0;top:20px;font-size:21px}.faq-list details[open] summary::after{content:'−'}.faq-list details p{font-size:16px;line-height:1.8;padding-bottom:23px;color:var(--ink)}
+
+.lightbox-zoom{position:absolute;top:13px;left:13px;z-index:3;display:flex;align-items:center;gap:2px;background:#ffffff15}.lightbox-zoom button{color:var(--paper)}.lightbox-zoom #zoomReset{min-width:64px;min-height:44px;font-size:12px}.lightbox-zoom button:disabled{opacity:.35;cursor:default}
+.lightbox figure{inset:76px 20px 90px;justify-content:flex-start;gap:16px}.lightbox-stage{flex:1;min-height:0;width:100%;overflow:auto;overscroll-behavior:contain;display:grid;place-items:center;scrollbar-width:thin}.lightbox-stage.is-zoomed{display:block;touch-action:pan-x pan-y}.lightbox-stage img{max-width:none;max-height:none;object-fit:contain;flex:none}.lightbox figcaption{flex-shrink:0;font-size:13px;padding:0 14px;line-height:1.6}
+@media(max-width:359px){.cover-title h1{font-size:39px}.cover-title>p{font-size:10px}.cover-title{gap:10px}.photo-index{font-size:10px}.bottom-nav>a,.bottom-nav>button{font-size:10px}.essential-grid strong{font-size:14px}}
+@media print{.hero-slide{height:auto}.lightbox-zoom{display:none}}
+
+.entry-lock-photos{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:25px 0}.entry-lock-photos img{height:auto;object-fit:contain}.entry-lock-photos figcaption{font-size:12px;margin-top:10px;line-height:1.6}.entry-lock-photos .photo-open{width:28px;height:28px;font-size:18px;right:8px;bottom:8px}

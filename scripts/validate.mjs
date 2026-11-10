@@ -7,7 +7,7 @@ const load=p=>fs.readFileSync(path.join(root,p),'utf8');
 const source=load('index.html')+load('assets/app.js')+load('assets/data.js')+load('assets/styles.css');
 const sandbox={window:{}};vm.runInNewContext(load('assets/data.js'),sandbox);const d=sandbox.window.EXTAY;
 const files=new Set(['index.html','assets/data.js','assets/app.js','assets/styles.css','assets/images/logo.png','manifest.webmanifest','assets/favicon.svg','robots.txt','vercel.json']);
-for(const x of [...source.matchAll(/(?:src|href)="(assets\/[^"$]+)"/g)])files.add(x[1]);
+for(const x of [...source.matchAll(/(?:src|href)="(assets\/[^"$]+)"/g)])files.add(x[1].split(/[?#]/)[0]);
 for(let i=0;i<59;i++)files.add(`assets/images/photo-${String(i).padStart(2,'0')}.webp`);
 for(const name of files)if(!fs.existsSync(path.join(root,name)))throw Error(`Missing asset: ${name}`);
 let translations=0;function walk(v,p='data'){if(!v||typeof v!=='object')return;if('ko'in v){for(const language of ['ko','en','ja','zh','tw'])if(typeof v[language]!=='string'||!v[language].trim())throw Error(`Missing ${language}: ${p}`);translations++;return}for(const[k,x]of Object.entries(v))walk(x,`${p}.${k}`)}walk(d);

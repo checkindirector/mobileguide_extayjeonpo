@@ -16,9 +16,11 @@
   <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
   <link rel="manifest" href="manifest.webmanifest">
   <link rel="preload" as="image" href="assets/images/photo-01.webp">
-  <link rel="stylesheet" href="assets/styles.css">
-  <script src="assets/data.js" defer></script>
-  <script src="assets/app.js" defer></script>
+  <link rel="preload" as="font" href="assets/fonts/oxanium-latin.woff2" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="assets/styles.css?v=20261110-audit1">
+  <link rel="stylesheet" href="assets/audit-refinements.css?v=20261110-audit1">
+  <script src="assets/data.js?v=20261110-audit1" defer></script>
+  <script src="assets/app.js?v=20261110-audit1" defer></script>
 </head>
 <body>
   <a class="skip-link" href="#main">본문으로 바로가기</a>
@@ -32,7 +34,7 @@
   <nav class="bottom-nav" aria-label="빠른 메뉴"></nav>
   <dialog class="menu-dialog" id="menuDialog"><div class="drawer-top"><span>EXTAY JEONPO</span><button class="icon-button" data-close="menuDialog" aria-label="메뉴 닫기">×</button></div><nav class="drawer-nav" aria-label="전체 메뉴"></nav><div class="drawer-foot">BUSAN PRIVATE STAY<br><small>35° N, 129° E · JEONPO</small></div></dialog>
   <dialog class="booking-dialog" id="bookingDialog" aria-labelledby="bookingTitle"><button class="dialog-close icon-button" data-close="bookingDialog" aria-label="닫기">×</button><p class="eyebrow">MAKE YOURSELF AT HOME</p><h2 id="bookingTitle"></h2><div id="bookingBody"></div></dialog>
-  <dialog class="lightbox" id="lightbox" aria-label="공간 사진 크게 보기"><button class="lightbox-close icon-button" data-close="lightbox" aria-label="사진 닫기">×</button><button class="lightbox-arrow prev icon-button" aria-label="이전 사진">←</button><figure><img id="lightboxImage" alt=""><figcaption id="lightboxCaption"></figcaption></figure><button class="lightbox-arrow next icon-button" aria-label="다음 사진">→</button><span class="lightbox-counter"></span></dialog>
+  <dialog class="lightbox" id="lightbox" aria-label="공간 사진 크게 보기"><button class="lightbox-close icon-button" data-close="lightbox" aria-label="사진 닫기">×</button><div class="lightbox-zoom"><button class="icon-button" id="zoomOut" aria-label="축소">−</button><button id="zoomReset" aria-label="원래 크기"><span id="zoomValue">100%</span></button><button class="icon-button" id="zoomIn" aria-label="확대">+</button></div><button class="lightbox-arrow prev icon-button" aria-label="이전 사진">←</button><figure><div class="lightbox-stage" id="lightboxStage"><img id="lightboxImage" alt=""></div><figcaption id="lightboxCaption"></figcaption></figure><button class="lightbox-arrow next icon-button" aria-label="다음 사진">→</button><span class="lightbox-counter"></span></dialog>
   <div class="toast" role="status" aria-live="polite"></div>
   <noscript><section class="noscript"><h1>EXTAY JEONPO</h1><p>부산광역시 부산진구 동성로 113, 5층 · 최대 10인 · 침실 2 · 욕실 2</p><p>체크인 16:00 / 체크아웃 11:00 · 엘리베이터와 건물 주차가 없습니다.</p><a href="https://www.airbnb.co.kr/h/extayjeonpo">Airbnb에서 예약 및 문의하기 ↗</a><p>공간 사진과 상세 가이드를 보려면 JavaScript를 켜주세요.</p></section></noscript>
 </body>
