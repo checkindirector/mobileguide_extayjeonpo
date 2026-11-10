@@ -1,0 +1,20 @@
+import fs from 'node:fs';
+import path from 'node:path';
+import vm from 'node:vm';
+import {fileURLToPath} from 'node:url';
+const root=path.resolve(path.dirname(fileURLToPath(import.meta.url)),'..');
+const load=p=>fs.readFileSync(path.join(root,p),'utf8');
+const source=load('index.html')+load('assets/app.js')+load('assets/data.js')+load('assets/styles.css');
+const sandbox={window:{}};vm.runInNewContext(load('assets/data.js'),sandbox);const d=sandbox.window.EXTAY;
+const files=new Set(['index.html','assets/data.js','assets/app.js','assets/styles.css','assets/images/logo.png','manifest.webmanifest','assets/favicon.svg','robots.txt','vercel.json']);
+for(const x of [...source.matchAll(/(?:src|href)="(assets\/[^"$]+)"/g)])files.add(x[1]);
+for(let i=0;i<59;i++)files.add(`assets/images/photo-${String(i).padStart(2,'0')}.webp`);
+for(const name of files)if(!fs.existsSync(path.join(root,name)))throw Error(`Missing asset: ${name}`);
+let translations=0;function walk(v,p='data'){if(!v||typeof v!=='object')return;if('ko'in v){for(const language of ['ko','en','ja','zh','tw'])if(typeof v[language]!=='string'||!v[language].trim())throw Error(`Missing ${language}: ${p}`);translations++;return}for(const[k,x]of Object.entries(v))walk(x,`${p}.${k}`)}walk(d);
+for(const item of d.gallery)if(!d.captions[item.id])throw Error(`Missing caption ${item.id}`);
+if(d.gallery.length!==35)throw Error('Incomplete gallery');
+for(const forbidden of ['staynemo-guide','anotherhouse-guide','을지로3가','OPENAI_API_KEY','api.openai.com','dongdae48@'])if(source.includes(forbidden))throw Error(`Unexpected carryover or private data: ${forbidden}`);
+const hostSource=path.join(root,'..','source-info.md');
+if(fs.existsSync(hostSource)){const m=fs.readFileSync(hostSource,'utf8').match(/Wi-Fi 비밀번호:([^\r\n]+)/);if(m){const secret=m[1].trim().replace(/\\/g,'');if(secret&&source.includes(secret))throw Error('Private Wi-Fi password must stay out of public source')}}
+if(d.bookingUrl!=='https://www.airbnb.co.kr/h/extayjeonpo')throw Error('Wrong booking destination');
+console.log(`Validated EXTAY JEONPO: ${files.size} assets, 35 gallery photos, ${translations} complete five-language text groups.`);

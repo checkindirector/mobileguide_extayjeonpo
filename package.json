@@ -1,0 +1,1 @@
+{"name":"mobileguide-extayjeonpo","version":"1.0.0","private":true,"type":"module","scripts":{"start":"node scripts/serve.mjs","build":"node scripts/validate.mjs","test":"node --test test/site.test.mjs"},"dependencies":{}}

@@ -1,0 +1,8 @@
+.git/
+.vercel/
+docs/
+test/
+README.md
+.env*
+work/
+assets/images/thumb-*.webp

@@ -1,0 +1,13 @@
+{
+  "github": "https://github.com/checkindirector/mobileguide_extayjeonpo",
+  "vercelTeamId": "team_hcKhg1gwXUYwal8OFWoezq6A",
+  "vercelTeamSlug": "checkin-director",
+  "vercelProjectId": "prj_lJL0k31jfC0Pjl5rFu5AErZsSROe",
+  "vercelProjectName": "extayjeonpo-guide",
+  "verifiedProjectDomain": "extayjeonpo-guide.vercel.app",
+  "proposedProductionUrl": "https://extayjeonpo-guide.vercel.app",
+  "domainVerified": true,
+  "deploymentStatus": "awaiting_user_url_confirmation",
+  "userInstruction": "배포하기 전에 전체 주소를 사용자에게 확인받을 것. Git 연동을 통한 자동 배포도 확인 전 실행하지 않을 것.",
+  "lastVerifiedDate": "2026-11-10"
+}
