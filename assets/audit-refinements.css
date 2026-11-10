@@ -36,3 +36,17 @@ html:is(:lang(ja),:lang(zh)) :is(p,li,h1,h2,h3,dd,dt,figcaption,button,a,small,s
 @media print{.hero-slide{height:auto}.lightbox-zoom{display:none}}
 
 .entry-lock-photos{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:25px 0}.entry-lock-photos img{height:auto;object-fit:contain}.entry-lock-photos figcaption{font-size:12px;margin-top:10px;line-height:1.6}.entry-lock-photos .photo-open{width:28px;height:28px;font-size:18px;right:8px;bottom:8px}
+
+/* Approved Ink Blue × Paper palette, shared by every guest page and dialog. */
+.eyebrow,.article-heading>span,.steps li::before{color:var(--accent)}
+.guide-row svg,.essential-grid svg{color:var(--accent)}
+.bottom-nav [aria-current]{color:var(--accent)}
+.guide-sidebar nav [aria-current]{background:var(--accent);color:var(--white);border-color:var(--accent)}
+.bottom-nav [aria-current]{font-weight:550}
+.text-link{border-color:var(--accent)}
+.text-link>span,.guide-row>span:last-child,.image-caption i{color:var(--accent)}
+.filter-tabs button[aria-pressed="true"]{background:var(--accent);color:var(--white);border-color:var(--accent)}
+.essentials,.local-edit,.booking-section,.help-block,.guide-message,.travel-alert{--muted:#586572}
+.filter-tabs{flex-wrap:wrap;overflow:visible}
+.guide-sidebar nav{flex-wrap:wrap;overflow:visible;gap:8px}
+.guide-sidebar nav a{font-size:13px;min-height:44px;display:flex;align-items:center}
