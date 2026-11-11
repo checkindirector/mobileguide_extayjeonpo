@@ -50,3 +50,118 @@ html:is(:lang(ja),:lang(zh)) :is(p,li,h1,h2,h3,dd,dt,figcaption,button,a,small,s
 .filter-tabs{flex-wrap:wrap;overflow:visible}
 .guide-sidebar nav{flex-wrap:wrap;overflow:visible;gap:8px}
 .guide-sidebar nav a{font-size:13px;min-height:44px;display:flex;align-items:center}
+
+/* Deeper ink blue, with a stronger editorial pause at the booking section. */
+:root{--accent:#263e59;--soft:#dfe6ed}
+.booking-section{background:var(--accent);color:var(--paper);--ink:var(--paper);--muted:var(--paper)}
+.booking-section .eyebrow{color:var(--paper)}
+.booking-section .primary-button{background:var(--paper);color:var(--accent);font-size:15px}
+.cover-meta>span:first-child{color:var(--accent)}
+
+/* The drawer is a primary navigation surface, with comfortable phone type. */
+.menu-dialog{padding:0 26px 32px}
+.drawer-top{position:sticky;top:0;z-index:1;margin:0 -26px 10px;padding:20px 24px;background:var(--accent);color:var(--paper);border:0}
+.drawer-top>span{font-size:17px;font-weight:400;letter-spacing:.03em}
+.drawer-top .icon-button{color:var(--paper);font-size:32px}
+.drawer-top .icon-button:focus-visible{outline-color:var(--paper)}
+.drawer-nav{margin-top:0}
+.drawer-nav a{grid-template-columns:26px minmax(0,1fr) 20px;gap:12px;min-height:68px;padding:17px 0;font-size:20px;line-height:1.5;letter-spacing:-.04em}
+.drawer-nav small{font-size:12px;color:var(--accent)}
+.drawer-nav i{font-size:23px;color:var(--accent)}
+.drawer-nav [aria-current]{color:var(--accent);font-weight:600}
+.drawer-foot{font-size:13px;letter-spacing:.08em;margin-top:30px}
+.drawer-foot small{font-size:11px}
+
+/* Local notes: authentic neighborhood photographs, then readable place entries. */
+.discovery-cover{padding-top:28px;padding-bottom:34px}
+.discovery-photo img,.place-feature-photo img{width:100%;height:auto;object-fit:contain}
+.discovery-photo figcaption,.place-feature-photo figcaption{display:grid;gap:5px;margin-top:11px;font-size:11px;line-height:1.6;color:var(--muted)}
+.discovery-photo figcaption>a,.place-feature-photo figcaption>a{text-decoration:underline;text-underline-offset:3px}
+.discovery-intro{margin-top:30px;padding-top:23px;border-top:1px solid var(--accent)}
+.discovery-intro .eyebrow{margin-bottom:13px}
+.discovery-intro>p:not(.eyebrow){font-size:14px;line-height:1.85}
+.discovery-intro>small,.content-date{display:block;font-size:12px;color:var(--muted);margin-top:16px}
+.local-page-links{margin-top:22px}
+.home-local-photo figcaption{display:grid;gap:6px;font-size:11px;line-height:1.7;margin-top:13px;color:var(--muted);letter-spacing:0}
+.home-local-photo figcaption>a{text-decoration:underline;text-underline-offset:3px}
+.home-local-photo img{width:100%;height:auto;object-fit:contain}
+.discovery-list{padding-top:36px}
+.discovery-list-title{font-size:26px;margin-bottom:22px}
+.result-count{font-family:Oxanium,Arial,sans-serif;font-size:12px;letter-spacing:.06em;color:var(--accent);padding:0 0 17px}
+.discovery-item{border-top:1px solid var(--line);padding:29px 0 32px}
+.discovery-meta{display:flex;justify-content:space-between;align-items:flex-start;gap:15px;margin-bottom:15px;font-size:11px;line-height:1.6;color:var(--accent)}
+.discovery-meta>span:first-child{font-family:Oxanium,Arial,sans-serif;letter-spacing:.04em}
+.discovery-meta>span:last-child{text-align:right}
+.discovery-item h2{font-size:25px;line-height:1.4}
+.place-original{font-size:12px;line-height:1.6;color:var(--muted);margin-top:6px;letter-spacing:0}
+.place-menu{font-size:15px;font-weight:550;color:var(--accent);margin-top:20px;line-height:1.7}
+.place-body{font-size:16px;line-height:1.85;margin-top:12px}
+.place-feature-photo{margin-top:22px}
+.place-details{margin-top:20px}
+.place-details summary{font-size:14px;line-height:1.7;min-height:44px;cursor:pointer;display:flex;align-items:center;justify-content:space-between;gap:12px;color:var(--accent);list-style:none;border-bottom:1px solid var(--line);padding:10px 0}
+.place-details summary::-webkit-details-marker{display:none}
+.place-details summary::after{content:'+';font-size:22px}
+.place-details[open] summary::after{content:'−'}
+.place-facts{margin:21px 0;font-size:14px;line-height:1.85}
+.place-facts>div{margin-top:16px}
+.place-facts dt{font-size:12px;color:var(--muted);margin-bottom:5px}
+.place-facts dd{margin:0;overflow-wrap:anywhere}
+.hours-value{display:block;font-family:Oxanium,Arial,sans-serif;font-size:15px;margin-bottom:5px;letter-spacing:0}
+.place-map-links{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin:21px 0 12px}
+.place-map-links .outline-button{padding:12px 13px;gap:8px;min-width:0}
+.place-details>.text-link{display:flex;gap:12px;margin-top:12px}
+.day-courses{background:var(--soft);padding-top:36px;padding-bottom:42px}
+.day-courses>h2{font-size:26px;line-height:1.45}
+.course-accordion{margin-top:25px;border-top:1px solid var(--line)}
+.course-accordion>details{border-bottom:1px solid var(--line)}
+.course-accordion summary{position:relative;list-style:none;cursor:pointer;min-height:80px;padding:18px 25px 18px 0}
+.course-accordion summary::-webkit-details-marker{display:none}
+.course-accordion summary small{display:block;font-size:10px;letter-spacing:.1em;color:var(--accent);margin-bottom:6px}
+.course-accordion summary>span{display:block;font-size:17px;line-height:1.55}
+.course-accordion summary::after{content:'+';position:absolute;right:0;top:29px;font-size:22px;color:var(--accent)}
+.course-accordion details[open] summary::after{content:'−'}
+.course-accordion ol{padding-left:24px;margin:4px 0 23px}
+.course-accordion li{padding:6px 0;font-size:14px}
+.course-accordion .text-link{display:flex;gap:12px}
+
+/* Airport options remain vertical and self-contained on a small screen. */
+.airport-section{padding-top:28px}
+.airport-choices{display:grid;gap:12px}
+.airport-choice{position:relative;text-align:left;padding:22px;background:var(--soft);display:grid;gap:8px;width:100%;border-left:3px solid var(--accent)}
+.airport-choice>span{font-size:10px;letter-spacing:.1em;color:var(--accent)}
+.airport-choice strong{font-size:20px;font-weight:500;line-height:1.5;padding-right:22px}
+.airport-choice b{font-size:17px;line-height:1.6;color:var(--accent);font-weight:550}
+.airport-choice small{font-size:13px;line-height:1.65}
+.airport-choice i{position:absolute;right:21px;top:22px;font-size:23px;font-style:normal;color:var(--accent)}
+.planning-note{font-size:13px;line-height:1.85;color:var(--muted);margin:23px 0 40px}
+.airport-guide{padding:34px 0 40px;border-top:1px solid var(--accent);scroll-margin-top:15px}
+.airport-guide>.eyebrow{margin-bottom:16px}
+.airport-guide h2{font-size:28px;line-height:1.4}
+.airport-best{font-size:14px;color:var(--accent);margin-top:15px}
+.airport-facts{display:flex;gap:8px;flex-wrap:wrap;margin:22px 0}
+.airport-facts span{font-size:13px;line-height:1.6;padding:8px 11px;background:var(--soft)}
+.airport-guide>p:not(.eyebrow):not(.airport-best){font-size:16px;line-height:1.85}
+.airport-guide .manual-links{display:grid;gap:12px}
+.airport-guide .text-link{gap:18px;margin-top:15px;max-width:100%}
+.airport-service-note{padding:20px;background:var(--soft);margin-top:24px}
+.taxi-address{margin-top:25px;padding:22px;background:var(--soft)}
+.taxi-address>span{display:block;font-size:13px;color:var(--accent)}
+.taxi-address>strong{display:block;font-size:21px;line-height:1.6;margin-top:10px;font-weight:550}
+.return-airport{border-top:1px solid var(--line);padding-top:35px}
+.return-airport h2{font-size:26px}
+.return-airport p:not(.eyebrow){font-size:16px;line-height:1.85;margin-top:22px}
+.return-airport .text-link{margin-top:22px}
+
+/* Device index and verified controls: practical steps, no tiny diagrams. */
+.device-jump{margin-bottom:42px}
+.device-jump>p{font-size:14px;color:var(--accent);margin-bottom:16px}
+.device-jump>div{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.device-jump button{display:flex;justify-content:space-between;align-items:center;gap:10px;min-height:56px;text-align:left;border:1px solid var(--line);padding:12px;font-size:13px;line-height:1.6}
+.device-jump button>span{color:var(--accent);flex-shrink:0}
+.info-article[id]{scroll-margin-top:15px}
+.info-article>.device-model{font-family:Oxanium,Arial,sans-serif;font-size:13px;letter-spacing:.04em;color:var(--accent);margin-top:-8px;line-height:1.6}
+.info-article>.device-location{font-size:13px;line-height:1.7;color:var(--muted);margin:9px 0 22px}
+.remote-legend{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:12px;padding:12px 0;border-bottom:1px solid var(--line);font-size:11px;color:var(--accent);line-height:1.7}
+.device-support{padding:24px;background:var(--soft);margin-top:35px;font-size:15px;line-height:1.85}
+.device-support .text-link{margin-top:18px}
+@media(max-width:359px){.drawer-nav a{font-size:19px;min-height:66px}.discovery-item h2{font-size:23px}.airport-choice{padding:20px}.airport-guide h2{font-size:26px}.taxi-address>strong{font-size:19px}}
