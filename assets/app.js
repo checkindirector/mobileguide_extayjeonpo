@@ -4,7 +4,7 @@
   const languages=['ko','en','ja','zh','tw'];
   const guideMediaUrl=file=>file.startsWith('assets/diagrams/')?`${file}?v=20261113-pine1`:file;
   let language='ko';try{const saved=localStorage.getItem('extayjeonpo-language');if(languages.includes(saved))language=saved;}catch{}
-  let route='home',category='all',localCategory='all',query='',slide=0,lightboxItems=[],lightboxIndex=0,toastTimer,deviceResizeObserver;
+  let route='home',category='all',localCategory='all',query='',lightboxItems=[],lightboxIndex=0,toastTimer,deviceResizeObserver;
   const heroPhotos=[1,3,8], scrolls=new Map();
   const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
   const t=v=>typeof v==='object'&&v!==null?(v[language]??v.en??v.ko??''):String(v??'');
@@ -55,17 +55,87 @@
     if(!photos.length)return '';
     return `<details class="photo-credits"><summary>${tr('photoCredits')}</summary>${route==='nearby'?'':`<p>${tr('photoLicense')}</p>`}<ul>${photos.map(p=>`<li>${ext(p.source,esc(p.title))}<span>${esc(p.creator)} · ${esc(p.publisher)}${p.created?` · ${esc(p.created)}`:''}</span></li>`).join('')}</ul></details>`;
   }
+  const homePhotoSets={
+    hero:heroPhotos.map(id=>({id,label:''})),
+    spaces:[{id:15,label:'BEDROOM 01'},{id:29,label:'THE TERRACE'},{id:2,label:'LITTLE DETAILS'}]
+  };
+  const homePhotoIndices={hero:0,spaces:0};
+  let homePhotoObserver;
+  function homePhotoCarousel(key){
+    const items=homePhotoSets[key],active=homePhotoIndices[key];
+    const label=key==='hero'?L('익스테이 전포 공간 사진','EXTAY JEONPO space photographs','EXTAY JEONPOの空間写真','EXTAY JEONPO空间照片','EXTAY JEONPO空間照片'):D.home.galleryTitle;
+    const carouselLabel=L('사진 캐러셀','Photo carousel','写真カルーセル','照片轮播','照片輪播');
+    const slideLabel=L('사진','Photograph','写真','照片','照片');
+    const selectLabel=L('사진 선택','Choose a photograph','写真を選択','选择照片','選擇照片');
+    return `<div class="home-photo-carousel ${key==='hero'?'hero-photo':''}" data-home-carousel="${key}" role="region" aria-roledescription="${text(carouselLabel)}" aria-label="${text(label)}">
+      <div class="home-photo-track" data-home-track tabindex="0" role="group" aria-label="${text(L('좌우로 넘기거나 방향키로 사진을 바꿔보세요','Swipe or use the arrow keys to change photographs','スワイプまたは矢印キーで写真を切り替えます','左右滑动或使用方向键切换照片','左右滑動或使用方向鍵切換照片'))}">
+        ${items.map((item,i)=>`<figure class="home-photo-slide" role="group" aria-roledescription="${text(slideLabel)}" aria-label="${i+1} / ${items.length}" ${i!==active?'inert aria-hidden="true"':''}>
+          <button class="photo-button" type="button" data-home-photo="${key}:${i}" aria-label="${text(D.captions[item.id])} · ${tr('zoomIn')}">${img(item.id,key==='hero'&&i===active?'fetchpriority="high"':'loading="lazy"')}<span class="photo-open" aria-hidden="true">↗</span></button>
+          <figcaption>${item.label?`<small>${esc(item.label)}</small>`:''}<p>${text(D.captions[item.id])}</p></figcaption>
+        </figure>`).join('')}
+      </div>
+      <div class="home-carousel-controls">
+        <button class="carousel-arrow" type="button" data-home-shift="-1" aria-label="${tr('previous')}" ${active===0?'disabled':''}>←</button>
+        <div class="home-carousel-position"><span data-home-count role="status" aria-live="polite" aria-atomic="true">${String(active+1).padStart(2,'0')} / ${String(items.length).padStart(2,'0')}</span><div class="home-carousel-dots" role="group" aria-label="${text(selectLabel)}">${items.map((item,i)=>`<button type="button" data-home-index="${i}" aria-label="${text(slideLabel)} ${i+1} · ${text(D.captions[item.id])}" aria-current="${i===active}"><span aria-hidden="true"></span></button>`).join('')}</div></div>
+        <button class="carousel-arrow" type="button" data-home-shift="1" aria-label="${tr('next')}" ${active===items.length-1?'disabled':''}>→</button>
+      </div>
+    </div>`;
+  }
+  function fitHomePhotoTrack(track){
+    const root=track.closest('[data-home-carousel]'),index=homePhotoIndices[root.dataset.homeCarousel];
+    const current=track.children[index];
+    if(track.clientWidth&&current?.offsetHeight)track.style.height=Math.ceil(current.getBoundingClientRect().height)+'px';
+  }
+  function syncHomePhotoCarousel(track){
+    const root=track.closest('[data-home-carousel]'),key=root.dataset.homeCarousel;
+    const index=Math.max(0,Math.min(track.children.length-1,Math.round(track.scrollLeft/Math.max(1,track.getBoundingClientRect().width))));
+    homePhotoIndices[key]=index;
+    if(track.dataset.active!==String(index)){
+      if(track.contains(document.activeElement)&&document.activeElement!==track&&!track.children[index].contains(document.activeElement))track.focus({preventScroll:true});
+      track.dataset.active=String(index);
+      [...track.children].forEach((figure,i)=>{figure.inert=i!==index;figure.setAttribute('aria-hidden',String(i!==index));});
+      $('[data-home-count]',root).textContent=`${String(index+1).padStart(2,'0')} / ${String(track.children.length).padStart(2,'0')}`;
+      $('[data-home-shift="-1"]',root).disabled=index===0;
+      $('[data-home-shift="1"]',root).disabled=index===track.children.length-1;
+      $$('[data-home-index]',root).forEach((button,i)=>button.setAttribute('aria-current',String(i===index)));
+    }
+    fitHomePhotoTrack(track);
+  }
+  function moveHomePhotoCarousel(root,index){
+    const track=$('[data-home-track]',root),next=Math.max(0,Math.min(track.children.length-1,index));
+    track.scrollTo({left:track.children[next].offsetLeft,behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'instant':'smooth'});
+  }
+  function bindHomePhotoCarousels(){
+    homePhotoObserver?.disconnect();
+    const roots=$$('[data-home-carousel]');if(!roots.length)return;
+    homePhotoObserver=new ResizeObserver(entries=>{for(const {target} of entries){const track=target.matches('[data-home-track]')?target:target.closest('[data-home-track]');if(!track)continue;
+      if(target===track&&track.dataset.width!==String(track.clientWidth)){
+        track.dataset.width=String(track.clientWidth);
+        track.scrollLeft=track.children[homePhotoIndices[track.closest('[data-home-carousel]').dataset.homeCarousel]].offsetLeft;
+      }
+      fitHomePhotoTrack(track);
+    }});
+    roots.forEach(root=>{
+      const track=$('[data-home-track]',root),key=root.dataset.homeCarousel;
+      track.scrollLeft=track.children[homePhotoIndices[key]].offsetLeft;
+      track.dataset.width=String(track.clientWidth);syncHomePhotoCarousel(track);
+      let frame;track.addEventListener('scroll',()=>{cancelAnimationFrame(frame);frame=requestAnimationFrame(()=>syncHomePhotoCarousel(track));},{passive:true});
+      track.addEventListener('keydown',event=>{if(!['ArrowLeft','ArrowRight','Home','End'].includes(event.key))return;event.preventDefault();const current=homePhotoIndices[key];moveHomePhotoCarousel(root,event.key==='Home'?0:event.key==='End'?track.children.length-1:current+(event.key==='ArrowRight'?1:-1));});
+      homePhotoObserver.observe(track);[...track.children].forEach(figure=>homePhotoObserver.observe(figure));
+    });
+  }
+
   function home(){return `
     <section class="cover">
       <div class="cover-meta"><span>BUSAN PRIVATE STAY</span><span>JEONPO, BUSAN</span><span class="cover-issue">A PLACE TO STAY TOGETHER</span></div>
       <div class="cover-title"><h1 aria-label="EXTAY JEONPO"><img class="cover-logo" src="assets/images/extay-logo.svg?v=20261113-logo1" width="518" height="155" alt="EXTAY"><span>JEONPO<i aria-hidden="true">.</i></span></h1><p>${text(D.home.line).replace(/\n/g,' ')}</p></div>
-      <div class="hero-photo"><div class="hero-slide">${img(heroPhotos[slide],'fetchpriority="high" width="1448" height="1086" id="heroImage"')}</div><div class="photo-index"><span id="heroCaption">${text(D.captions[heroPhotos[slide]])}</span><div><button class="hero-prev" aria-label="${tr('previous')}">←</button><span id="heroCount">0${slide+1} / 03</span><button class="hero-next" aria-label="${tr('next')}">→</button></div></div></div>
+      ${homePhotoCarousel('hero')}
       <div class="cover-caption"><span>PRIVATE SPACE · SHARED MOMENTS</span><button class="scroll-link" data-scroll="introduction">SCROLL TO DISCOVER <span aria-hidden="true">↓</span></button></div>
     </section>
     <section class="intro section" id="introduction"><div><p class="eyebrow">01 / THE STAY</p><h2>${lines(D.home.introTitle)}</h2></div><div class="intro-copy"><p>${text(D.home.introBody)}</p>${stats()}${link('gallery',tr('gallery'))}</div></section>
     <section class="essentials section"><div class="section-heading"><div><p class="eyebrow">STAY ESSENTIALS</p><h2>${text(D.home.essentials)}</h2></div><span class="small-note">THE PRACTICAL SIDE<br>OF A GOOD STAY</span></div><div class="essential-grid">${[['checkin','checkIn','16:00'],['checkin','checkOut','11:00'],['transport','transport',text(L('부전역 도보 5–8분','Bujeon · 5–8 min walk','釜田駅 徒歩5–8分','釜田站步行5–8分钟','釜田站步行5–8分鐘'))],['wifi','wifi','5G · 2.4G']].map(([r,k,v])=>`<a href="#${r}">${icon(r)}<span>${tr(k)}</span><strong>${v}</strong><i aria-hidden="true">↗</i></a>`).join('')}</div><a href="#transport" class="arrival-note"><strong>${tr('stairs')}</strong><span>${text(D.home.floorBody)}</span><span aria-hidden="true">↗</span></a></section>
     <section class="signature section"><button class="signature-image photo-button" data-photo="9">${img(9,'loading="lazy" width="1448" height="1086"')}<span class="photo-open" aria-hidden="true">↗</span></button><div class="signature-copy"><p class="eyebrow">ROOM FOR YOUR PEOPLE</p><h2>${lines(D.home.signatureTitle)}</h2><p>${text(D.home.signatureBody)}</p>${link('gallery',tr('gallery'))}<span class="signature-mark">ONE FLOOR.<br>JUST YOURS.</span></div></section>
-    <section class="space-edit section"><div class="section-heading"><div><p class="eyebrow">02 / THE SPACE EDIT</p><h2>${text(D.home.galleryTitle)}</h2></div>${link('gallery',tr('viewAll'))}</div><div class="editorial-mosaic">${[[15,'BEDROOM 01'],[29,'THE TERRACE'],[2,'LITTLE DETAILS']].map(([id,label])=>`<button class="photo-button" data-photo="${id}">${img(id,'loading="lazy"')}<span class="image-caption"><small>${label}</small><span>${text(D.captions[id])}</span><i aria-hidden="true">↗</i></span></button>`).join('')}</div></section>
+    <section class="space-edit section"><div class="section-heading"><div><p class="eyebrow">02 / THE SPACE EDIT</p><h2>${text(D.home.galleryTitle)}</h2></div>${link('gallery',tr('viewAll'))}</div>${homePhotoCarousel('spaces')}</section>
     <section class="local-edit section"><div class="local-copy"><p class="eyebrow">03 / JEONPO, AT YOUR PACE</p><h2>${lines(D.home.localTitle)}</h2><p>${text(D.home.localBody)}</p><div class="local-links">${link('nearby',tr('nearby'))}${link('tours',tr('tours'))}</div></div>${localPhoto('jeonpo',t(D.sights[0].title),'home-local-photo')}</section>
     <section class="home-guide section"><div class="section-heading"><div><p class="eyebrow">04 / YOUR STAY, MADE EASY</p><h2>${tr('infoTitle')}</h2></div><p>${tr('infoBody')}</p></div><div class="guide-rows">${guideRows()}</div></section>
     <section class="faq-section section"><p class="eyebrow">BEFORE YOU BOOK</p><h2>${tr('faq')}</h2><div class="faq-list">${D.faqs.map(x=>`<details><summary>${text(x.q)}</summary><p>${text(x.a)}</p></details>`).join('')}</div></section><section class="booking-section section"><p class="eyebrow">A GOOD PLACE, WITH GOOD PEOPLE</p><h2>${lines(D.home.bookingTitle)}</h2><p>${text(D.home.bookingBody)}</p><button class="primary-button" data-book>${tr('book')}<span aria-hidden="true">↗</span></button><span class="booking-location">JEONPO<br>BUSAN, KOREA</span></section>${footer()}`;}
@@ -151,7 +221,7 @@
     }
   }
   function compactPage(){
-    if(route==='home')$$('.signature img,.editorial-mosaic img,.home-local-photo img').forEach(image=>{
+    if(route==='home')$$('.signature img,.home-photo-carousel img,.home-local-photo img').forEach(image=>{
       const width=Number(image.getAttribute('width')),height=Number(image.getAttribute('height'));
       if(width&&height)image.style.aspectRatio=`${width} / ${height}`;
     });
@@ -195,16 +265,19 @@
     const pages={home,gallery,guide:guideIndex,airport,transport,nearby,tours};
     $('#main').innerHTML=(pages[route]||guidePage)();
     document.body.dataset.route=route;document.title=route==='home'?'EXTAY JEONPO — Busan Private Stay':`${tr(route)} · EXTAY JEONPO`;
-    compactPage();if(samePage)$$('.compact-panel').forEach((panel,i)=>{panel.open=openPanels.includes(i);});updateNavigation();bindDeviceCarousels();if(focus)$('#main').focus({preventScroll:true});if(restore)window.scrollTo({top:scrolls.get(route)||0,behavior:'instant'});
+    compactPage();if(samePage)$$('.compact-panel').forEach((panel,i)=>{panel.open=openPanels.includes(i);});updateNavigation();bindDeviceCarousels();bindHomePhotoCarousels();if(focus)$('#main').focus({preventScroll:true});if(restore)window.scrollTo({top:scrolls.get(route)||0,behavior:'instant'});
   }
   function navigate(){const next=location.hash.slice(1)||'home',known=['home','gallery','guide','airport','transport','nearby','tours',...Object.keys(D.guides)];scrolls.set(route,window.scrollY);const resolved=known.includes(next)?next:'home';if(route!==resolved){localCategory='all';query='';}route=resolved;$$('dialog[open]').forEach(x=>x.close());render(true,true);}
   function showToast(message){clearTimeout(toastTimer);$('.toast').textContent=message;$('.toast').classList.add('visible');toastTimer=setTimeout(()=>$('.toast').classList.remove('visible'),3300);}
   function openPhoto(id){lightboxItems=route==='gallery'?D.gallery.filter(x=>category==='all'||x.category===category).map(x=>x.id):route==='transport'?[36,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51,52,53]:D.guides[route]?[...new Set([D.guides[route].image,...D.guides[route].cards.flatMap(x=>[x.image,...(x.photos||[])]).filter(x=>x!==null)])]:D.gallery.map(x=>x.id);if(!lightboxItems.includes(id))lightboxItems.push(id);lightboxIndex=lightboxItems.indexOf(id);updatePhoto();$('#lightbox').showModal();requestAnimationFrame(fitPhoto);}
   function updatePhoto(){photoZoom=1;const item=lightboxItems[lightboxIndex],isFile=typeof item==='object';$('#lightboxImage').src=isFile?guideMediaUrl(item.file):`assets/images/photo-${String(item).padStart(2,'0')}.webp`;$('#lightboxImage').alt=isFile?item.caption:t(D.captions[item]);$('#lightboxCaption').textContent=isFile?item.caption:t(D.captions[item]);$('.lightbox-counter').textContent=`${String(lightboxIndex+1).padStart(2,'0')} / ${String(lightboxItems.length).padStart(2,'0')}`;requestAnimationFrame(fitPhoto);}
   function shiftPhoto(n){lightboxIndex=(lightboxIndex+n+lightboxItems.length)%lightboxItems.length;updatePhoto();}
-  function shiftHero(n){slide=(slide+n+heroPhotos.length)%heroPhotos.length;const id=heroPhotos[slide];$('#heroImage').src=`assets/images/photo-${String(id).padStart(2,'0')}.webp`;$('#heroImage').alt=t(D.captions[id]);$('#heroCaption').textContent=t(D.captions[id]);$('#heroCount').textContent=`0${slide+1} / 03`;}
+
   document.addEventListener('click',async e=>{
     if(e.target.closest('.skip-link')){e.preventDefault();$('#main').focus();return;}
+    const homePhoto=e.target.closest('[data-home-photo]');if(homePhoto){const[key,index]=homePhoto.dataset.homePhoto.split(':');lightboxItems=homePhotoSets[key].map(item=>item.id);lightboxIndex=Number(index);updatePhoto();$('#lightbox').showModal();requestAnimationFrame(fitPhoto);return;}
+    const homeShift=e.target.closest('[data-home-shift]');if(homeShift){const root=homeShift.closest('[data-home-carousel]');moveHomePhotoCarousel(root,homePhotoIndices[root.dataset.homeCarousel]+Number(homeShift.dataset.homeShift));return;}
+    const homeIndex=e.target.closest('[data-home-index]');if(homeIndex){moveHomePhotoCarousel(homeIndex.closest('[data-home-carousel]'),Number(homeIndex.dataset.homeIndex));return;}
     const device=e.target.closest('[data-device-media]');if(device){const[id,index]=device.dataset.deviceMedia.split(':');const c=[...D.guides.appliances.cards,...D.guides.laundry.cards].find(c=>c.id===id);lightboxItems=D.deviceMedia[id].map(s=>({file:s.photo!==undefined?'assets/images/photo-'+String(s.photo).padStart(2,'0')+'.webp':s.file,caption:t(c.title)+' · '+t(s.title)+(s.keys?' · '+s.keys.map((k,i)=>(i+1)+'. '+t(k)).join(' / '):'')}));lightboxIndex=Number(index);updatePhoto();$('#lightbox').showModal();requestAnimationFrame(fitPhoto);return;}
     const guideShift=e.target.closest('[data-guide-shift]');if(guideShift){const root=guideShift.closest('.device-visual'),track=$('[data-device-track]',root);moveDeviceCarousel(root,Number(track.dataset.active||0)+Number(guideShift.dataset.guideShift));return;}
     const guideIndex=e.target.closest('[data-guide-index]');if(guideIndex){moveDeviceCarousel(guideIndex.closest('.device-visual'),Number(guideIndex.dataset.guideIndex));return;}
@@ -216,7 +289,7 @@
     const cat=e.target.closest('[data-category]');if(cat){category=cat.dataset.category;const y=scrollY;render();window.scrollTo({top:y,behavior:'instant'});$(`[data-category="${category}"]`).focus({preventScroll:true});return;}
     const local=e.target.closest('[data-local-category]');if(local){localCategory=local.dataset.localCategory;$$('[data-local-category]').forEach(b=>{b.classList.toggle('active',b.dataset.localCategory===localCategory);b.setAttribute('aria-pressed',String(b.dataset.localCategory===localCategory))});$('#localResults').innerHTML=localCards();compactLists();return;}
     const copy=e.target.closest('[data-copy]');if(copy){try{await navigator.clipboard.writeText(copy.dataset.copy);showToast(tr('copied'))}catch{showToast(tr('copyFail'))}return;}
-    if(e.target.closest('.hero-prev'))shiftHero(-1);if(e.target.closest('.hero-next'))shiftHero(1);
+
     if(e.target.closest('.lightbox-arrow.prev'))shiftPhoto(-1);if(e.target.closest('.lightbox-arrow.next'))shiftPhoto(1);
     const more=e.target.closest('[data-show-more]');if(more){const hidden=$$('#localResults>.discovery-item[hidden],.gallery-grid>.gallery-item[hidden]'),batch=Number(more.dataset.showMore);hidden.slice(0,batch).forEach(card=>{card.hidden=false;});if(hidden.length<=batch)more.remove();if(hidden[0]){hidden[0].tabIndex=-1;hidden[0].focus({preventScroll:true});hidden[0].scrollIntoView({block:'start',behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'instant':'smooth'});}return;}
     const scroll=e.target.closest('[data-scroll]');if(scroll){const target=document.getElementById(scroll.dataset.scroll);if(target?.matches('details'))target.open=true;target?.closest('details')?.setAttribute('open','');target?.scrollIntoView({behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'instant':'smooth'});}
