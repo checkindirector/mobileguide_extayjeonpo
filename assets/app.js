@@ -151,6 +151,10 @@
     }
   }
   function compactPage(){
+    if(route==='home')$$('.signature img,.editorial-mosaic img,.home-local-photo img').forEach(image=>{
+      const width=Number(image.getAttribute('width')),height=Number(image.getAttribute('height'));
+      if(width&&height)image.style.aspectRatio=`${width} / ${height}`;
+    });
     if(D.guides[route]){
       $('.guide-sidebar')?.remove();$('.device-jump')?.remove();
       $$('.info-article').forEach((article,i)=>{
@@ -178,7 +182,6 @@
       $$('.airport-guide').forEach(article=>{const subtitle=$('h2',article)?.textContent||'',title=t(L('김해공항 → 숙소','Gimhae Airport → the stay','金海空港 → 宿','金海机场 → 住宿','金海機場 → 住宿'));const id=article.id;article.removeAttribute('id');$('h2',article)?.remove();$('.eyebrow',article)?.remove();disclosure([article],title,subtitle,'airport',id);});
       const back=$('.return-airport');if(back){$('h2',back)?.remove();$('.eyebrow',back)?.remove();disclosure([back],t(L('숙소 → 김해공항','The stay → Gimhae Airport','宿 → 金海空港','住宿 → 金海机场','住宿 → 金海機場')),'','airport');}
     }
-    if(route==='home')$$('.signature,.space-edit,.local-edit,.home-guide,.faq-section').forEach(section=>{const title=$('h2',section)?.textContent||tr('gallery');const panel=disclosure([section],title,'','home');panel.classList.add('home-panel');});
     if(['nearby','tours'].includes(route)){
       $('.discovery-cover')?.remove();
       const courses=$('.day-courses');if(courses){$('h2',courses)?.remove();$('.eyebrow',courses)?.remove();disclosure([courses],tr('courses'),'','courses').classList.add('course-panel');}

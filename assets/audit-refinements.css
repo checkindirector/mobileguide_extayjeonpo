@@ -277,6 +277,8 @@ button,input,select,textarea{font-family:inherit}
 .cover-title h1 i{position:static;right:auto;bottom:auto}
 
 /* Short, selectable mobile guides. Closed panels keep their full content accessible. */
+body[data-route="home"] .editorial-mosaic{grid-template-columns:minmax(0,1fr);gap:30px}
+body[data-route="home"] .image-caption>span{word-break:keep-all;overflow-wrap:break-word}
 [hidden]{display:none!important}
 .compact-panel{border:1px solid var(--line);background:var(--paper);margin:0 0 12px;scroll-margin-top:14px}
 .compact-panel>summary{list-style:none;display:flex;align-items:center;justify-content:space-between;gap:18px;cursor:pointer;padding:21px 18px;min-height:88px;color:var(--ink)}
@@ -302,9 +304,6 @@ button,input,select,textarea{font-family:inherit}
 .walking-grid{gap:28px}.walking-step p{font-size:17px}.walking-step h3{font-size:20px}
 .planning-note{margin-top:0}.airport-guide .airport-facts{gap:10px;margin:0 0 20px}
 .airport-guide .airport-best{margin-top:0}.airport-section{padding-top:0}
-.home-panel{margin:0 28px 12px}.home-panel .panel-body{padding:0}.home-panel .section{padding:26px 18px}
-.home-panel .signature,.home-panel .space-edit,.home-panel .local-edit{margin:0}.home-panel .section-heading{margin-bottom:20px}
-.home-panel .local-edit{display:block}.home-panel .local-edit>div{margin-top:24px}
 .course-panel{margin:0 28px 24px}.course-panel>.panel-body{padding-top:0}.course-panel .course-accordion{margin-top:0}
 .discovery-list{padding-top:0}.discovery-item{padding:28px 0 32px}.place-feature-photo{margin:18px 0}.place-body{font-size:17px}
 .discovery-item{scroll-margin-top:14px}.place-details>.place-body{padding:10px 0;margin-top:0}
@@ -317,4 +316,4 @@ button,input,select,textarea{font-family:inherit}
 .single-image .swipe-guide{display:none}
 .device-media-caption{font-size:15px;line-height:1.7}.swipe-guide{font-size:14px;font-weight:600}
 .help-block{padding-top:30px;padding-bottom:30px}.footer{padding-top:30px}
-@media(max-width:359px){.compact-panel>summary{padding:18px 14px;gap:12px}.panel-copy>strong{font-size:18px}.panel-body{padding:20px 14px 24px}.home-panel,.course-panel{margin-left:22px;margin-right:22px}}
+@media(max-width:359px){.compact-panel>summary{padding:18px 14px;gap:12px}.panel-copy>strong{font-size:18px}.panel-body{padding:20px 14px 24px}.course-panel{margin-left:22px;margin-right:22px}}
