@@ -31,7 +31,7 @@
   function home(){return `
     <section class="cover">
       <div class="cover-meta"><span>BUSAN PRIVATE STAY</span><span>JEONPO, BUSAN</span><span class="cover-issue">A PLACE TO STAY TOGETHER</span></div>
-      <div class="cover-title"><h1 aria-label="EXTAY JEONPO">EXTAY<span>JEONPO</span><i aria-hidden="true">.</i></h1><p>${lines(D.home.line)}</p></div>
+      <div class="cover-title"><h1 aria-label="EXTAY JEONPO">EXTAY<span>JEONPO</span><i aria-hidden="true">.</i></h1><p>${text(D.home.line).replace(/\n/g,' ')}</p></div>
       <div class="hero-photo"><div class="hero-slide">${img(heroPhotos[slide],'fetchpriority="high" width="1448" height="1086" id="heroImage"')}</div><div class="photo-index"><span id="heroCaption">${text(D.captions[heroPhotos[slide]])}</span><div><button class="hero-prev" aria-label="${tr('previous')}">←</button><span id="heroCount">0${slide+1} / 03</span><button class="hero-next" aria-label="${tr('next')}">→</button></div></div></div>
       <div class="cover-caption"><span>PRIVATE SPACE · SHARED MOMENTS</span><button class="scroll-link" data-scroll="introduction">SCROLL TO DISCOVER <span aria-hidden="true">↓</span></button></div>
     </section>
@@ -86,7 +86,7 @@
     $('.desktop-nav').innerHTML=[['gallery','gallery'],['guide','guide'],['nearby','local']].map(([r,k])=>`<a href="#${r}" ${route===r?'aria-current="page"':''}>${tr(k)}</a>`).join('');
     $('.header-book').textContent=tr('book');
     $('.bottom-nav').innerHTML=[['home','home','home'],['gallery','space','gallery'],['guide','guide','guide'],['nearby','local','nearby'],['book','book','book']].map(([r,k,i])=>r==='book'?`<button data-book>${icon(i)}<span>${tr(k)}</span></button>`:`<a href="#${r}" ${route===r||(r==='guide'&&['airport','transport',...Object.keys(D.guides)].includes(route))||(r==='nearby'&&route==='tours')?'aria-current="page"':''}>${icon(i)}<span>${tr(k)}</span></a>`).join('');
-    $('.drawer-nav').innerHTML=['home','gallery','airport','transport','checkin','wifi','appliances','laundry','rules','nearby','tours'].map((r,i)=>`<a href="#${r}" ${route===r?'aria-current="page"':''}><small>${String(i+1).padStart(2,'0')}</small><span>${tr(r)}</span><i aria-hidden="true">↗</i></a>`).join('');
+    $('.drawer-nav').innerHTML=['home','gallery','airport','transport','checkin','wifi','appliances','laundry','rules','nearby','tours'].map((r,i)=>`<a href="#${r}" ${route===r?'aria-current="page"':''}><small aria-hidden="true">${String(i+1).padStart(2,'0')}</small><span class="drawer-copy"><strong>${esc(tr(r))}</strong><span class="drawer-subtitle">${text(D.menuDescriptions[r])}</span></span><i aria-hidden="true">↗</i></a>`).join('');
     $('#language').value=language;$('#languageLabel').textContent=tr('language');$('.skip-link').textContent=tr('skip');$('.menu-button').setAttribute('aria-label',tr('menu'));$('.bottom-nav').setAttribute('aria-label',tr('quick'));
     $('#zoomIn').setAttribute('aria-label',tr('zoomIn'));$('#zoomOut').setAttribute('aria-label',tr('zoomOut'));$('#zoomReset').setAttribute('aria-label',tr('zoomReset'));
     $$('[data-close]').forEach(b=>b.setAttribute('aria-label',tr('close')));$('.prev').setAttribute('aria-label',tr('previous'));$('.next').setAttribute('aria-label',tr('next'));

@@ -165,3 +165,48 @@ html:is(:lang(ja),:lang(zh)) :is(p,li,h1,h2,h3,dd,dt,figcaption,button,a,small,s
 .device-support{padding:24px;background:var(--soft);margin-top:35px;font-size:15px;line-height:1.85}
 .device-support .text-link{margin-top:18px}
 @media(max-width:359px){.drawer-nav a{font-size:19px;min-height:66px}.discovery-item h2{font-size:23px}.airport-choice{padding:20px}.airport-guide h2{font-size:26px}.taxi-address>strong{font-size:19px}}
+
+/* Another House's readable body scale: Latin Oxanium, Korean Noto Sans KR.
+   Keep the shared display family; raise the cover weight for this guest guide. */
+body{font-family:Oxanium,'Noto Sans KR','Malgun Gothic','Apple SD Gothic Neo',sans-serif;font-size:17px;font-weight:600;line-height:1.75;letter-spacing:0;font-synthesis-weight:none}
+h1,h2,h3{font-weight:650;letter-spacing:-.045em}
+button,input,select,textarea{font-family:inherit}
+.cover-title{display:block;padding-top:22px;padding-bottom:27px}
+.cover-title h1{width:fit-content;max-width:100%;font-size:clamp(44px,calc(min(100vw,480px) * .144),69px);font-weight:400;line-height:1.05;letter-spacing:-.02em}
+.cover-title>p{min-width:0;max-width:100%;font-size:17px;font-weight:600;line-height:1.7;margin-top:20px;text-align:left;white-space:normal;color:var(--ink)}
+.cover-meta{font-size:12px;font-weight:500;letter-spacing:.09em;gap:14px;flex-wrap:wrap}
+.intro-copy>p,.signature-copy>p:not(.eyebrow),.local-copy>p:not(.eyebrow),.page-heading .lead,.info-article>p,.route-overview p:not(.eyebrow),.walking-step>p:not(.eyebrow),.transport-notes p,.local-feature>div>p:not(.eyebrow),.tour-card>p:not(.eyebrow),.steps li,.local-card p:not(.eyebrow),.home-guide .section-heading>p,.booking-section>p:not(.eyebrow),.booking-dialog #bookingBody>p:first-child,.place-body,.airport-guide>p:not(.eyebrow):not(.airport-best),.return-airport p:not(.eyebrow),.faq-list details p{font-size:17px;font-weight:600;line-height:1.8}
+.help-block p:not(.eyebrow),.arrival-note>span:first-of-type,.travel-alert p,.address-card>p:not(.eyebrow),.guide-message,.discovery-intro>p:not(.eyebrow),.airport-best,.course-accordion li,.place-facts{font-size:16px;font-weight:600;line-height:1.8}
+.primary-button,.outline-button,.text-link,.copy-button,.manual-links .text-link,.local-card-links .text-link,.tour-stops .outline-button,.help-block .primary-button,.booking-dialog .primary-button,.booking-section .primary-button{font-size:15px;font-weight:600;min-height:44px}
+.guide-row{font-size:17px;font-weight:650}
+.eyebrow,.page-heading .eyebrow,.help-block .eyebrow,.booking-dialog .eyebrow,.route-overview .eyebrow,.walking-step .eyebrow,.article-heading>span,.steps li::before,.gallery-total,.gallery-item small,.image-caption small,.result-count,.discovery-meta,.course-accordion summary small,.airport-choice>span{font-size:12px;font-weight:600}
+.gallery-item>span,.image-caption>span,.entry-lock-photos figcaption,.guide-sidebar figcaption,.discovery-photo figcaption,.place-feature-photo figcaption,.home-local-photo figcaption,.local-feature figcaption,.tour-cover>span,.lightbox figcaption,.remote-legend{font-size:14px;font-weight:500;line-height:1.65}
+.essential-grid a>span,.stats dt,.arrival-note strong,.travel-alert strong,.footer p,.footer small,.booking-contact,.booking-facts,.small-note,.discovery-intro>small,.content-date,.place-original,.place-facts dt,.airport-choice small,.planning-note,.airport-facts span,.taxi-address>span,.device-jump>p,.device-jump button,.info-article>.device-model,.info-article>.device-location,.wifi-network>small,.wifi-network .copy-button,.place-details summary,.guide-sidebar nav a{font-size:14px;font-weight:600;line-height:1.7}
+.essential-grid strong{font-size:17px;font-weight:650}
+.filter-tabs button{font-size:14px;font-weight:600}
+.bottom-nav>a,.bottom-nav>button{font-size:13px;font-weight:600}
+.brand>span{font-size:12px;font-weight:500}
+.header-book{font-size:14px;font-weight:600}
+.cover-caption>span,.scroll-link,.photo-index,.photo-index>div,.back-link,.lightbox-counter,.lightbox-zoom #zoomReset{font-size:12px;font-weight:600;line-height:1.6}
+.cover-caption{padding-top:20px;display:flex;flex-direction:column;align-items:stretch;gap:12px}
+.cover-caption>span{max-width:100%}.scroll-link{flex-shrink:0;justify-content:space-between;width:100%;min-height:44px;padding:8px 0}
+.photo-index{position:static;transform:none;display:flex;flex-wrap:wrap;gap:8px 14px}.photo-index>span{flex-basis:100%;font-size:14px;font-weight:500}.photo-index>div{gap:6px;margin-left:auto}
+.guide-row .row-number{font-size:12px;font-weight:600}.footer-brand>span{font-size:14px;font-weight:500}
+.toast{font-size:14px;font-weight:600;line-height:1.6}
+.stats dd,.airport-choice strong,.airport-choice b,.place-menu,.taxi-address>strong{font-weight:650}
+.drawer-nav a{min-height:90px;padding:19px 0;align-items:center;letter-spacing:0}
+.drawer-copy{display:block;min-width:0}
+.drawer-copy>strong{display:block;font-size:20px;font-weight:800;line-height:1.4;word-break:keep-all;overflow-wrap:anywhere;letter-spacing:-.025em}
+.drawer-subtitle{display:block;margin-top:7px;font-size:14px;font-weight:600;line-height:1.6;color:var(--muted);word-break:keep-all;overflow-wrap:anywhere}
+.drawer-nav small{font-size:12px;font-weight:600;align-self:start;padding-top:4px}
+.drawer-foot,.drawer-foot small{font-size:12px;font-weight:500;line-height:1.8}
+@media(max-width:359px){
+  .cover-title h1{font-size:46px}
+  .cover-title>p{font-size:17px;max-width:250px}
+  .cover-meta{font-size:12px;letter-spacing:.07em}
+  .drawer-copy>strong{font-size:19px}
+  .bottom-nav>a,.bottom-nav>button{font-size:12px}
+  .essential-grid strong{font-size:16px}
+  .photo-index{flex-wrap:wrap;row-gap:8px}
+  .photo-index>span{flex-basis:100%}
+}
