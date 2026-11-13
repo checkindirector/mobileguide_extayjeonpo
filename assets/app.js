@@ -61,6 +61,8 @@
   };
   const homePhotoIndices={hero:0,spaces:0};
   let homePhotoObserver;
+  const homeHeroAutoDelay=2400;
+  let homeHeroAutoComplete=false,disposeHomeHeroAutoplay=()=>{};
   function homePhotoCarousel(key){
     const items=homePhotoSets[key],active=homePhotoIndices[key];
     const label=key==='hero'?L('익스테이 전포 공간 사진','EXTAY JEONPO space photographs','EXTAY JEONPOの空間写真','EXTAY JEONPO空间照片','EXTAY JEONPO空間照片'):D.home.galleryTitle;
@@ -70,7 +72,7 @@
     return `<div class="home-photo-carousel ${key==='hero'?'hero-photo':''}" data-home-carousel="${key}" role="region" aria-roledescription="${text(carouselLabel)}" aria-label="${text(label)}">
       <div class="home-photo-track" data-home-track tabindex="0" role="group" aria-label="${text(L('좌우로 넘기거나 방향키로 사진을 바꿔보세요','Swipe or use the arrow keys to change photographs','スワイプまたは矢印キーで写真を切り替えます','左右滑动或使用方向键切换照片','左右滑動或使用方向鍵切換照片'))}">
         ${items.map((item,i)=>`<figure class="home-photo-slide" role="group" aria-roledescription="${text(slideLabel)}" aria-label="${i+1} / ${items.length}" ${i!==active?'inert aria-hidden="true"':''}>
-          <button class="photo-button" type="button" data-home-photo="${key}:${i}" aria-label="${text(D.captions[item.id])} · ${tr('zoomIn')}">${img(item.id,key==='hero'&&i===active?'fetchpriority="high"':'loading="lazy"')}<span class="photo-open" aria-hidden="true">↗</span></button>
+          <button class="photo-button" type="button" data-home-photo="${key}:${i}" aria-label="${text(D.captions[item.id])} · ${tr('zoomIn')}">${img(item.id,key==='hero'?(i===active?'fetchpriority="high" loading="eager"':'loading="eager"'):'loading="lazy"')}<span class="photo-open" aria-hidden="true">↗</span></button>
           <figcaption>${item.label?`<small>${esc(item.label)}</small>`:''}<p>${text(D.captions[item.id])}</p></figcaption>
         </figure>`).join('')}
       </div>
@@ -105,9 +107,42 @@
     const track=$('[data-home-track]',root),next=Math.max(0,Math.min(track.children.length-1,index));
     track.scrollTo({left:track.children[next].offsetLeft,behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'instant':'smooth'});
   }
+  function bindHomeHeroAutoplay(root){
+    disposeHomeHeroAutoplay();disposeHomeHeroAutoplay=()=>{};
+    if(!root||homeHeroAutoComplete)return;
+    const track=$('[data-home-track]',root),last=homePhotoSets.hero.length-1,events=new AbortController();
+    let timer=0,visible=false,disposed=false,visibilityObserver;
+    const clear=()=>{clearTimeout(timer);timer=0;};
+    const stop=()=>{homeHeroAutoComplete=true;clear();};
+    const canPlay=()=>!disposed&&!homeHeroAutoComplete&&visible&&!document.hidden&&!$('dialog[open]');
+    const schedule=()=>{
+      clear();if(!canPlay())return;
+      if(homePhotoIndices.hero>=last){stop();return;}
+      if($$('img',track).some(image=>!image.complete||!image.naturalWidth))return;
+      timer=setTimeout(()=>{
+        timer=0;if(!canPlay())return;
+        const next=homePhotoIndices.hero+1;
+        moveHomePhotoCarousel(root,next);
+        if(next>=last)stop();else schedule();
+      },homeHeroAutoDelay);
+    };
+    // One pass, like Another House: 1 → 2 → 3, then leave manual navigation in charge.
+    root.addEventListener('pointerdown',stop,{passive:true,signal:events.signal});
+    root.addEventListener('focusin',stop,{signal:events.signal});
+    root.addEventListener('keydown',stop,{signal:events.signal});
+    root.addEventListener('wheel',event=>{if(event.deltaX||event.shiftKey)stop();},{passive:true,signal:events.signal});
+    root.addEventListener('load',schedule,{capture:true,signal:events.signal});
+    document.addEventListener('visibilitychange',schedule,{signal:events.signal});
+    document.addEventListener('close',schedule,{capture:true,signal:events.signal});
+    if('IntersectionObserver' in window){
+      visibilityObserver=new IntersectionObserver(entries=>{visible=entries[0].isIntersecting&&entries[0].intersectionRatio>=.35;schedule();},{threshold:[0,.35]});
+      visibilityObserver.observe(root);
+    }else{visible=true;schedule();}
+    disposeHomeHeroAutoplay=()=>{disposed=true;clear();events.abort();visibilityObserver?.disconnect();};
+  }
   function bindHomePhotoCarousels(){
     homePhotoObserver?.disconnect();
-    const roots=$$('[data-home-carousel]');if(!roots.length)return;
+    const roots=$$('[data-home-carousel]');bindHomeHeroAutoplay(roots.find(root=>root.dataset.homeCarousel==='hero'));if(!roots.length)return;
     homePhotoObserver=new ResizeObserver(entries=>{for(const {target} of entries){const track=target.matches('[data-home-track]')?target:target.closest('[data-home-track]');if(!track)continue;
       if(target===track&&track.dataset.width!==String(track.clientWidth)){
         track.dataset.width=String(track.clientWidth);
