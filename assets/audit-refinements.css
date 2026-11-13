@@ -59,6 +59,13 @@ html:is(:lang(ja),:lang(zh)) :is(p,li,h1,h2,h3,dd,dt,figcaption,button,a,small,s
 .booking-section .primary-button{background:var(--paper);color:var(--accent);font-size:15px}
 .cover-meta>span:first-child{color:var(--accent)}
 
+/* A pine-green introduction makes the stay's first story a clear color accent. */
+#introduction{background:var(--accent);color:var(--white);--ink:var(--white);--muted:rgba(255,255,255,.86);--line:rgba(255,255,255,.28)}
+#introduction h2,#introduction .eyebrow,#introduction .text-link,#introduction .text-link>span{color:var(--white)}
+#introduction .text-link{border-color:var(--white)}
+#introduction a:focus-visible{outline-color:var(--white)}
+#introduction ::selection{background:var(--paper);color:var(--accent)}
+
 /* The drawer is a primary navigation surface, with comfortable phone type. */
 .menu-dialog{padding:0 26px 32px}
 .drawer-top{position:sticky;top:0;z-index:1;margin:0 -26px 10px;padding:20px 24px;background:var(--accent);color:var(--paper);border:0}
