@@ -1,0 +1,21 @@
+{
+  "source": "261020_EXTAY logo 최종.ai",
+  "sha256": "a5665b4f629e25c481bebf0f3a9c97ee6be77a02d752c677d4ed0fe717100b1b",
+  "sourcePaths": 6,
+  "logoBounds": [
+    41.75230407714844,
+    325.77899169921875,
+    556.5775146484375,
+    477.427490234375
+  ],
+  "logoViewBox": [
+    517.8252105712891,
+    154.64849853515625
+  ],
+  "sourceColor": "#231f20",
+  "iconSourcePaths": [
+    2,
+    3
+  ],
+  "note": "Original vector path commands and transforms retained; white variant changes fill only."
+}

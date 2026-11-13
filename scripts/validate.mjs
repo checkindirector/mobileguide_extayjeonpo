@@ -11,6 +11,7 @@ const files=new Set(['index.html','assets/data.js','assets/app.js','assets/style
 for(const x of [...source.matchAll(/(?:src|href)="(assets\/[^"$]+)"/g)])files.add(x[1].split(/[?#]/)[0]);
 for(let i=0;i<59;i++)files.add(`assets/images/photo-${String(i).padStart(2,'0')}.webp`);
 for(const photo of Object.values(d.localPhotos))files.add(photo.file);
+for(const icon of JSON.parse(load('manifest.webmanifest')).icons)files.add(icon.src.split(/[?#]/)[0]);
 for(const [device,slides] of Object.entries(d.deviceMedia)){
  if(slides.length<2)throw Error(`Incomplete visual guide: ${device}`);
  for(const slide of slides){
