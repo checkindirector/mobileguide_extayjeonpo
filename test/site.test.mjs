@@ -2,7 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import vm from 'node:vm';
-const ctx={window:{}};for(const file of ['data.js','guest-guide-data.js','stay-essentials-data.js','appliance-guide-data.js','tour-photo-data.js'])vm.runInNewContext(fs.readFileSync(new URL('../assets/'+file,import.meta.url),'utf8'),ctx);const d=ctx.window.EXTAY;
+const ctx={window:{}};for(const file of ['data.js','guest-guide-data.js','stay-essentials-data.js','appliance-guide-data.js','tour-photo-data.js','dining-photo-data.js'])vm.runInNewContext(fs.readFileSync(new URL('../assets/'+file,import.meta.url),'utf8'),ctx);const d=ctx.window.EXTAY;
 test('guest-critical policies match supplied property information',()=>{
  assert.match(d.ui.stairs.ko,/5층/);assert.match(d.home.floorBody.ko,/엘리베이터가 없는/);
  const checkin=JSON.stringify(d.guides.checkin);for(const v of ['16:00','14:00','11:00','20,000','09:00–21:00'])assert.ok(checkin.includes(v),v);
@@ -40,6 +40,19 @@ test('new coffee and water instructions match the installed models',()=>{
 test('every device has visual slides and every sight has a licensed local photograph',()=>{
  const devices=[...d.guides.appliances.cards,...d.guides.laundry.cards].filter(c=>c.id);
  assert.equal(devices.length,14);
- for(const c of devices){assert.ok(d.deviceMedia[c.id].length>=2,c.id);for(const s of d.deviceMedia[c.id])if(s.file)assert.ok(fs.existsSync(new URL('../'+s.file,import.meta.url)),s.file)}
+ for(const c of devices){assert.ok(d.deviceMedia[c.id].length>=1,c.id);for(const s of d.deviceMedia[c.id])if(s.file)assert.ok(fs.existsSync(new URL('../'+s.file,import.meta.url)),s.file)}
  for(const sight of d.sights){const p=d.localPhotos[sight.id];assert.ok(p,sight.id);assert.match(p.license,/제1유형/);assert.ok(p.creator&&p.publisher);assert.ok(fs.existsSync(new URL('../'+p.file,import.meta.url)),p.file)}
+});
+
+test('all dining recommendations have distinct real photographs saved locally',()=>{
+ const files=new Set();
+ for(const place of d.dining){const photo=d.localPhotos[place.id];assert.ok(photo,place.id);assert.ok(photo.width>=300&&photo.height>=250);assert.ok(fs.existsSync(new URL('../'+photo.file,import.meta.url)));assert.equal(new URL(photo.source).protocol,'https:');files.add(photo.file)}
+ assert.equal(files.size,20);
+});
+
+test('coffee starts with the official C30 diagram and old schematic placeholders are unused',()=>{
+ const slides=d.deviceMedia.coffee;assert.equal(slides.length,4);assert.match(slides[0].file,/manual-coffee-overview.svg$/);
+ for(const slide of slides)assert.equal(new URL(slide.source).hostname,'www.nespresso.com');
+ for(const [device,media] of Object.entries(d.deviceMedia))for(const slide of media)assert.ok(!slide.file?.startsWith('assets/diagrams/'),device);
+ for(const device of ['hob','washer','dryer'])assert.ok(d.deviceMedia[device][0].source,device);
 });

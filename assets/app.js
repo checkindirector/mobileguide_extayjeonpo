@@ -4,7 +4,7 @@
   const languages=['ko','en','ja','zh','tw'];
   const guideMediaUrl=file=>file.startsWith('assets/diagrams/')?`${file}?v=20261113-pine1`:file;
   let language='ko';try{const saved=localStorage.getItem('extayjeonpo-language');if(languages.includes(saved))language=saved;}catch{}
-  let route='home',category='all',localCategory='all',query='',slide=0,lightboxItems=[],lightboxIndex=0,toastTimer;
+  let route='home',category='all',localCategory='all',query='',slide=0,lightboxItems=[],lightboxIndex=0,toastTimer,deviceResizeObserver;
   const heroPhotos=[1,3,8], scrolls=new Map();
   const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
   const t=v=>typeof v==='object'&&v!==null?(v[language]??v.en??v.ko??''):String(v??'');
@@ -31,7 +31,7 @@
   const guideRows=()=>['airport','transport','checkin','wifi','appliances','laundry','rules'].map((r,i)=>`<a href="#${r}" class="guide-row"><span class="row-number">0${i+1}</span>${icon(r)}<span>${tr(r)}</span><span aria-hidden="true">↗</span></a>`).join('');
   function deviceCarousel(c){
     const slides=D.deviceMedia[c.id];
-    return `<section class="device-visual" aria-label="${text(c.title)}"><div class="device-visual-heading"><span>${tr('illustratedGuide')}</span><strong data-guide-count>01 / ${String(slides.length).padStart(2,'0')}</strong></div><div class="device-track" data-device-track="${esc(c.id)}" tabindex="0" role="group" aria-label="${text(c.title)} · ${tr('illustratedGuide')}">${slides.map((s,i)=>{const source=s.photo!==undefined?`assets/images/photo-${String(s.photo).padStart(2,'0')}.webp`:guideMediaUrl(s.file);const dimensions=s.photo!==undefined?D.photoSizes[s.photo]:[s.width,s.height];return `<figure class="device-slide" ${i?'inert aria-hidden="true"':''}><button class="device-media-button" type="button" data-device-media="${esc(c.id)}:${i}" aria-label="${text(c.title)} · ${text(s.title)} · ${tr('zoomIn')}"><img src="${esc(source)}" width="${dimensions[0]}" height="${dimensions[1]}" alt="${text(c.title)} · ${text(s.title)}" loading="lazy" decoding="async"><span class="media-expand" aria-hidden="true">↗</span></button><figcaption><p>${text(s.title)}</p>${s.keys?`<ol class="diagram-key">${s.keys.map(k=>`<li>${text(k)}</li>`).join('')}</ol>`:''}</figcaption></figure>`}).join('')}</div><div class="device-carousel-controls"><button type="button" data-guide-shift="-1" class="carousel-arrow" aria-label="${tr('guidePrevious')}" disabled>←</button><span class="device-page" data-guide-page role="status" aria-label="${tr('guidePage')}">01 / ${String(slides.length).padStart(2,'0')}</span><button type="button" data-guide-shift="1" class="carousel-arrow" aria-label="${tr('guideNext')}">→</button></div><div class="device-dots" aria-label="${tr('guidePage')}">${slides.map((s,i)=>`<button type="button" data-guide-index="${i}" aria-label="${tr('guidePage')} ${i+1}" aria-current="${i===0?'true':'false'}"><span aria-hidden="true"></span></button>`).join('')}</div><p class="swipe-guide">${tr('swipeGuide')}</p></section>`;
+    return `<section class="device-visual ${slides.length===1?'single-image':''}" aria-label="${text(c.title)}"><div class="device-visual-heading"><span>${tr('illustratedGuide')}</span><strong data-guide-count>01 / ${String(slides.length).padStart(2,'0')}</strong></div><div class="device-track" data-device-track="${esc(c.id)}" tabindex="0" role="group" aria-label="${text(c.title)} · ${tr('illustratedGuide')}">${slides.map((s,i)=>{const source=s.photo!==undefined?`assets/images/photo-${String(s.photo).padStart(2,'0')}.webp`:guideMediaUrl(s.file);const dimensions=s.photo!==undefined?D.photoSizes[s.photo]:[s.width,s.height];return `<figure class="device-slide" ${i?'inert aria-hidden="true"':''}><button class="device-media-button" type="button" data-device-media="${esc(c.id)}:${i}" aria-label="${text(c.title)} · ${text(s.title)} · ${tr('zoomIn')}"><img src="${esc(source)}" width="${dimensions[0]}" height="${dimensions[1]}" alt="${text(c.title)} · ${text(s.title)}" loading="lazy" decoding="async"><span class="media-expand" aria-hidden="true">↗</span></button><figcaption><p>${text(s.title)}</p>${s.keys?`<ol class="diagram-key">${s.keys.map(k=>`<li>${text(k)}</li>`).join('')}</ol>`:''}</figcaption></figure>`}).join('')}</div><div class="device-carousel-controls"><button type="button" data-guide-shift="-1" class="carousel-arrow" aria-label="${tr('guidePrevious')}" disabled>←</button><span class="device-page" data-guide-page role="status" aria-label="${tr('guidePage')}">01 / ${String(slides.length).padStart(2,'0')}</span><button type="button" data-guide-shift="1" class="carousel-arrow" aria-label="${tr('guideNext')}">→</button></div><div class="device-dots" aria-label="${tr('guidePage')}">${slides.map((s,i)=>`<button type="button" data-guide-index="${i}" aria-label="${tr('guidePage')} ${i+1}" aria-current="${i===0?'true':'false'}"><span aria-hidden="true"></span></button>`).join('')}</div><p class="swipe-guide">${tr('swipeGuide')}</p></section>`;
   }
   function syncDeviceCarousel(track){
     const index=Math.max(0,Math.min(track.children.length-1,Math.round(track.scrollLeft/Math.max(1,track.clientWidth))));
@@ -41,15 +41,19 @@
     $('[data-guide-shift="-1"]',root).disabled=index===0;$('[data-guide-shift="1"]',root).disabled=index===track.children.length-1;
     [...track.children].forEach((s,i)=>{s.inert=i!==index;s.setAttribute('aria-hidden',String(i!==index))});
     $$('[data-guide-index]',root).forEach((b,i)=>b.setAttribute('aria-current',String(i===index)));
+    fitDeviceTrack(track);
   }
   function moveDeviceCarousel(root,index){const track=$('[data-device-track]',root);track.scrollTo({left:Math.max(0,Math.min(track.children.length-1,index))*track.clientWidth,behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'instant':'smooth'});}
   function bindDeviceCarousels(){
+    deviceResizeObserver?.disconnect();deviceResizeObserver=new ResizeObserver(entries=>{for(const entry of entries){const track=entry.target.closest('[data-device-track]');if(track)fitDeviceTrack(track);}});
     $$('[data-device-track]').forEach(track=>{let frame;track.addEventListener('scroll',()=>{cancelAnimationFrame(frame);frame=requestAnimationFrame(()=>syncDeviceCarousel(track))},{passive:true});track.addEventListener('keydown',e=>{if(e.target!==track||!['ArrowLeft','ArrowRight','Home','End'].includes(e.key))return;e.preventDefault();const current=Number(track.dataset.active||0),next=e.key==='Home'?0:e.key==='End'?track.children.length-1:current+(e.key==='ArrowRight'?1:-1);moveDeviceCarousel(track.closest('.device-visual'),next)});syncDeviceCarousel(track)});
+    $$('.device-slide').forEach(slide=>deviceResizeObserver.observe(slide));
   }
+  function fitDeviceTrack(track){const current=track.children[Number(track.dataset.active||0)];if(track.clientWidth&&current?.offsetHeight)track.style.height=current.offsetHeight+'px';}
   function photoCredits(){
-    const photos=route==='tours'?D.photoCredits:['home','nearby'].includes(route)?D.photoCredits.filter(p=>p.id==='jeonpo'):[];
+    const photos=route==='nearby'?D.dining.map(x=>({...D.diningPhotoSources[x.id],title:t(x.title),publisher:''})):route==='tours'?D.photoCredits:['home','nearby'].includes(route)?D.photoCredits.filter(p=>p.id==='jeonpo'):[];
     if(!photos.length)return '';
-    return `<details class="photo-credits"><summary>${tr('photoCredits')}</summary><p>${tr('photoLicense')}</p><ul>${photos.map(p=>`<li>${ext(p.source,esc(p.title))}<span>${esc(p.creator)} · ${esc(p.publisher)}${p.created?` · ${esc(p.created)}`:''}</span></li>`).join('')}</ul></details>`;
+    return `<details class="photo-credits"><summary>${tr('photoCredits')}</summary>${route==='nearby'?'':`<p>${tr('photoLicense')}</p>`}<ul>${photos.map(p=>`<li>${ext(p.source,esc(p.title))}<span>${esc(p.creator)} · ${esc(p.publisher)}${p.created?` · ${esc(p.created)}`:''}</span></li>`).join('')}</ul></details>`;
   }
   function home(){return `
     <section class="cover">
@@ -89,7 +93,7 @@
     const items=all.filter(x=>(localCategory==='all'||(localCategory==='local'&&dining?x.near:x.category===localCategory))&&(!q||JSON.stringify([x.title,x.nameEn,x.address,x.area,x.menu,x.body]).toLocaleLowerCase().includes(q)));
     const total=`<p class="result-count" role="status">${String(items.length).padStart(2,'0')} / ${all.length} ${dining?'FOOD & CAFÉS':'PLACES'}</p>`;
     if(!items.length)return total+`<p class="empty-state">${tr('empty')}</p>`;
-    return total+items.map(x=>`<article class="discovery-item" id="place-${esc(x.id)}"><div class="discovery-meta"><span>${String(all.indexOf(x)+1).padStart(2,'0')} / ${esc(x.area)}</span><span>${text(categories[x.category])}</span></div><h2>${text(x.title)}</h2><p class="place-original" lang="${language==='ko'?'en':'ko'}">${esc(language==='ko'?x.nameEn:x.nameKo===t(x.title)?x.nameEn:x.nameKo)}</p>${!dining&&D.localPhotos[x.id]?localPhoto(x.id,t(x.title),'place-feature-photo'):''}${x.menu?`<p class="place-menu">${text(x.menu)}</p>`:''}<p class="place-body">${text(x.body)}</p><details class="place-details"><summary>${tr('placeDetails')}</summary><dl class="place-facts"><div><dt>${tr('addressLabel')}</dt><dd lang="ko">${esc(x.address)}</dd></div>${x.tip?`<div><dt>${tr('visitTip')}</dt><dd>${text(x.tip)}</dd></div>`:''}<div><dt>${tr('hoursLabel')}</dt><dd>${D.venueHours?.[x.id]?`<span class="hours-value">${esc(D.venueHours[x.id])}</span>`:''}${tr('checkOnMap')}</dd></div></dl><div class="place-map-links">${ext(N(x.query),tr('naver'),'outline-button')}${ext(G(x.query),tr('google'),'outline-button')}</div>${ext(directions(x),tr('directions'))}${ext(x.source,tr('officialInfo'))}</details></article>`).join('');
+    return total+items.map(x=>`<article class="discovery-item" id="place-${esc(x.id)}"><div class="discovery-meta"><span>${String(all.indexOf(x)+1).padStart(2,'0')} / ${esc(x.area)}</span><span>${text(categories[x.category])}</span></div><h2>${text(x.title)}</h2><p class="place-original" lang="${language==='ko'?'en':'ko'}">${esc(language==='ko'?x.nameEn:x.nameKo===t(x.title)?x.nameEn:x.nameKo)}</p>${D.localPhotos[x.id]?localPhoto(x.id,t(x.title),'place-feature-photo'):''}${x.menu?`<p class="place-menu">${text(x.menu)}</p>`:''}<p class="place-body">${text(x.body)}</p><details class="place-details"><summary>${tr('placeDetails')}</summary><dl class="place-facts"><div><dt>${tr('addressLabel')}</dt><dd lang="ko">${esc(x.address)}</dd></div>${x.tip?`<div><dt>${tr('visitTip')}</dt><dd>${text(x.tip)}</dd></div>`:''}<div><dt>${tr('hoursLabel')}</dt><dd>${D.venueHours?.[x.id]?`<span class="hours-value">${esc(D.venueHours[x.id])}</span>`:''}${tr('checkOnMap')}</dd></div></dl><div class="place-map-links">${ext(N(x.query),tr('naver'),'outline-button')}${ext(G(x.query),tr('google'),'outline-button')}</div>${ext(directions(x),tr('directions'))}${ext(x.source,tr('officialInfo'))}</details></article>`).join('');
   }
   function dayCourses(){
     return `<section class="day-courses section"><p class="eyebrow">A DAY, WELL SPENT</p><h2>${tr('courses')}</h2><div class="course-accordion">${D.dayCourses.map(c=>`<details><summary><small>${esc(c.label)}</small><span>${text(c.title)}</span></summary><ol>${c.stops.map(id=>{const place=D.sights.find(x=>x.id===id);return `<li>${ext(N(place.query),text(place.title))}</li>`}).join('')}</ol></details>`).join('')}</div></section>`;
@@ -115,12 +119,80 @@
     $$('[data-close]').forEach(b=>b.setAttribute('aria-label',tr('close')));$('.prev').setAttribute('aria-label',tr('previous'));$('.next').setAttribute('aria-label',tr('next'));
     $('#bookingTitle').textContent=tr('bookingTitle');$('#bookingBody').innerHTML=`<p>${tr('bookingBody')}</p>${stats()}<div class="booking-facts"><p>${tr('stairs')}</p><p>${tr('noParking')}</p></div>${ext(D.bookingUrl,tr('bookingCta'),'primary-button')}<p class="booking-contact">${tr('askBody')}</p>`;
   }
+  // Native disclosures keep the full guide available without a long first screen.
+  function disclosure(nodes,title,subtitle='',group='guide',id=''){
+    const panel=document.createElement('details');panel.className='compact-panel';panel.name=group;
+    if(id)panel.id=id;
+    const summary=document.createElement('summary');
+    summary.innerHTML=`<span class="panel-copy"><strong>${esc(title)}</strong>${subtitle?`<span>${esc(subtitle)}</span>`:''}</span><span class="panel-toggle" aria-hidden="true">+</span>`;
+    const body=document.createElement('div');body.className='panel-body';
+    const first=nodes[0];first.before(panel);panel.append(summary,body);nodes.forEach(node=>body.append(node));
+    summary.addEventListener('click',()=>{panel.dataset.userToggle='true';});
+    panel.addEventListener('toggle',()=>{
+      const userTriggered=panel.dataset.userToggle==='true';delete panel.dataset.userToggle;
+      if(!panel.open)return;
+      $$('.compact-panel').filter(other=>other!==panel&&other.name===group&&other.open).forEach(other=>{other.open=false;});
+      requestAnimationFrame(()=>{
+        $$('.device-visual',panel).forEach(root=>{const track=$('[data-device-track]',root);track.scrollLeft=Number(track.dataset.active||0)*track.clientWidth;fitDeviceTrack(track);});
+        if(userTriggered)panel.scrollIntoView({block:'start',behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'instant':'smooth'});
+      });
+    });
+    return panel;
+  }
+  function compactLists(){
+    const list=$('#localResults')||$('.gallery-grid');if(!list)return;
+    const cards=$$('#localResults>.discovery-item,.gallery-grid>.gallery-item');
+    const batch=route==='gallery'?6:4;
+    cards.forEach((card,i)=>{card.hidden=i>=batch;const body=$('.place-body',card),details=$('.place-details',card);if(body&&details)details.querySelector('summary').after(body);});
+    list.parentElement.querySelector('[data-show-more]')?.remove();
+    if(cards.length>batch){const button=document.createElement('button');button.className='show-more outline-button';button.dataset.showMore=String(batch);
+      button.innerHTML=`${text(L(`${batch}개 더 보기`,`Show ${batch} more`,`${batch}件をさらに見る`,`再看${batch}个`,`再看${batch}個`))}<span aria-hidden="true">＋</span>`;
+      list.after(button);
+    }
+  }
+  function compactPage(){
+    if(D.guides[route]){
+      $('.guide-sidebar')?.remove();$('.device-jump')?.remove();
+      $$('.info-article').forEach((article,i)=>{
+        const title=$('h2',article)?.textContent||'',model=$('.device-model',article)?.textContent||'';
+        const id=article.id;article.removeAttribute('id');$('.article-heading',article)?.remove();$('.device-model',article)?.remove();
+        const panel=disclosure([article],title,model,'stay-guide',id);
+        if(route==='wifi'&&i===0)panel.open=true;
+      });
+    }
+    if(route==='transport'){
+      const entry=$('.building-photo');let entryPanel;if(entry)entryPanel=disclosure([entry],t(L('건물 입구 → 5층','Building entrance → 5F','建物入口 → 5階','建筑入口 → 5楼','建築入口 → 5樓')),tr('stairs'),'transport');
+      $$('.route-overview>article').forEach((article,i)=>{
+        const title=t(i?L('김해공항 → 숙소','Gimhae Airport → the stay','金海空港 → 宿','金海机场 → 住宿','金海機場 → 住宿'):L('부산역 → 숙소','Busan Station → the stay','釜山駅 → 宿','釜山站 → 住宿','釜山站 → 住宿'));
+        $('h2',article)?.remove();$('.eyebrow',article)?.remove();disclosure([article],title,'','transport');
+      });
+      const walking=$('.walking-grid');$('.transport-section>.section-heading')?.remove();
+      if(walking)disclosure([walking],t(L('부전역 2번 출구 → 숙소','Bujeon Exit 2 → the stay','釜田駅2番出口 → 宿','釜田站2号出口 → 住宿','釜田站2號出口 → 住宿')),t(L('도보 5–8분 · 사진으로 찾아가기','5–8 min walk · photo directions','徒歩5–8分・写真で道案内','步行5–8分钟・照片指引','步行5–8分鐘・照片指引')),'transport');
+      $$('.transport-notes>article').forEach((article,i)=>{const title=i?t(L('차량 → 명성주차장','By car → Myeongseong Parking','車 → 명성駐車場','自驾 → 명성停车场','開車 → 명성停車場')):$('h2',article).textContent;$('h2',article)?.remove();disclosure([article],title,'','transport');});
+      if(entryPanel){$('.transport-section').append(entryPanel);const note=$('.travel-alert>p');if(note)$('.panel-body',entryPanel).prepend(note);}
+      const address=$('.address-card');if(address)disclosure([address],t(L('숙소 주소 · 지도','Stay address · maps','宿の住所・地図','住宿地址・地图','住宿地址・地圖')),tr('address'),'transport');
+      $('.transport-section').after($('.address-section'));
+    }
+    if(route==='airport'){
+      $('.airport-choices')?.remove();
+      $$('.airport-guide').forEach(article=>{const subtitle=$('h2',article)?.textContent||'',title=t(L('김해공항 → 숙소','Gimhae Airport → the stay','金海空港 → 宿','金海机场 → 住宿','金海機場 → 住宿'));const id=article.id;article.removeAttribute('id');$('h2',article)?.remove();$('.eyebrow',article)?.remove();disclosure([article],title,subtitle,'airport',id);});
+      const back=$('.return-airport');if(back){$('h2',back)?.remove();$('.eyebrow',back)?.remove();disclosure([back],t(L('숙소 → 김해공항','The stay → Gimhae Airport','宿 → 金海空港','住宿 → 金海机场','住宿 → 金海機場')),'','airport');}
+    }
+    if(route==='home')$$('.signature,.space-edit,.local-edit,.home-guide,.faq-section').forEach(section=>{const title=$('h2',section)?.textContent||tr('gallery');const panel=disclosure([section],title,'','home');panel.classList.add('home-panel');});
+    if(['nearby','tours'].includes(route)){
+      $('.discovery-cover')?.remove();
+      const courses=$('.day-courses');if(courses){$('h2',courses)?.remove();$('.eyebrow',courses)?.remove();disclosure([courses],tr('courses'),'','courses').classList.add('course-panel');}
+    }
+    compactLists();
+  }
+
   function render(focus=false,restore=false){
+    const samePage=document.body.dataset.route===route,openPanels=$$('.compact-panel').map((panel,i)=>panel.open?i:-1);
     document.documentElement.lang={zh:'zh-CN',tw:'zh-TW'}[language]||language;
     const pages={home,gallery,guide:guideIndex,airport,transport,nearby,tours};
     $('#main').innerHTML=(pages[route]||guidePage)();
     document.body.dataset.route=route;document.title=route==='home'?'EXTAY JEONPO — Busan Private Stay':`${tr(route)} · EXTAY JEONPO`;
-    updateNavigation();bindDeviceCarousels();if(focus)$('#main').focus({preventScroll:true});if(restore)window.scrollTo({top:scrolls.get(route)||0,behavior:'instant'});
+    compactPage();if(samePage)$$('.compact-panel').forEach((panel,i)=>{panel.open=openPanels.includes(i);});updateNavigation();bindDeviceCarousels();if(focus)$('#main').focus({preventScroll:true});if(restore)window.scrollTo({top:scrolls.get(route)||0,behavior:'instant'});
   }
   function navigate(){const next=location.hash.slice(1)||'home',known=['home','gallery','guide','airport','transport','nearby','tours',...Object.keys(D.guides)];scrolls.set(route,window.scrollY);const resolved=known.includes(next)?next:'home';if(route!==resolved){localCategory='all';query='';}route=resolved;$$('dialog[open]').forEach(x=>x.close());render(true,true);}
   function showToast(message){clearTimeout(toastTimer);$('.toast').textContent=message;$('.toast').classList.add('visible');toastTimer=setTimeout(()=>$('.toast').classList.remove('visible'),3300);}
@@ -133,21 +205,22 @@
     const device=e.target.closest('[data-device-media]');if(device){const[id,index]=device.dataset.deviceMedia.split(':');const c=[...D.guides.appliances.cards,...D.guides.laundry.cards].find(c=>c.id===id);lightboxItems=D.deviceMedia[id].map(s=>({file:s.photo!==undefined?'assets/images/photo-'+String(s.photo).padStart(2,'0')+'.webp':s.file,caption:t(c.title)+' · '+t(s.title)+(s.keys?' · '+s.keys.map((k,i)=>(i+1)+'. '+t(k)).join(' / '):'')}));lightboxIndex=Number(index);updatePhoto();$('#lightbox').showModal();requestAnimationFrame(fitPhoto);return;}
     const guideShift=e.target.closest('[data-guide-shift]');if(guideShift){const root=guideShift.closest('.device-visual'),track=$('[data-device-track]',root);moveDeviceCarousel(root,Number(track.dataset.active||0)+Number(guideShift.dataset.guideShift));return;}
     const guideIndex=e.target.closest('[data-guide-index]');if(guideIndex){moveDeviceCarousel(guideIndex.closest('.device-visual'),Number(guideIndex.dataset.guideIndex));return;}
-    const localPhoto=e.target.closest('[data-local-photo]');if(localPhoto){const id=localPhoto.dataset.localPhoto;lightboxItems=Object.entries(D.localPhotos).map(([key,p])=>({file:p.file,caption:t(D.sights.find(x=>x.id===key)?.title||p.title||'Busan')}));lightboxIndex=Object.keys(D.localPhotos).indexOf(id);updatePhoto();$('#lightbox').showModal();requestAnimationFrame(fitPhoto);return;}
+    const localPhoto=e.target.closest('[data-local-photo]');if(localPhoto){const id=localPhoto.dataset.localPhoto,places=(route==='nearby'?D.dining:D.sights).filter(place=>D.localPhotos[place.id]);lightboxItems=places.map(place=>({file:D.localPhotos[place.id].file,caption:t(place.title)}));lightboxIndex=places.findIndex(place=>place.id===id);updatePhoto();$('#lightbox').showModal();requestAnimationFrame(fitPhoto);return;}
     const photo=e.target.closest('[data-photo]');if(photo){openPhoto(Number(photo.dataset.photo));return;}
     if(e.target.closest('[data-book]')){$('#bookingDialog').showModal();return;}
     const close=e.target.closest('[data-close]');if(close){document.getElementById(close.dataset.close).close();return;}
     if(e.target.closest('.menu-button')){$('#menuDialog').showModal();$('.menu-button').setAttribute('aria-expanded','true');return;}
     const cat=e.target.closest('[data-category]');if(cat){category=cat.dataset.category;const y=scrollY;render();window.scrollTo({top:y,behavior:'instant'});$(`[data-category="${category}"]`).focus({preventScroll:true});return;}
-    const local=e.target.closest('[data-local-category]');if(local){localCategory=local.dataset.localCategory;$$('[data-local-category]').forEach(b=>{b.classList.toggle('active',b.dataset.localCategory===localCategory);b.setAttribute('aria-pressed',String(b.dataset.localCategory===localCategory))});$('#localResults').innerHTML=localCards();return;}
+    const local=e.target.closest('[data-local-category]');if(local){localCategory=local.dataset.localCategory;$$('[data-local-category]').forEach(b=>{b.classList.toggle('active',b.dataset.localCategory===localCategory);b.setAttribute('aria-pressed',String(b.dataset.localCategory===localCategory))});$('#localResults').innerHTML=localCards();compactLists();return;}
     const copy=e.target.closest('[data-copy]');if(copy){try{await navigator.clipboard.writeText(copy.dataset.copy);showToast(tr('copied'))}catch{showToast(tr('copyFail'))}return;}
     if(e.target.closest('.hero-prev'))shiftHero(-1);if(e.target.closest('.hero-next'))shiftHero(1);
     if(e.target.closest('.lightbox-arrow.prev'))shiftPhoto(-1);if(e.target.closest('.lightbox-arrow.next'))shiftPhoto(1);
-    const scroll=e.target.closest('[data-scroll]');if(scroll)document.getElementById(scroll.dataset.scroll)?.scrollIntoView({behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'instant':'smooth'});
+    const more=e.target.closest('[data-show-more]');if(more){const hidden=$$('#localResults>.discovery-item[hidden],.gallery-grid>.gallery-item[hidden]'),batch=Number(more.dataset.showMore);hidden.slice(0,batch).forEach(card=>{card.hidden=false;});if(hidden.length<=batch)more.remove();if(hidden[0]){hidden[0].tabIndex=-1;hidden[0].focus({preventScroll:true});hidden[0].scrollIntoView({block:'start',behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'instant':'smooth'});}return;}
+    const scroll=e.target.closest('[data-scroll]');if(scroll){const target=document.getElementById(scroll.dataset.scroll);if(target?.matches('details'))target.open=true;target?.closest('details')?.setAttribute('open','');target?.scrollIntoView({behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'instant':'smooth'});}
     const a=e.target.closest('a[href^="#"]');if(a&&a.getAttribute('href')===location.hash&&$('#menuDialog').open)$('#menuDialog').close();
   });
   $('#language').addEventListener('change',e=>{const y=scrollY;language=e.target.value;try{localStorage.setItem('extayjeonpo-language',language)}catch{}render();window.scrollTo({top:y,behavior:'instant'})});
-  document.addEventListener('input',e=>{if(e.target.id==='localSearch'){query=e.target.value;$('#localResults').innerHTML=localCards()}});
+  document.addEventListener('input',e=>{if(e.target.id==='localSearch'){query=e.target.value;$('#localResults').innerHTML=localCards();compactLists()}});
   $('#menuDialog').addEventListener('close',()=>$('.menu-button').setAttribute('aria-expanded','false'));
   $$('dialog').forEach(d=>d.addEventListener('click',e=>{if(e.target===d){const b=d.getBoundingClientRect();if(e.clientX<b.left||e.clientX>b.right||e.clientY<b.top||e.clientY>b.bottom)d.close()}}));
   document.addEventListener('keydown',e=>{if($('#lightbox').open){if(e.key==='ArrowRight'){e.preventDefault();shiftPhoto(1)}if(e.key==='ArrowLeft'){e.preventDefault();shiftPhoto(-1)}}});

@@ -55,14 +55,26 @@
     dryer:[power,key('다이얼로 건조 코스 선택','Select a cycle with the dial','ダイヤルで乾燥コース選択','旋钮选择烘干程序','旋鈕選擇烘乾程序'),key('동작/일시정지','Start / pause','運転・一時停止','启动／暂停','啟動／暫停')]
   };
   const manuals={hob:'hob',coffee:'coffee',washer:'washer',dryer:'dryer'};
+  D.deviceDiagrams.microwave=[key('① 위쪽 다이얼 · 출력 선택','① Upper dial · power level','① 上のダイヤル・出力','① 上方旋钮・功率','① 上方旋鈕・功率'),key('② 아래쪽 다이얼 · 가열 시간','② Lower dial · cooking time','② 下のダイヤル・加熱時間','② 下方旋钮・加热时间','② 下方旋鈕・加熱時間'),key('금속·은박·밀폐 용기 금지','No metal, foil or sealed containers','金属・アルミ・密閉容器不可','禁用金属、锡纸、密封容器','禁用金屬、錫紙、密封容器')];
   const manualSize={hob:[696,490],coffee:[756,733],washer:[1209,416],dryer:[1393,405]};
   D.deviceMedia={};
   for(const c of [...cards,...D.guides.laundry.cards].filter(c=>c.id)){
     const slides=[];
-    if(c.image!==null)slides.push({photo:c.image,title:D.ui.guidePhoto});
-    slides.push({file:`assets/diagrams/${c.id}.svg`,width:600,height:520,title:D.ui.guideDiagram,keys:D.deviceDiagrams[c.id]});
-    slides.push({file:`assets/diagrams/${c.id}-steps.svg`,width:600,height:520,title:D.ui.guideEssentials,keys:D.deviceDiagrams[c.id]});
-    if(manuals[c.id])slides.push({file:`assets/images/manual-${c.id}-controls.webp`,title:c.id==='coffee'?L('공식 설명서 · 에센자 미니 C 기기 구성','Official manual · Essenza Mini C overview','公式説明書・Essenza Mini Cの構成','官方说明书・Essenza Mini C结构','官方說明書・Essenza Mini C結構'):D.ui.guideManualFigure,width:manualSize[c.id][0],height:manualSize[c.id][1],source:c.links[0].url});
+    if(c.id==='coffee'){
+      const figures=[['overview',304,235,L('공식 설명서 · 에센자 미니 C30 구성','Official manual · Essenza Mini C30 overview','公式説明書・Essenza Mini C30の構成','官方说明书・Essenza Mini C30结构','官方說明書・Essenza Mini C30結構')],['capsule',98,115,L('레버를 올리고 캡슐 1개 넣기','Lift the lever and insert one capsule','レバーを上げてカプセルを1個入れる','抬起手柄放入一颗胶囊','抬起手把放入一顆膠囊')],['cup',94,115,L('레버를 닫고 컵 놓기','Close the lever and place a cup','レバーを閉じてカップを置く','合上手柄并放好杯子','合上手把並放好杯子')],['buttons',86,62,L('작은 컵 40mL · 큰 컵 110mL','Small cup 40 mL · large cup 110 mL','小カップ40mL・大カップ110mL','小杯40mL・大杯110mL','小杯40mL・大杯110mL')]];
+      for(const [name,width,height,title] of figures)slides.push({file:`assets/images/manual-coffee-${name}.svg`,width,height,title,source:c.links[0].url});
+    }else if(manuals[c.id])slides.push({file:`assets/images/manual-${c.id}-controls.webp`,title:D.ui.guideManualFigure,width:manualSize[c.id][0],height:manualSize[c.id][1],source:c.links[0].url,keys:D.deviceDiagrams[c.id]});
+    if(['tv','living-ac','fan'].includes(c.id)){
+      const size={tv:[315,1170],'living-ac':[415,1040],fan:[395,845]}[c.id];
+      slides.push({file:`assets/images/guide-${c.id}-actual.webp`,width:size[0],height:size[1],title:D.ui.guidePhoto,keys:D.deviceDiagrams[c.id]});
+      slides.push({photo:55,title:L('리모컨 구분 · 왼쪽 TV / 가운데 에어컨 / 오른쪽 팬','Remote identification · TV left / AC middle / fan right','リモコンの区別・左TV／中央エアコン／右ファン','遥控器区分・左电视／中空调／右吊扇','遙控器區分・左電視／中冷氣／右吊扇')});
+    }
+    else if(c.image!==null)slides.push({photo:c.image,title:D.ui.guidePhoto,keys:manuals[c.id]?undefined:D.deviceDiagrams[c.id]});
+    if(['microwave','kettle'].includes(c.id)){
+      slides.push({file:`assets/images/guide-${c.id}-illustration.webp`,width:c.id==='microwave'?1254:1536,height:c.id==='microwave'?1254:1024,title:L('기본 사용 예시 · 안내 일러스트','Basic use · guide illustration','基本的な使い方・案内イラスト','基本使用示意图','基本使用示意圖'),keys:D.deviceDiagrams[c.id]});
+      slides.push({photo:10,title:D.ui.guidePhoto});
+    }
+    if(c.id==='water')slides.push({file:'assets/images/guide-water-official.webp',width:1000,height:1000,title:L('제조사 공식 제품 사진 · 출수 조작부','Official product image · dispensing controls','メーカー公式写真・出水操作部','厂商官方产品图・出水控制区','廠商官方產品圖・出水控制區'),source:c.links[0].url,keys:D.deviceDiagrams[c.id]});
     D.deviceMedia[c.id]=slides;
   }
 })();

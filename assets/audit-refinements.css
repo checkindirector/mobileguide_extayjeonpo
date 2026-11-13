@@ -275,3 +275,46 @@ button,input,select,textarea{font-family:inherit}
 .cover-title h1 .cover-logo{display:block;width:clamp(210px,calc(min(100vw,480px) * .68),300px);max-width:100%;height:auto;margin:0 0 12px}
 .cover-title h1>span{margin:0}
 .cover-title h1 i{position:static;right:auto;bottom:auto}
+
+/* Short, selectable mobile guides. Closed panels keep their full content accessible. */
+[hidden]{display:none!important}
+.compact-panel{border:1px solid var(--line);background:var(--paper);margin:0 0 12px;scroll-margin-top:14px}
+.compact-panel>summary{list-style:none;display:flex;align-items:center;justify-content:space-between;gap:18px;cursor:pointer;padding:21px 18px;min-height:88px;color:var(--ink)}
+.compact-panel>summary::-webkit-details-marker{display:none}
+.panel-copy{display:grid;gap:8px;min-width:0}
+.panel-copy>strong{font-size:19px;line-height:1.5;font-weight:800;word-break:keep-all;overflow-wrap:anywhere}
+.panel-copy>span{font-size:14px;font-weight:600;line-height:1.65;color:var(--muted);overflow-wrap:anywhere}
+.panel-toggle{flex-shrink:0;width:30px;height:30px;border-radius:50%;background:var(--soft);display:grid;place-items:center;font:24px/1 Arial;color:var(--accent)}
+.compact-panel[open]>summary{background:var(--accent);color:white}
+.compact-panel[open]>.panel-copy,.compact-panel[open]>summary .panel-copy>span{color:#e5eee8}
+.compact-panel[open]>summary .panel-toggle{transform:rotate(45deg);background:#ffffff20;color:white}
+.panel-body{padding:24px 18px 28px;min-width:0}
+.panel-body>.info-article,.panel-body>.airport-guide,.panel-body>.return-airport,.panel-body>.day-courses{padding:0;margin:0;border:0}
+.guide-layout{display:block;padding-top:0}.guide-content{width:100%;min-width:0}
+.guide-content .compact-panel .info-article>p{font-size:17px;line-height:1.85}
+.guide-content .device-location{margin-top:0}
+.route-overview,.transport-notes,.airport-guides{display:block;gap:0}
+.route-overview>article,.transport-notes>article{padding:0;border:0}
+.panel-body>article>p:first-child{margin-top:0}
+.address-section{display:block;padding-bottom:22px}.address-card{padding-bottom:20px}
+.address-section>.compact-panel{margin-top:20px}.building-photo{margin:0}
+.transport-section{padding-top:0}.travel-alert{margin-bottom:20px;padding:18px}
+.walking-grid{gap:28px}.walking-step p{font-size:17px}.walking-step h3{font-size:20px}
+.planning-note{margin-top:0}.airport-guide .airport-facts{gap:10px;margin:0 0 20px}
+.airport-guide .airport-best{margin-top:0}.airport-section{padding-top:0}
+.home-panel{margin:0 28px 12px}.home-panel .panel-body{padding:0}.home-panel .section{padding:26px 18px}
+.home-panel .signature,.home-panel .space-edit,.home-panel .local-edit{margin:0}.home-panel .section-heading{margin-bottom:20px}
+.home-panel .local-edit{display:block}.home-panel .local-edit>div{margin-top:24px}
+.course-panel{margin:0 28px 24px}.course-panel>.panel-body{padding-top:0}.course-panel .course-accordion{margin-top:0}
+.discovery-list{padding-top:0}.discovery-item{padding:28px 0 32px}.place-feature-photo{margin:18px 0}.place-body{font-size:17px}
+.discovery-item{scroll-margin-top:14px}.place-details>.place-body{padding:10px 0;margin-top:0}
+.transport-section .travel-alert>strong{font-size:16px;line-height:1.8}
+.address-section>.compact-panel .address-card{padding:0}
+.show-more{display:flex;width:100%;justify-content:space-between;align-items:center;margin:22px 0 0;min-height:58px;padding:16px 18px;font-size:17px;font-weight:700}
+.device-visual{margin:22px 0}.device-media-button>img{height:auto;max-height:360px;min-height:200px;object-fit:contain;width:100%;background:#fff}
+.device-slide{align-self:start}.device-carousel-controls{margin-top:12px}.device-dots{margin-bottom:-14px}
+.single-image .device-carousel-controls,.single-image .device-dots{display:none}
+.single-image .swipe-guide{display:none}
+.device-media-caption{font-size:15px;line-height:1.7}.swipe-guide{font-size:14px;font-weight:600}
+.help-block{padding-top:30px;padding-bottom:30px}.footer{padding-top:30px}
+@media(max-width:359px){.compact-panel>summary{padding:18px 14px;gap:12px}.panel-copy>strong{font-size:18px}.panel-body{padding:20px 14px 24px}.home-panel,.course-panel{margin-left:22px;margin-right:22px}}
