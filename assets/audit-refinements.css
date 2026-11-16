@@ -336,13 +336,10 @@ button,input,select,textarea{font-family:inherit}
 .home-carousel-dots [aria-current="true"]>span{width:8px;height:8px;background:var(--accent)}
 .home-photo-carousel .photo-open{width:40px;height:40px;right:12px;bottom:12px}
 
-/* Photo-first arrival: edge-to-edge within the mobile page, with a portrait opening. */
-body[data-route="home"] .topbar{position:fixed;top:0;left:50%;transform:translateX(-50%);background:rgba(var(--paper-rgb),.84);backdrop-filter:blur(12px)}
+/* Photo-first arrival: full-width room views, preserving the complete landscape frame. */
 body[data-route="home"] .cover{padding:0}
-body[data-route="home"] .hero-photo .home-photo-slide>.photo-button{height:clamp(340px,68svh,640px);overflow:hidden}
-body[data-route="home"] .hero-photo .home-photo-slide .photo-button>img{height:100%;object-fit:cover;object-position:50% 50%}
-body[data-route="home"] [data-home-photo="hero:1"]>img{object-position:30% 50%}
-body[data-route="home"] [data-home-photo="hero:2"]>img{object-position:48% 50%}
+body[data-route="home"] .hero-photo .home-photo-slide>.photo-button{height:auto;aspect-ratio:4/3;overflow:hidden}
+body[data-route="home"] .hero-photo .home-photo-slide .photo-button>img{height:100%;object-fit:contain;object-position:center}
 body[data-route="home"] .home-photo-slide figcaption{padding:15px var(--gutter) 0}
 body[data-route="home"] .home-carousel-controls{padding-inline:var(--gutter)}
 body[data-route="home"] .cover-meta{padding-inline:var(--gutter);margin-top:22px}

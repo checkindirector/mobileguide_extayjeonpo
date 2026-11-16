@@ -5,7 +5,7 @@
   const guideMediaUrl=file=>file.startsWith('assets/diagrams/')?`${file}?v=20261113-pine1`:file;
   let language='ko';try{const saved=localStorage.getItem('extayjeonpo-language');if(languages.includes(saved))language=saved;}catch{}
   let route='home',category='all',localCategory='all',query='',lightboxItems=[],lightboxIndex=0,toastTimer,deviceResizeObserver;
-  const heroPhotos=[2,9,8], scrolls=new Map();
+  const heroPhotos=[1,9,8], scrolls=new Map();
   const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
   const t=v=>typeof v==='object'&&v!==null?(v[language]??v.en??v.ko??''):String(v??'');
   const tr=k=>t(D.ui[k]);
