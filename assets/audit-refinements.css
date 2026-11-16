@@ -336,9 +336,9 @@ button,input,select,textarea{font-family:inherit}
 .home-carousel-dots [aria-current="true"]>span{width:8px;height:8px;background:var(--accent)}
 .home-photo-carousel .photo-open{width:40px;height:40px;right:12px;bottom:12px}
 
-/* A taller arrival image keeps both the living and dining areas in view. */
+/* A wider arrival frame reveals more of the sofa and dining area while keeping height. */
 body[data-route="home"] .cover{padding:0}
-body[data-route="home"] .hero-photo .home-photo-slide>.photo-button{height:auto;aspect-ratio:1;overflow:hidden}
+body[data-route="home"] .hero-photo .home-photo-slide>.photo-button{height:auto;aspect-ratio:6/5;overflow:hidden}
 body[data-route="home"] .hero-photo .home-photo-slide .photo-button>img{height:100%;object-fit:cover;object-position:center}
 body[data-route="home"] .home-photo-slide figcaption{padding:15px var(--gutter) 0}
 body[data-route="home"] .home-carousel-controls{padding-inline:var(--gutter)}
