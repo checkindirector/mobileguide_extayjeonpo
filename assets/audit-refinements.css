@@ -336,10 +336,14 @@ button,input,select,textarea{font-family:inherit}
 .home-carousel-dots [aria-current="true"]>span{width:8px;height:8px;background:var(--accent)}
 .home-photo-carousel .photo-open{width:40px;height:40px;right:12px;bottom:12px}
 
-/* A wider arrival frame reveals more of the sofa and dining area while keeping height. */
+/* Full room width, with the identity above the photograph instead of over the space. */
+.brand>.home-guide-label{display:none}
+body[data-route="home"] .brand>img,
+body[data-route="home"] .brand>span:not(.home-guide-label){display:none}
+body[data-route="home"] .brand>.home-guide-label{display:block;font-size:13px;font-weight:600;letter-spacing:.12em;color:var(--accent)}
 body[data-route="home"] .cover{padding:0}
-body[data-route="home"] .hero-photo .home-photo-slide>.photo-button{height:auto;aspect-ratio:6/5;overflow:hidden}
-body[data-route="home"] .hero-photo .home-photo-slide .photo-button>img{height:100%;object-fit:cover;object-position:center}
+body[data-route="home"] .hero-photo .home-photo-slide>.photo-button{height:auto;aspect-ratio:4/3;overflow:hidden}
+body[data-route="home"] .hero-photo .home-photo-slide .photo-button>img{height:100%;object-fit:contain;object-position:center}
 body[data-route="home"] .home-photo-slide figcaption{padding:15px var(--gutter) 0}
 body[data-route="home"] .home-carousel-controls{padding-inline:var(--gutter)}
 body[data-route="home"] .hero-photo .home-photo-slide figcaption{padding-top:10px}
@@ -347,14 +351,44 @@ body[data-route="home"] .hero-photo .home-carousel-controls{margin-top:6px;gap:1
 body[data-route="home"] .hero-photo .home-carousel-position{display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:0 8px}
 body[data-route="home"] .hero-photo [data-home-count]{white-space:nowrap}
 body[data-route="home"] .cover-meta{padding-inline:var(--gutter);margin-top:10px}
-body[data-route="home"] .cover-title{padding:8px var(--gutter) 10px}
+body[data-route="home"] .cover-title{padding:12px var(--gutter) 14px}
 body[data-route="home"] .cover-title h1{display:flex;align-items:center;flex-wrap:wrap;gap:10px;font-size:28px;line-height:1.1}
 body[data-route="home"] .cover-title h1 .cover-logo{width:clamp(124px,35vw,156px);margin:0}
 body[data-route="home"] .cover-title h1>span{font-size:28px}
 body[data-route="home"] .cover-title h1 i{font-size:inherit;line-height:inherit}
-body[data-route="home"] .cover-title>p{margin-top:8px}
+body[data-route="home"] .cover-tagline{margin:8px 0 10px;padding-inline:var(--gutter);font-size:17px;font-weight:600;line-height:1.7;letter-spacing:-.025em}
 body[data-route="home"] .cover-caption{padding:0 var(--gutter) 12px;gap:4px}
 body[data-route="home"] .space-edit>.home-photo-carousel,
 body[data-route="home"] .signature-image,
 body[data-route="home"] .home-local-photo{width:calc(100% + var(--gutter) + var(--gutter));margin-left:calc(0px - var(--gutter));margin-right:calc(0px - var(--gutter))}
 body[data-route="home"] .home-local-photo>figcaption{padding-inline:var(--gutter)}
+
+/* Green, immediately recognizable airport choices; details remain on light paper. */
+body[data-route="airport"] .airport-section .compact-panel{border-color:var(--accent);scroll-margin-top:86px}
+body[data-route="airport"] .airport-section .compact-panel>summary{background:var(--accent);color:var(--white)}
+body[data-route="airport"] .airport-section .panel-copy>span{color:var(--white);font-size:15px;line-height:1.7}
+body[data-route="airport"] .airport-section .panel-toggle{background:#ffffff20;color:var(--white)}
+body[data-route="airport"] .planning-note{margin-top:24px;font-size:15px;line-height:1.85}
+
+/* Arrival essentials stay open. Only the longer photo directions need expanding. */
+body[data-route="transport"] .page-heading{padding-bottom:22px}
+body[data-route="transport"] .address-section{padding-top:22px;padding-bottom:0}
+body[data-route="transport"] .address-card{padding-bottom:24px;border-bottom:2px solid var(--accent)}
+body[data-route="transport"] .address-card>.eyebrow{display:block;font-size:14px;font-weight:700;margin-bottom:8px;color:var(--accent)}
+body[data-route="transport"] .address-card h2{font-size:25px;font-weight:800;color:var(--accent);line-height:1.55}
+body[data-route="transport"] .address-card .button-row{margin-top:18px}
+body[data-route="transport"] .address-card .outline-button{background:var(--accent);border-color:var(--accent);color:var(--white);font-size:15px;font-weight:700}
+body[data-route="transport"] .address-card .copy-button{margin-top:12px}
+body[data-route="transport"] .transport-section{padding-top:20px;padding-bottom:32px}
+body[data-route="transport"] .travel-alert{margin-bottom:12px}
+.arrival-jump{display:flex;flex-wrap:wrap;gap:4px 12px;margin-bottom:20px}
+.arrival-jump button{min-height:44px;border-bottom:1px solid var(--accent);font-size:14px;font-weight:700;color:var(--accent)}
+body[data-route="transport"] .route-overview{margin:0 0 24px;scroll-margin-top:86px}
+body[data-route="transport"] .route-overview>article{padding:22px 0;border-bottom:1px solid var(--line)}
+body[data-route="transport"] .route-overview h2,
+body[data-route="transport"] .transport-notes h2{font-size:23px;font-weight:800;line-height:1.5;color:var(--accent)}
+body[data-route="transport"] .compact-panel{scroll-margin-top:86px;border-color:var(--sand)}
+body[data-route="transport"] .compact-panel>summary{background:var(--soft);color:var(--accent)}
+body[data-route="transport"] .compact-panel[open]>summary{background:var(--accent);color:var(--white)}
+body[data-route="transport"] .transport-notes{padding-top:6px;margin-top:22px;scroll-margin-top:86px}
+body[data-route="transport"] .transport-notes>article{padding:22px 0;border-bottom:1px solid var(--line)}

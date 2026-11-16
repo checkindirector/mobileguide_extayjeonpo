@@ -162,9 +162,10 @@
 
   function home(){return `
     <section class="cover">
+      <div class="cover-title"><h1 aria-label="EXTAY JEONPO"><img class="cover-logo" src="assets/images/extay-logo.svg?v=20261113-logo1" width="518" height="155" alt="EXTAY"><span>JEONPO<i aria-hidden="true">.</i></span></h1></div>
       ${homePhotoCarousel('hero')}
       <div class="cover-meta"><span>BUSAN PRIVATE STAY</span><span>JEONPO, BUSAN</span><span class="cover-issue">A PLACE TO STAY TOGETHER</span></div>
-      <div class="cover-title"><h1 aria-label="EXTAY JEONPO"><img class="cover-logo" src="assets/images/extay-logo.svg?v=20261113-logo1" width="518" height="155" alt="EXTAY"><span>JEONPO<i aria-hidden="true">.</i></span></h1><p>${text(D.home.line).replace(/\n/g,' ')}</p></div>
+      <p class="cover-tagline">${text(D.home.line).replace(/\n/g,' ')}</p>
       <div class="cover-caption"><span>PRIVATE SPACE · SHARED MOMENTS</span><button class="scroll-link" data-scroll="introduction">SCROLL TO DISCOVER <span aria-hidden="true">↓</span></button></div>
     </section>
     <section class="intro section" id="introduction"><div><p class="eyebrow">01 / THE STAY</p><h2>${lines(D.home.introTitle)}</h2></div><div class="intro-copy"><p>${text(D.home.introBody)}</p>${stats()}${link('gallery',tr('gallery'))}</div></section>
@@ -270,22 +271,24 @@
       });
     }
     if(route==='transport'){
-      const entry=$('.building-photo');let entryPanel;if(entry)entryPanel=disclosure([entry],t(L('건물 입구 → 5층','Building entrance → 5F','建物入口 → 5階','建筑入口 → 5楼','建築入口 → 5樓')),tr('stairs'),'transport');
+      const entry=$('.building-photo');let entryPanel;if(entry)entryPanel=disclosure([entry],t(L('건물 입구 → 5층','Building entrance → 5F','建物入口 → 5階','建筑入口 → 5楼','建築入口 → 5樓')),tr('stairs'),'transport','arrival-entry');
       $$('.route-overview>article').forEach((article,i)=>{
         const title=t(i?L('김해공항 → 숙소','Gimhae Airport → the stay','金海空港 → 宿','金海机场 → 住宿','金海機場 → 住宿'):L('부산역 → 숙소','Busan Station → the stay','釜山駅 → 宿','釜山站 → 住宿','釜山站 → 住宿'));
-        $('h2',article)?.remove();$('.eyebrow',article)?.remove();disclosure([article],title,'','transport');
+        $('h2',article).textContent=title;$('.eyebrow',article)?.remove();
       });
       const walking=$('.walking-grid');$('.transport-section>.section-heading')?.remove();
-      if(walking)disclosure([walking],t(L('부전역 2번 출구 → 숙소','Bujeon Exit 2 → the stay','釜田駅2番出口 → 宿','釜田站2号出口 → 住宿','釜田站2號出口 → 住宿')),t(L('도보 5–8분 · 사진으로 찾아가기','5–8 min walk · photo directions','徒歩5–8分・写真で道案内','步行5–8分钟・照片指引','步行5–8分鐘・照片指引')),'transport');
-      $$('.transport-notes>article').forEach((article,i)=>{const title=i?t(L('차량 → 명성주차장','By car → Myeongseong Parking','車 → 명성駐車場','自驾 → 명성停车场','開車 → 명성停車場')):$('h2',article).textContent;$('h2',article)?.remove();disclosure([article],title,'','transport');});
-      if(entryPanel){$('.transport-section').append(entryPanel);const note=$('.travel-alert>p');if(note)$('.panel-body',entryPanel).prepend(note);}
-      const address=$('.address-card');if(address)disclosure([address],t(L('숙소 주소 · 지도','Stay address · maps','宿の住所・地図','住宿地址・地图','住宿地址・地圖')),tr('address'),'transport');
-      $('.transport-section').after($('.address-section'));
+      if(walking){const panel=disclosure([walking],t(L('부전역 2번 출구 → 숙소','Bujeon Exit 2 → the stay','釜田駅2番出口 → 宿','釜田站2号出口 → 住宿','釜田站2號出口 → 住宿')),t(L('도보 5–8분 · 사진으로 찾아가기','5–8 min walk · photo directions','徒歩5–8分・写真で道案内','步行5–8分钟・照片指引','步行5–8分鐘・照片指引')),'transport','arrival-walk');if(entryPanel)panel.after(entryPanel);}
+      $('.route-overview').id='arrival-routes';$('.transport-notes').id='arrival-luggage';
+      $('.address-card>.eyebrow').textContent=t(L('숙소 주소','STAY ADDRESS','宿の住所','住宿地址','住宿地址'));
+      const jumps=document.createElement('nav');jumps.className='arrival-jump';jumps.setAttribute('aria-label',t(L('도착 안내 바로가기','Arrival shortcuts','到着案内ショートカット','抵达指引快捷入口','抵達指引捷徑')));
+      jumps.innerHTML=[['arrival-routes',L('대중교통','Transport','公共交通','公共交通','公共交通')],['arrival-walk',L('도보 사진','Walk photos','徒歩の写真','步行照片','步行照片')],['arrival-entry',L('건물 입구','Entrance','建物入口','建筑入口','建築入口')],['arrival-luggage',L('주차·짐','Parking & bags','駐車・荷物','停车・行李','停車・行李')]].map(([id,label])=>`<button type="button" data-scroll="${id}">${text(label)}</button>`).join('');
+      $('.travel-alert').after(jumps);
     }
     if(route==='airport'){
       $('.airport-choices')?.remove();
-      $$('.airport-guide').forEach(article=>{const subtitle=$('h2',article)?.textContent||'',title=t(L('김해공항 → 숙소','Gimhae Airport → the stay','金海空港 → 宿','金海机场 → 住宿','金海機場 → 住宿'));const id=article.id;article.removeAttribute('id');$('h2',article)?.remove();$('.eyebrow',article)?.remove();disclosure([article],title,subtitle,'airport',id);});
+      $$('.airport-guide').forEach((article,i)=>{const option=D.airport.options[i],title=$('h2',article)?.textContent||'',subtitle=`${t(option.fare)} · ${t(option.time)}`;const id=article.id;article.removeAttribute('id');$('h2',article)?.remove();$('.eyebrow',article)?.remove();disclosure([article],title,subtitle,'airport',id);});
       const back=$('.return-airport');if(back){$('h2',back)?.remove();$('.eyebrow',back)?.remove();disclosure([back],t(L('숙소 → 김해공항','The stay → Gimhae Airport','宿 → 金海空港','住宿 → 金海机场','住宿 → 金海機場')),'','airport');}
+      const note=$('.planning-note');if(note)$('.content-date').before(note);
     }
     if(['nearby','tours'].includes(route)){
       $('.discovery-cover')?.remove();
