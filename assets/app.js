@@ -5,7 +5,7 @@
   const guideMediaUrl=file=>file.startsWith('assets/diagrams/')?`${file}?v=20261113-pine1`:file;
   let language='ko';try{const saved=localStorage.getItem('extayjeonpo-language');if(languages.includes(saved))language=saved;}catch{}
   let route='home',category='all',localCategory='all',query='',lightboxItems=[],lightboxIndex=0,toastTimer,deviceResizeObserver;
-  const heroPhotos=[1,3,8], scrolls=new Map();
+  const heroPhotos=[2,9,8], scrolls=new Map();
   const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
   const t=v=>typeof v==='object'&&v!==null?(v[language]??v.en??v.ko??''):String(v??'');
   const tr=k=>t(D.ui[k]);
@@ -162,9 +162,9 @@
 
   function home(){return `
     <section class="cover">
+      ${homePhotoCarousel('hero')}
       <div class="cover-meta"><span>BUSAN PRIVATE STAY</span><span>JEONPO, BUSAN</span><span class="cover-issue">A PLACE TO STAY TOGETHER</span></div>
       <div class="cover-title"><h1 aria-label="EXTAY JEONPO"><img class="cover-logo" src="assets/images/extay-logo.svg?v=20261113-logo1" width="518" height="155" alt="EXTAY"><span>JEONPO<i aria-hidden="true">.</i></span></h1><p>${text(D.home.line).replace(/\n/g,' ')}</p></div>
-      ${homePhotoCarousel('hero')}
       <div class="cover-caption"><span>PRIVATE SPACE · SHARED MOMENTS</span><button class="scroll-link" data-scroll="introduction">SCROLL TO DISCOVER <span aria-hidden="true">↓</span></button></div>
     </section>
     <section class="intro section" id="introduction"><div><p class="eyebrow">01 / THE STAY</p><h2>${lines(D.home.introTitle)}</h2></div><div class="intro-copy"><p>${text(D.home.introBody)}</p>${stats()}${link('gallery',tr('gallery'))}</div></section>
