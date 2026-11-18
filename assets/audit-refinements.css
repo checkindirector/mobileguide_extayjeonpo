@@ -354,17 +354,24 @@ body[data-route="home"] .hero-photo .home-carousel-controls{margin-top:6px;gap:1
 body[data-route="home"] .hero-photo .home-carousel-position{display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:0 8px}
 body[data-route="home"] .hero-photo [data-home-count]{white-space:nowrap}
 body[data-route="home"] .cover-meta{padding-inline:var(--gutter);margin-top:10px}
-body[data-route="home"] .cover-title{padding:12px var(--gutter) 14px}
-body[data-route="home"] .cover-title h1{display:flex;align-items:center;flex-wrap:wrap;gap:10px;font-size:28px;line-height:1.1}
-body[data-route="home"] .cover-title h1 .cover-logo{width:clamp(124px,35vw,156px);margin:0}
-body[data-route="home"] .cover-title h1>span{font-size:28px}
-body[data-route="home"] .cover-title h1 i{font-size:inherit;line-height:inherit}
+body[data-route="home"] .cover-title{padding:8px var(--gutter) 12px}
+body[data-route="home"] .cover-title h1{display:flex;flex-direction:column;align-items:center;flex-wrap:nowrap;gap:6px;width:fit-content;margin:0 auto;font-size:13px;line-height:1}
+body[data-route="home"] .cover-title h1 .cover-logo{width:clamp(136px,40vw,168px);margin:0}
+body[data-route="home"] .cover-title h1>span{font-size:13px;font-weight:600;line-height:1.3;letter-spacing:.28em;padding-left:.28em}
 body[data-route="home"] .cover-tagline{margin:8px 0 10px;padding-inline:var(--gutter);font-size:17px;font-weight:600;line-height:1.7;letter-spacing:-.025em}
 body[data-route="home"] .cover-caption{padding:0 var(--gutter) 12px;gap:4px}
 body[data-route="home"] .space-edit>.home-photo-carousel,
 body[data-route="home"] .signature-image,
 body[data-route="home"] .home-local-photo{width:calc(100% + var(--gutter) + var(--gutter));margin-left:calc(0px - var(--gutter));margin-right:calc(0px - var(--gutter))}
 body[data-route="home"] .home-local-photo>figcaption{padding-inline:var(--gutter)}
+
+/* A distinct pine navigation bar on the home screen. */
+body[data-route="home"] .bottom-nav{background:var(--accent);border-top-color:var(--accent)}
+body[data-route="home"] .bottom-nav>a,
+body[data-route="home"] .bottom-nav>button{color:var(--white)}
+body[data-route="home"] .bottom-nav [aria-current]{color:var(--white);font-weight:800}
+body[data-route="home"] .bottom-nav [aria-current]::after{width:4px;height:4px;background:var(--white)}
+body[data-route="home"] .bottom-nav svg{stroke-width:1.5}
 
 /* Green, immediately recognizable airport choices; details remain on light paper. */
 body[data-route="airport"] .airport-section .compact-panel{border-color:var(--accent);scroll-margin-top:86px}

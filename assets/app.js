@@ -162,7 +162,7 @@
 
   function home(){return `
     <section class="cover">
-      <div class="cover-title"><h1 aria-label="EXTAY JEONPO"><img class="cover-logo" src="assets/images/extay-logo.svg?v=20261113-logo1" width="518" height="155" alt="EXTAY"><span>JEONPO<i aria-hidden="true">.</i></span></h1></div>
+      <div class="cover-title"><h1 aria-label="EXTAY JEONPO"><img class="cover-logo" src="assets/images/extay-logo.svg?v=20261113-logo1" width="518" height="155" alt="EXTAY"><span>JEONPO</span></h1></div>
       ${homePhotoCarousel('hero')}
       <div class="cover-meta"><span>BUSAN PRIVATE STAY</span><span>JEONPO, BUSAN</span><span class="cover-issue">A PLACE TO STAY TOGETHER</span></div>
       <p class="cover-tagline">${text(D.home.line).replace(/\n/g,' ')}</p>
