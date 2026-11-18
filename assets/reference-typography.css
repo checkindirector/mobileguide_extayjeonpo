@@ -129,13 +129,13 @@ body[data-route="home"] .brand>.home-guide-label{font-size:13px;font-weight:800;
 .lightbox figcaption,.lightbox-counter,.lightbox-zoom #zoomReset,.toast{font-size:13px;font-weight:600;line-height:1.5}
 /* The cover's three images carry their own navigation. No caption below the hero. */
 .hero-photo{position:relative}
-body[data-route="home"] .hero-photo .home-carousel-controls{position:absolute;right:12px;bottom:12px;width:auto;display:flex;gap:0;margin:0;padding:0 3px;border:0;border-radius:2px;background:rgb(0 0 0 / .38);color:#fff;z-index:2}
+body[data-route="home"] .hero-photo .home-carousel-controls{position:absolute;right:12px;bottom:12px;width:auto;display:flex;gap:0;margin:0;padding:0;border:0;border-radius:0;background:transparent;color:#fff;text-shadow:0 1px 4px rgb(0 0 0 / .5);z-index:2}
 .hero-photo .home-carousel-position{display:block;min-width:59px;text-align:center;padding:0 3px}
 .hero-photo .home-carousel-position>[data-home-count]{font-size:12px;font-weight:600;line-height:44px;letter-spacing:.04em;color:#fff}
 .hero-photo .home-carousel-dots{display:none}
-.hero-photo .carousel-arrow{border:0;color:#fff;background:transparent;font-size:18px;width:44px;height:44px}
+.hero-photo .carousel-arrow{border:0;color:#fff;background:transparent;font-size:18px;width:44px;height:44px;text-shadow:inherit}
 .hero-photo .carousel-arrow:disabled{opacity:.45}
 .hero-photo .carousel-arrow:focus-visible{outline:2px solid #fff;outline-offset:-4px}
-.hero-photo .photo-open{top:12px;bottom:auto;background:rgb(0 0 0 / .28);border:0;color:#fff}
+.hero-photo .photo-open{top:12px;bottom:auto;background:transparent;border:0;color:#fff;font-size:21px;text-shadow:0 1px 4px rgb(0 0 0 / .5)}
 @media(max-width:400px){.drawer-copy>strong{font-size:17px}.drawer-subtitle{font-size:12px}}
 @media(max-width:359px){.guide-categories button{padding:14px 12px}.guide-device-options button{padding:10px;font-size:13px}.airport-choice{padding:16px}.airport-choice b{font-size:14px}}
