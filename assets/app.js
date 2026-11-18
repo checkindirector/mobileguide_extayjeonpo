@@ -61,7 +61,7 @@
   };
   const homePhotoIndices={hero:0,spaces:0};
   let homePhotoObserver;
-  const homeHeroAutoDelay=2400;
+  const homeHeroAutoDelay=1680;
   let homeHeroAutoComplete=false,disposeHomeHeroAutoplay=()=>{};
   function homePhotoCarousel(key){
     const items=homePhotoSets[key],active=homePhotoIndices[key];

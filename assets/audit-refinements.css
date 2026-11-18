@@ -336,14 +336,16 @@ button,input,select,textarea{font-family:inherit}
 .home-carousel-dots [aria-current="true"]>span{width:8px;height:8px;background:var(--accent)}
 .home-photo-carousel .photo-open{width:40px;height:40px;right:12px;bottom:12px}
 
-/* Full room width, with the identity above the photograph instead of over the space. */
+/* An immersive mobile portrait crop, with the identity kept above the photograph. */
 .brand>.home-guide-label{display:none}
 body[data-route="home"] .brand>img,
 body[data-route="home"] .brand>span:not(.home-guide-label){display:none}
 body[data-route="home"] .brand>.home-guide-label{display:block;font-size:13px;font-weight:600;letter-spacing:.12em;color:var(--accent)}
 body[data-route="home"] .cover{padding:0}
-body[data-route="home"] .hero-photo .home-photo-slide>.photo-button{height:auto;aspect-ratio:4/3;overflow:hidden}
-body[data-route="home"] .hero-photo .home-photo-slide .photo-button>img{height:100%;object-fit:contain;object-position:center}
+body[data-route="home"] .hero-photo .home-photo-slide>.photo-button{height:auto;aspect-ratio:4/5;overflow:hidden}
+body[data-route="home"] .hero-photo .home-photo-slide .photo-button>img{height:100%;object-fit:cover;object-position:45% center}
+body[data-route="home"] .hero-photo .home-photo-slide [data-home-photo="hero:1"]>img{object-position:30% center}
+body[data-route="home"] .hero-photo .home-photo-slide [data-home-photo="hero:2"]>img{object-position:48% center}
 body[data-route="home"] .home-photo-slide figcaption{padding:15px var(--gutter) 0}
 body[data-route="home"] .home-carousel-controls{padding-inline:var(--gutter)}
 body[data-route="home"] .hero-photo .home-photo-slide figcaption{padding-top:10px}
