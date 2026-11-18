@@ -20,25 +20,26 @@
   <link rel="preload" as="font" href="assets/fonts/oxanium-latin.woff2" type="font/woff2" crossorigin>
   <link rel="stylesheet" href="assets/styles.css?v=20261113-pine1">
   <link rel="stylesheet" href="assets/audit-refinements.css?v=20261118-diningflowers4">
+  <link rel="stylesheet" href="assets/reference-typography.css?v=20261118-guide6">
   <script src="assets/data.js?v=20261118-townview5" defer></script>
   <script src="assets/guest-guide-data.js?v=20261113-pine1" defer></script>
   <script src="assets/stay-essentials-data.js?v=20261113-pine1" defer></script>
   <script src="assets/appliance-guide-data.js?v=20261113-compact1" defer></script>
   <script src="assets/tour-photo-data.js?v=20261113-pine1" defer></script>
   <script src="assets/dining-photo-data.js?v=20261113-compact1" defer></script>
-  <script src="assets/app.js?v=20261118-masthead3" defer></script>
+  <script src="assets/app.js?v=20261118-guide6" defer></script>
 </head>
 <body>
   <a class="skip-link" href="#main">본문으로 바로가기</a>
   <header class="topbar">
     <button class="menu-button icon-button" aria-label="메뉴 열기" aria-expanded="false" aria-controls="menuDialog"><span class="menu-lines" aria-hidden="true"></span></button>
-    <a class="brand" href="#home" aria-label="EXTAY JEONPO 홈"><img src="assets/images/extay-logo.svg?v=20261113-logo1" width="518" height="155" alt="EXTAY"><span>JEONPO</span><span class="home-guide-label" aria-hidden="true">STAY GUIDE</span></a>
+    <a class="brand" href="#home" aria-label="EXTAY JEONPO 홈"><img src="assets/images/extay-logo.svg?v=20261113-logo1" width="518" height="155" alt="EXTAY"><span>JEONPO</span><span class="home-guide-label" aria-hidden="true">익스테이 전포</span></a>
     <nav class="desktop-nav" aria-label="주 메뉴"></nav>
     <div class="header-tools"><label class="language-label"><span class="sr-only" id="languageLabel">언어 선택</span><select id="language" aria-labelledby="languageLabel"><option value="ko">KO</option><option value="en">EN</option><option value="ja">JA</option><option value="zh">CN</option><option value="tw">TW</option></select></label><button class="header-book" data-book></button></div>
   </header>
   <main id="main" tabindex="-1"></main>
   <nav class="bottom-nav" aria-label="빠른 메뉴"></nav>
-  <dialog class="menu-dialog" id="menuDialog"><div class="drawer-top"><div class="drawer-brand"><img src="assets/images/extay-logo-white.svg?v=20261113-logo1" width="518" height="155" alt="EXTAY"><span>JEONPO</span></div><button class="icon-button" data-close="menuDialog" aria-label="메뉴 닫기">×</button></div><nav class="drawer-nav" aria-label="전체 메뉴"></nav><div class="drawer-foot">BUSAN PRIVATE STAY<br><small>35° N, 129° E · JEONPO</small></div></dialog>
+  <dialog class="menu-dialog" id="menuDialog"><div class="drawer-top"><div class="drawer-brand"><img src="assets/images/extay-logo-white.svg?v=20261113-logo1" width="518" height="155" alt="EXTAY"><span>JEONPO</span></div><button class="icon-button" data-close="menuDialog" aria-label="메뉴 닫기">×</button></div><nav class="drawer-nav" aria-label="전체 메뉴"></nav></dialog>
   <dialog class="booking-dialog" id="bookingDialog" aria-labelledby="bookingTitle"><button class="dialog-close icon-button" data-close="bookingDialog" aria-label="닫기">×</button><p class="eyebrow">MAKE YOURSELF AT HOME</p><h2 id="bookingTitle"></h2><div id="bookingBody"></div></dialog>
   <dialog class="lightbox" id="lightbox" aria-label="공간 사진 크게 보기"><button class="lightbox-close icon-button" data-close="lightbox" aria-label="사진 닫기">×</button><div class="lightbox-zoom"><button class="icon-button" id="zoomOut" aria-label="축소">−</button><button id="zoomReset" aria-label="원래 크기"><span id="zoomValue">100%</span></button><button class="icon-button" id="zoomIn" aria-label="확대">+</button></div><button class="lightbox-arrow prev icon-button" aria-label="이전 사진">←</button><figure><div class="lightbox-stage" id="lightboxStage"><img id="lightboxImage" alt=""></div><figcaption id="lightboxCaption"></figcaption></figure><button class="lightbox-arrow next icon-button" aria-label="다음 사진">→</button><span class="lightbox-counter"></span></dialog>
   <div class="toast" role="status" aria-live="polite"></div>

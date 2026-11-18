@@ -1,0 +1,141 @@
+/* Role-by-role typography measured from Another House's current mobile pages.
+   Its body stack, weights and sizes are retained; the approved pine identity stays. */
+body{font-family:Oxanium,'Arial Narrow',Arial,sans-serif;font-size:17px;font-weight:600;line-height:1.55;letter-spacing:0;font-synthesis-weight:auto}
+button,input,select,textarea{font-family:inherit}
+h1,h2,h3,h4,p,li{letter-spacing:0}
+.page-heading h1{font-size:35px;font-weight:600;line-height:1.12;letter-spacing:-.03em}
+body[data-route="wifi"] .page-heading h1{font-size:38px}
+body[data-route="gallery"] .page-heading h1{font-size:37px;font-weight:800}
+.page-heading .lead{font-size:15px;font-weight:600;line-height:1.62}
+.eyebrow,.page-heading .eyebrow,.help-block .eyebrow,.booking-dialog .eyebrow{font-size:13px;font-weight:600;line-height:1.55;letter-spacing:.08em}
+.section-heading h2,.home-guide .section-heading h2,.essentials h2,.space-edit h2,.local-copy h2{font-size:26px;font-weight:800;line-height:1.2;letter-spacing:-.025em}
+.local-copy h2{font-size:29px}
+.intro h2,.signature h2{font-size:clamp(38px,10vw,46px);font-weight:300;line-height:.92;letter-spacing:-.025em}
+.intro-copy>p,.signature-copy>p:not(.eyebrow){font-size:16px;font-weight:600;line-height:1.9}
+.local-copy>p:not(.eyebrow),.home-guide .section-heading>p,.booking-section>p:not(.eyebrow){font-size:16px;font-weight:600;line-height:1.55}
+.cover-tagline{font-size:16px;font-weight:600;line-height:1.55}
+.cover-meta,.cover-caption>span,.scroll-link,.cover-issue{font-size:12px;font-weight:600;line-height:1.55}
+.cover-title h1>span{font-family:Oxanium,'Noto Sans KR',Arial,sans-serif;font-weight:300}
+.essential-grid strong{font-size:16px;font-weight:800;line-height:1.32}
+.essential-grid a>span,.arrival-note strong{font-size:13px;font-weight:600;line-height:1.45}
+.arrival-note>span:first-of-type,.small-note,.stats dt{font-size:13px;font-weight:600;line-height:1.55}
+.stats dd{font-size:30px;font-weight:700;line-height:1.2}
+.primary-button,.outline-button,.text-link,.copy-button,.manual-links .text-link,.help-block .primary-button,.booking-section .primary-button,.booking-dialog .primary-button{font-size:14px;font-weight:800;line-height:1.5;min-height:44px}
+.guide-row{font-size:16px;font-weight:800;line-height:1.4}
+.guide-row .row-number,.back-link{font-size:12px;font-weight:600}
+.faq-section h2,.booking-section h2,.help-block h2{font-size:24px;font-weight:700;line-height:1.35;letter-spacing:-.025em}
+.faq-list summary{font-size:16px;font-weight:700;line-height:1.45}
+.faq-list details p,.help-block p:not(.eyebrow),.guide-message,.booking-dialog #bookingBody>p:first-child,.booking-contact,.booking-facts{font-size:15px;font-weight:600;line-height:1.62}
+.guide-contents,.guide-picker{margin:0 0 28px;scroll-margin-top:86px}
+.guide-contents>.eyebrow,.guide-picker>.eyebrow{margin-bottom:12px;color:var(--accent)}
+.guide-contents>div{display:flex;flex-wrap:wrap;gap:8px}
+.guide-contents button{display:flex;align-items:center;gap:14px;min-height:44px;border:1px solid var(--line);padding:10px 12px;font-size:14px;font-weight:800;line-height:1.4;text-align:left;color:var(--accent);background:var(--soft)}
+.guide-contents button>span{margin-left:auto}
+.guide-picker>h2{font-size:21px;font-weight:800;line-height:1.3;margin:0 0 18px}
+.guide-categories{display:grid;gap:9px}
+.guide-categories button{display:grid;grid-template-columns:25px 1fr 18px;gap:5px 10px;text-align:left;padding:16px 14px;border:1px solid var(--line);background:var(--paper);color:var(--ink)}
+.guide-categories button>span{grid-row:1/3;font-size:12px;font-weight:600;padding-top:3px;color:var(--muted)}
+.guide-categories strong{font-size:16px;font-weight:800;line-height:1.3}
+.guide-categories small{grid-column:2;font-size:12px;font-weight:600;line-height:1.6;color:var(--muted);word-break:keep-all;overflow-wrap:anywhere}
+.guide-categories i{font-style:normal;grid-column:3;grid-row:1/3;align-self:center}
+.guide-categories [aria-pressed="true"]{background:var(--accent);color:white;border-color:var(--accent)}
+.guide-categories [aria-pressed="true"]>span,.guide-categories [aria-pressed="true"]>small{color:white}
+.guide-device-options{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:18px}
+.guide-device-options button{display:flex;gap:7px;align-items:center;justify-content:space-between;min-height:48px;padding:11px 12px;border:1px solid var(--line);font-size:14px;font-weight:800;line-height:1.4;text-align:left;color:var(--accent)}
+.guide-device-options [aria-pressed="true"]{background:var(--soft);border-color:var(--accent);box-shadow:inset 0 -2px var(--accent)}
+.guide-change{display:block;min-height:44px;color:var(--accent);font-size:13px;font-weight:600;text-decoration:underline;text-underline-offset:4px;margin:0 0 10px}
+.info-article{padding:28px 0;border-top:1px solid var(--line);scroll-margin-top:86px}
+.article-heading{display:flex;gap:12px;align-items:baseline;margin-bottom:14px}
+.article-heading>span{font-size:12px;font-weight:600;color:var(--accent)}
+.article-heading h2{font-size:18px;font-weight:700;line-height:1.25;letter-spacing:0;margin:0}
+body[data-route="checkin"] .article-heading h2,body[data-route="rules"] .article-heading h2{font-size:21px;font-weight:800;line-height:1.28}
+.info-article>p,.guide-content .info-article>p,.steps li,.device-caution>p,.device-support p{font-size:15px;font-weight:600;line-height:1.62}
+.guide-content .info-article>.device-model,.guide-content .info-article>.device-location{font-size:15px;font-weight:600;line-height:1.5}
+.device-caution>strong{font-size:15px;font-weight:800;line-height:1.5}
+.steps li{line-height:1.55}
+.steps li::before{font-size:12px;font-weight:600}
+.device-visual-heading,.device-visual-heading>strong,.device-page{font-size:13px;font-weight:600;line-height:1.5}
+.device-slide figcaption,.device-slide figcaption>p{font-size:13px;font-weight:600;line-height:1.6}
+.device-slide figcaption>p{font-weight:800}
+.diagram-key li{font-size:13px;font-weight:600;line-height:1.6}
+.swipe-guide{font-size:12px;font-weight:600;line-height:1.55}
+.remote-legend{font-size:12px;font-weight:600;line-height:1.5}
+.wifi-network code{font-size:21px;font-weight:700;line-height:1.4}
+.wifi-network>small,.wifi-network .copy-button{font-size:13px;font-weight:600;line-height:1.5}
+.device-media-button>img{max-height:360px;min-height:200px}
+.walking-guide .device-media-button>img{max-height:430px;min-height:0;padding:0}
+.walking-guide .diagram-key{list-style:none;margin:10px 0 0}
+.walking-guide .diagram-key li{padding-left:0;font-size:15px;font-weight:600;line-height:1.62}
+.walking-guide .diagram-key li::before{display:none}
+.walking-guide .device-slide figcaption>p{font-size:18px;font-weight:700;line-height:1.25;color:var(--ink)}
+.walking-guide,.building-photo{scroll-margin-top:86px}
+.building-photo{margin:20px 0 10px}
+.building-photo .photo-button{width:100%}
+.building-photo img{display:block;width:100%;max-height:300px;height:auto;object-fit:contain}
+body[data-route="transport"] .address-card h2{font-size:21px;font-weight:700;line-height:1.35}
+body[data-route="transport"] .address-card>.eyebrow{font-size:13px;font-weight:600}
+.address-card>p:not(.eyebrow){font-size:14px;font-weight:600;line-height:1.45}
+body[data-route="transport"] .route-overview h2,body[data-route="transport"] .transport-notes h2{font-size:21px;font-weight:800;line-height:1.28}
+.route-overview p:not(.eyebrow),.transport-notes p,.travel-alert p{font-size:15px;font-weight:600;line-height:1.62}
+body[data-route="transport"] .travel-alert>strong{font-size:15px;font-weight:800;line-height:1.5}
+.arrival-jump{margin:0 0 16px;gap:4px 14px}
+.arrival-jump button{font-size:14px;font-weight:800;line-height:1.4}
+body[data-route="transport"] .address-card .outline-button{font-size:14px;font-weight:800}
+.airport-choices{display:grid;grid-template-columns:1fr;gap:10px;margin-bottom:22px}
+.airport-choice{position:relative;display:grid;grid-template-columns:1fr;gap:4px;padding:16px;text-align:left;background:var(--accent);color:white;border:2px solid var(--accent);min-height:126px}
+.airport-choice>span{grid-column:1;font-size:11px;font-weight:600;line-height:1.4;letter-spacing:.08em;color:white}
+.airport-choice strong{grid-column:1;font-size:18px;font-weight:800;line-height:1.3;color:white}
+.airport-choice b{grid-column:1;grid-row:auto;font-size:13px;font-weight:800;line-height:1.5;color:white}
+.airport-choice small{grid-column:1;font-size:13px;font-weight:600;line-height:1.5;color:white}
+.airport-choice i{position:absolute;top:16px;right:16px;font-size:16px;font-style:normal;color:white}
+.airport-choice[aria-pressed="true"]{outline:2px solid var(--accent);outline-offset:3px}
+.airport-choice[aria-pressed="true"] i{transform:rotate(-45deg)}
+.airport-guide{padding:28px 0;border-top:1px solid var(--line);scroll-margin-top:86px}
+.airport-guide h2,.return-airport h2{font-size:21px;font-weight:800;line-height:1.28}
+.airport-guide>p:not(.eyebrow):not(.airport-best),.return-airport p:not(.eyebrow){font-size:15px;font-weight:600;line-height:1.62}
+.airport-best{font-size:15px;font-weight:600;line-height:1.62}
+body[data-route="airport"] .planning-note,.planning-note,.airport-facts span,.airport-service-note,.content-date{font-size:13px;font-weight:600;line-height:1.6}
+.taxi-address>strong{font-size:21px;font-weight:800;line-height:1.4}
+.taxi-address>span{font-size:13px;font-weight:600;line-height:1.5}
+.day-courses{padding-top:0;padding-bottom:26px}
+.day-courses>h2,.discovery-list-title{font-size:26px;font-weight:800;line-height:1.2}
+.course-accordion summary{font-size:16px;font-weight:800;line-height:1.4}
+.course-accordion summary small{font-size:12px;font-weight:600}
+.course-accordion li{font-size:15px;font-weight:600;line-height:1.62}
+.discovery-item>h2{font-size:21px;font-weight:800;line-height:1.25}
+.place-body,.place-facts{font-size:15px;font-weight:600;line-height:1.62}
+.place-menu{font-size:16px;font-weight:800;line-height:1.4}
+.place-original,.discovery-meta,.result-count,.place-facts dt,.place-details summary{font-size:13px;font-weight:600;line-height:1.5}
+.filter-tabs button{font-size:14px;font-weight:800;line-height:1.4}
+.search-field input{font-size:15px;font-weight:600}
+.show-more{font-size:14px;font-weight:800}
+.gallery-item>span,.gallery-item small,.gallery-total,.home-photo-slide figcaption>small,.home-photo-slide figcaption>p,.image-caption>span{font-size:13px;font-weight:600;line-height:1.45}
+.home-photo-slide figcaption>p{font-weight:600}
+.drawer-nav a{min-height:78px;padding:17px 0}
+.drawer-copy>strong{font-size:18px;font-weight:800;line-height:1.3;letter-spacing:0}
+.drawer-subtitle{margin-top:5px;font-size:13px;font-weight:600;line-height:1.45}
+.drawer-nav small{font-size:12px;font-weight:600}
+.drawer-journal{margin:30px 0;padding:20px;background:var(--accent);color:white;border-radius:14px}
+.drawer-journal>p{font-size:11px;font-weight:600;line-height:1.5;letter-spacing:.1em;margin:0 0 14px}
+.drawer-journal>strong{display:block;font-size:21px;font-weight:800;line-height:1.55}
+.drawer-nav .drawer-journal>small{display:block;font-size:13px;font-weight:600;line-height:1.45;margin-top:15px;color:#fff;align-self:auto;padding:0}
+.bottom-nav>a,.bottom-nav>button{font-size:11px;font-weight:600;line-height:1.3}
+.bottom-nav svg{width:25px;height:25px}
+.header-book,.language-label select{font-size:13px;font-weight:600}
+body[data-route="home"] .brand>.home-guide-label{font-size:13px;font-weight:800;letter-spacing:-.025em;white-space:nowrap}
+.footer p,.footer small{font-size:15px;font-weight:700;line-height:1.5}
+.footer-brand>span{font-size:14px;font-weight:600}
+.photo-credits summary,.photo-credits>p,.photo-credits li,.photo-credits li>span,.photo-credits .text-link{font-size:13px;font-weight:600;line-height:1.6}
+.lightbox figcaption,.lightbox-counter,.lightbox-zoom #zoomReset,.toast{font-size:13px;font-weight:600;line-height:1.5}
+/* The cover's three images carry their own navigation. No caption below the hero. */
+.hero-photo{position:relative}
+body[data-route="home"] .hero-photo .home-carousel-controls{position:absolute;right:12px;bottom:12px;width:auto;display:flex;gap:0;margin:0;padding:0 3px;border:0;border-radius:2px;background:rgb(0 0 0 / .38);color:#fff;z-index:2}
+.hero-photo .home-carousel-position{display:block;min-width:59px;text-align:center;padding:0 3px}
+.hero-photo .home-carousel-position>[data-home-count]{font-size:12px;font-weight:600;line-height:44px;letter-spacing:.04em;color:#fff}
+.hero-photo .home-carousel-dots{display:none}
+.hero-photo .carousel-arrow{border:0;color:#fff;background:transparent;font-size:18px;width:44px;height:44px}
+.hero-photo .carousel-arrow:disabled{opacity:.45}
+.hero-photo .carousel-arrow:focus-visible{outline:2px solid #fff;outline-offset:-4px}
+.hero-photo .photo-open{top:12px;bottom:auto;background:rgb(0 0 0 / .28);border:0;color:#fff}
+@media(max-width:400px){.drawer-copy>strong{font-size:17px}.drawer-subtitle{font-size:12px}}
+@media(max-width:359px){.guide-categories button{padding:14px 12px}.guide-device-options button{padding:10px;font-size:13px}.airport-choice{padding:16px}.airport-choice b{font-size:14px}}

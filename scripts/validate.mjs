@@ -5,7 +5,7 @@ import {fileURLToPath} from 'node:url';
 const root=path.resolve(path.dirname(fileURLToPath(import.meta.url)),'..');
 const load=p=>fs.readFileSync(path.join(root,p),'utf8');
 const contentFiles=['assets/data.js','assets/guest-guide-data.js','assets/stay-essentials-data.js','assets/appliance-guide-data.js','assets/tour-photo-data.js','assets/dining-photo-data.js'];
-const source=load('index.html')+load('assets/app.js')+contentFiles.map(load).join('')+load('assets/styles.css')+load('assets/audit-refinements.css');
+const source=load('index.html')+load('assets/app.js')+contentFiles.map(load).join('')+load('assets/styles.css')+load('assets/audit-refinements.css')+load('assets/reference-typography.css');
 const sandbox={window:{}};for(const file of contentFiles)vm.runInNewContext(load(file),sandbox);const d=sandbox.window.EXTAY;
 const files=new Set(['index.html','assets/data.js','assets/app.js','assets/styles.css','assets/images/logo.png','manifest.webmanifest','assets/favicon.svg','robots.txt','vercel.json']);
 for(const x of [...source.matchAll(/(?:src|href)="(assets\/[^"$]+)"/g)])files.add(x[1].split(/[?#]/)[0]);
