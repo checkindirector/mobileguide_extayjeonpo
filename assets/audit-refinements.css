@@ -343,9 +343,11 @@ body[data-route="home"] .brand>span:not(.home-guide-label){display:none}
 body[data-route="home"] .brand>.home-guide-label{display:block;font-size:13px;font-weight:600;letter-spacing:.12em;color:var(--accent)}
 body[data-route="home"] .cover{padding:0}
 body[data-route="home"] .hero-photo .home-photo-slide>.photo-button{height:auto;aspect-ratio:1;overflow:hidden}
+body[data-route="home"] .hero-photo .home-photo-slide>[data-home-photo="hero:1"]{aspect-ratio:5/4}
+body[data-route="home"] .hero-photo .home-photo-track{transition:height .28s ease}
 body[data-route="home"] .hero-photo .home-photo-slide .photo-button>img{height:100%;object-fit:cover;object-position:center}
 body[data-route="home"] .hero-photo .home-photo-slide [data-home-photo="hero:0"]>img{position:absolute;left:0;bottom:0;height:116%;object-position:center}
-body[data-route="home"] .hero-photo .home-photo-slide [data-home-photo="hero:1"]>img{object-position:left top}
+body[data-route="home"] .hero-photo .home-photo-slide [data-home-photo="hero:1"]>img{object-position:center top}
 body[data-route="home"] .hero-photo .home-photo-slide [data-home-photo="hero:2"]>img{object-position:left center}
 body[data-route="home"] .home-photo-slide figcaption{padding:15px var(--gutter) 0}
 body[data-route="home"] .home-carousel-controls{padding-inline:var(--gutter)}
@@ -372,6 +374,7 @@ body[data-route="home"] .bottom-nav>button{color:var(--white)}
 body[data-route="home"] .bottom-nav [aria-current]{color:var(--white);font-weight:800}
 body[data-route="home"] .bottom-nav [aria-current]::after{width:4px;height:4px;background:var(--white)}
 body[data-route="home"] .bottom-nav svg{stroke-width:1.5}
+@media(prefers-reduced-motion:reduce){body[data-route="home"] .hero-photo .home-photo-track{transition:none}}
 
 /* Green, immediately recognizable airport choices; details remain on light paper. */
 body[data-route="airport"] .airport-section .compact-panel{border-color:var(--accent);scroll-margin-top:86px}

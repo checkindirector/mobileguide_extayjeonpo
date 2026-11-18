@@ -7,7 +7,7 @@ window.EXTAY = (() => {
   const home={
     line:L('햇살은 가득,\n머무름은 느긋하게.','Full of light.\nRoom to slow down.','光に満ちて、\nゆっくり過ごす。','让阳光住进来，\n让时光慢下来。','讓陽光住進來，\n讓時光慢下來。'),
     introTitle:L('함께여서 더 좋은,\n전포의 어느 하루.','A little more time.\nA little more together.','一緒だから、\n特別な全浦の一日。','因为相聚，\n田浦的一天更美好。','因為相聚，\n田浦的一天更美好。'),
-    introBody:L('낯선 도시의 하루도 우리답게. 통창으로 들어오는 빛, 여럿이 둘러앉는 테이블, 편히 기대는 소파. 익스테이 전포는 한 팀만을 위해 준비한 프라이빗 스테이입니다.','A bright living room, a table to gather around, a sofa to settle into. Your own private stay in Jeonpo, shared only with the people you came with.','大きな窓からの光、みんなで囲むテーブル、くつろげるソファ。大切な人たちだけで過ごす、全浦のプライベートステイです。','落地窗透进阳光，围坐餐桌，倚靠沙发。田浦的私人空间，只留给与您同行的人。','大片窗景灑進陽光，圍坐餐桌，倚靠沙發。田浦的私人空間，只留給與您同行的人。'),
+introBody:L('낯선 도시의 하루도 우리답게. 부산 전포의 타운뷰를 통창으로 즐기는 거실, 여럿이 둘러앉는 테이블, 편히 기대는 소파. 익스테이 전포는 한 팀만을 위해 준비한 프라이빗 스테이입니다.','Busan’s Jeonpo townscape through full-height windows. A table to gather around, a sofa to settle into. Your own private stay, shared only with the people you came with.','大きな窓越しに釜山・全浦の街並みを楽しむリビング、みんなで囲むテーブル、くつろげるソファ。大切な人たちだけで過ごす、全浦のプライベートステイです。','透过客厅的落地窗欣赏釜山田浦街景，与旅伴围坐餐桌，倚靠沙发。田浦的私人空间，只留给与您同行的人。','透過客廳的落地窗欣賞釜山田浦街景，與旅伴圍坐餐桌，倚靠沙發。田浦的私人空間，只留給與您同行的人。'),
     essentials:L('먼저 알아두면 편해요.','Good to know, before you go.','ご出発前に、ひと確認。','出发前，先了解这些。','出發前，先了解這些。'),
     floorBody:L('숙소는 엘리베이터가 없는 건물의 5층입니다. 큰 짐이 있다면 3일 전까지 호스트에게 짐 운반 서비스를 문의해 주세요.','The stay is on the 5th floor with no elevator. For large luggage, ask your host about carrying assistance at least 3 days ahead.','エレベーターのない建物の5階です。大きなお荷物は3日前までに運搬サービスをご相談ください。','住宿位于5楼，无电梯。如需搬运行李，请至少提前3天联系房东。','住宿位於5樓，無電梯。如需搬運行李，請至少提前3天聯絡房東。'),
     signatureTitle:L('문을 열면,\n우리만의 거실.','One floor.\nAll yours.','扉の先は、\n私たちだけの空間。','推开门，\n就是我们的客厅。','推開門，\n就是我們的客廳。'),
