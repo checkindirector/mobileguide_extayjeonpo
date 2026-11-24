@@ -2,7 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import vm from 'node:vm';
-const ctx={window:{}};for(const file of ['data.js','guest-guide-data.js','stay-essentials-data.js','appliance-guide-data.js','tour-photo-data.js','dining-photo-data.js'])vm.runInNewContext(fs.readFileSync(new URL('../assets/'+file,import.meta.url),'utf8'),ctx);const d=ctx.window.EXTAY;
+const ctx={window:{}};for(const file of ['data.js','guest-guide-data.js','stay-essentials-data.js','appliance-guide-data.js','tour-photo-data.js','dining-photo-data.js','airport-guide-data.js'])vm.runInNewContext(fs.readFileSync(new URL('../assets/'+file,import.meta.url),'utf8'),ctx);const d=ctx.window.EXTAY;
 test('guest-critical policies match supplied property information',()=>{
  assert.match(d.ui.stairs.ko,/5층/);assert.match(d.home.floorBody.ko,/엘리베이터가 없는/);
  const checkin=JSON.stringify(d.guides.checkin);for(const v of ['16:00','14:00','11:00','20,000','09:00–21:00'])assert.ok(checkin.includes(v),v);
@@ -26,6 +26,23 @@ test('airport and device guidance keeps services and actual models separate',()=
  assert.match(d.airport.options.find(x=>x.id==='bus').steps[3].ko,/다른 승하차/);
  const hob=d.guides.appliances.cards.find(x=>x.id==='hob');assert.match(hob.model,/HEC-2050SH/);assert.match(hob.text.ko,/하이라이트/);
  const dryer=d.guides.laundry.cards.find(x=>x.id==='dryer');assert.match(dryer.model,/DV20CB8600BW/);assert.equal(dryer.image,null);
+});
+test('airport journeys preserve correct reverse directions and distinct boarding points',()=>{
+ const g=d.airport.guide;
+ for(const direction of ['arrival','departure'])for(const method of ['rail','bus','taxi']){
+  const j=g.journeys[direction][method];assert.ok(j.route.length>=2);assert.notEqual(j.from.ko,j.to.ko);
+  assert.equal(j.to.ko.includes('김해공항'),direction==='departure');
+ }
+ const back=g.journeys.departure.rail.route.map(s=>s.body.ko).join(' ');
+ for(const destination of ['다대포해수욕장','양산','가야대'])assert.ok(back.includes(destination));
+ assert.match(g.notices.bus.ko,/60–80/);assert.match(g.notices.bus.ko,/현금 불가/);
+ assert.match(g.journeys.departure.bus.route[0].body.ko,/다른 승하차/);
+ assert.equal(g.journeys.arrival.bus.hours,'07:20–21:30');assert.equal(g.journeys.departure.bus.hours,'06:00–20:00');
+ assert.equal(g.journeys.arrival.bus.stopCode,'05708');assert.equal(g.journeys.departure.bus.stopCode,'05707');
+ for(const direction of ['arrival','departure'])assert.equal(new URL(g.journeys[direction].bus.walkMap).hostname,'map.naver.com');
+ assert.notEqual(g.journeys.arrival.bus.walkMap,g.journeys.departure.bus.walkMap);
+ assert.equal(g.boardingSlides.length,2);
+ for(const slide of g.boardingSlides){assert.equal(new URL(slide.source).hostname,'www.airport.co.kr');assert.ok(fs.existsSync(new URL('../'+slide.file,import.meta.url)));}
 });
 test('new coffee and water instructions match the installed models',()=>{
  const coffee=d.guides.appliances.cards.find(x=>x.id==='coffee');

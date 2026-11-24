@@ -4,7 +4,7 @@ import vm from 'node:vm';
 import {fileURLToPath} from 'node:url';
 const root=path.resolve(path.dirname(fileURLToPath(import.meta.url)),'..');
 const load=p=>fs.readFileSync(path.join(root,p),'utf8');
-const contentFiles=['assets/data.js','assets/guest-guide-data.js','assets/stay-essentials-data.js','assets/appliance-guide-data.js','assets/tour-photo-data.js','assets/dining-photo-data.js'];
+const contentFiles=['assets/data.js','assets/guest-guide-data.js','assets/stay-essentials-data.js','assets/appliance-guide-data.js','assets/tour-photo-data.js','assets/dining-photo-data.js','assets/airport-guide-data.js'];
 const source=load('index.html')+load('assets/app.js')+contentFiles.map(load).join('')+load('assets/styles.css')+load('assets/audit-refinements.css')+load('assets/reference-typography.css');
 const sandbox={window:{}};for(const file of contentFiles)vm.runInNewContext(load(file),sandbox);const d=sandbox.window.EXTAY;
 const files=new Set(['index.html','assets/data.js','assets/app.js','assets/styles.css','assets/images/logo.png','manifest.webmanifest','assets/favicon.svg','robots.txt','vercel.json']);
@@ -21,6 +21,11 @@ for(const [device,slides] of Object.entries(d.deviceMedia)){
  }
 }
 for(const name of files)if(!fs.existsSync(path.join(root,name)))throw Error(`Missing asset: ${name}`);
+for(const slide of d.airport.guide.boardingSlides){
+ if(!fs.existsSync(path.join(root,slide.file))||!(slide.width>0&&slide.height>0))throw Error(`Missing airport map: ${slide.file}`);
+ if(new URL(slide.source).protocol!=='https:')throw Error('Invalid airport source');
+ files.add(slide.file);
+}
 let translations=0;function walk(v,p='data'){if(!v||typeof v!=='object')return;if('ko'in v){for(const language of ['ko','en','ja','zh','tw'])if(typeof v[language]!=='string'||!v[language].trim())throw Error(`Missing ${language}: ${p}`);translations++;return}for(const[k,x]of Object.entries(v))walk(x,`${p}.${k}`)}walk(d);
 for(const item of d.gallery)if(!d.captions[item.id])throw Error(`Missing caption ${item.id}`);
 if(d.gallery.length!==35)throw Error('Incomplete gallery');

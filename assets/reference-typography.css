@@ -182,3 +182,70 @@ html:has(body[data-route="gallery"]){scrollbar-gutter:stable both-edges;backgrou
 .gallery-band.single{grid-template-columns:minmax(0,1fr)}
 .gallery-section .natural-photos .gallery-item{width:100%;height:auto;margin:0;aspect-ratio:var(--photo-ratio);align-self:start}
 .gallery-section .natural-photos .gallery-item img{height:100%;margin-top:0;object-fit:contain}
+
+/* Airport journeys: persistent controls, comparable estimates, actions first. */
+html:has(body[data-route="airport"]){scrollbar-gutter:stable both-edges;background:var(--paper)}
+body[data-route="airport"] .page-heading{padding:18px 18px 16px;border-bottom:0}
+body[data-route="airport"] .page-heading .eyebrow{font-size:11px;margin-bottom:8px}
+body[data-route="airport"] .page-heading h1{font-size:32px;line-height:1.2;font-weight:800;letter-spacing:-.025em}
+body[data-route="airport"] .page-heading .lead{font-size:15px;line-height:1.6;margin-top:12px}
+.airport-shell.section{padding:0 18px 32px}
+.airport-controls{position:sticky;top:68px;z-index:30;margin:0 -18px 16px;padding:4px 18px 6px;background:var(--paper);border-bottom:1px solid var(--line);box-shadow:0 4px 10px #25372e05}
+.airport-direction{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:4px;border:1px solid var(--line);padding:2px;background:var(--soft);border-radius:9px}
+.airport-direction button{min-height:44px;padding:8px 6px;border-radius:6px;font-size:14px;font-weight:800;line-height:1.4;color:var(--accent)}
+.airport-direction [aria-pressed="true"]{background:var(--accent);color:white}
+.airport-method-tabs{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:6px;margin-top:0}
+.airport-method-tab{min-height:44px;padding:9px 6px;border-bottom:2px solid transparent;font-size:15px;line-height:1.3;font-weight:700;color:var(--muted)}
+.airport-method-tab[aria-selected="true"]{color:var(--accent);border-bottom-color:var(--accent);font-weight:800}
+.airport-comparison>h2{font-size:18px;font-weight:800;line-height:1.4;margin-bottom:12px}
+.airport-comparison>div{display:grid;gap:8px}
+.airport-compare-choice{display:grid;gap:6px;width:100%;padding:10px;border:1px solid var(--line);border-radius:8px;background:var(--soft);color:var(--ink);text-align:left}
+.airport-compare-heading{display:flex;align-items:center;justify-content:space-between;gap:12px}
+.airport-compare-heading>strong{font-size:17px;font-weight:800;line-height:1.3;color:var(--accent)}
+.airport-choice-state{font-size:11px;font-weight:700;line-height:1.5;color:var(--accent);flex-shrink:0}
+.airport-compare-facts{display:grid;grid-template-columns:1fr 1.12fr;gap:10px}
+.airport-compare-facts>span{display:grid;gap:3px;align-content:start;min-width:0}
+.airport-compare-facts small{font-size:11px;font-weight:600;line-height:1.45;color:var(--muted)}
+.airport-compare-facts b{font-size:14px;font-weight:700;line-height:1.45;word-break:keep-all;overflow-wrap:anywhere}
+.airport-compare-note{font-size:12px;font-weight:600;line-height:1.5;color:var(--muted)}
+.airport-compare-choice[aria-pressed="true"]{background:var(--accent);border-color:var(--accent);color:white}
+.airport-compare-choice[aria-pressed="true"] :is(strong,small,.airport-choice-state){color:white}
+.airport-comparison-basis{font-size:12px;line-height:1.65;font-weight:600;color:var(--muted);margin:12px 0 24px}
+.airport-trip-note{padding:12px;background:var(--soft);font-size:14px;font-weight:600;line-height:1.65;margin:0 0 20px;border-left:3px solid var(--accent)}
+#airport-panel{overflow-anchor:none}
+.airport-detail{padding:24px 0 0;border-top:1px solid var(--accent)}
+.airport-detail-heading>.eyebrow{font-size:11px;margin-bottom:8px}
+.airport-detail-heading>h2{font-size:23px;line-height:1.3;font-weight:800;color:var(--accent)}
+.airport-route-endpoints{display:flex;flex-wrap:wrap;align-items:baseline;gap:6px 9px;font-size:14px;font-weight:700;line-height:1.5;margin:10px 0 0}
+.airport-route-endpoints i{font-style:normal;color:var(--accent)}
+.airport-fit{font-size:14px;line-height:1.6;font-weight:600;margin-top:10px;color:var(--muted)}
+.airport-quick-actions,.airport-driver-actions{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;margin-top:16px}
+.airport-shell :is(.airport-quick-actions,.airport-driver-actions,.airport-last-mile) :is(.primary-button,.outline-button){min-height:48px;padding:12px 10px;font-size:13px;font-weight:800;line-height:1.45;gap:8px;word-break:keep-all;overflow-wrap:anywhere}
+.airport-shell :is(.airport-quick-actions,.airport-driver-actions,.airport-last-mile) :is(.primary-button,.outline-button)>span{font-size:18px;flex-shrink:0}
+.airport-driver{margin:16px 0;padding:16px;border:1px solid var(--line);border-left:3px solid var(--accent);background:var(--soft)}
+.airport-driver>p{font-size:13px;font-weight:700;line-height:1.5;margin-bottom:8px}
+.airport-driver>strong{display:block;font-size:20px;line-height:1.5;font-weight:800;word-break:keep-all;overflow-wrap:anywhere}
+.airport-hours{display:flex;flex-wrap:wrap;justify-content:space-between;gap:8px;padding:12px;margin-top:16px;background:var(--soft);font-size:14px;font-weight:600;line-height:1.5}
+.airport-hours strong{font-size:17px;font-weight:800;color:var(--accent)}
+.airport-key-note{margin:16px 0 24px;padding:12px 14px;border-left:3px solid var(--accent);background:#edf3ed80;font-size:14px;font-weight:600;line-height:1.65}
+.airport-route>h3,.airport-boarding>h3{font-size:18px;font-weight:800;line-height:1.4;margin:0 0 16px}
+.airport-timeline{list-style:none;margin:0;padding:0}
+.airport-timeline>li{display:grid;grid-template-columns:32px minmax(0,1fr);gap:12px;position:relative;padding-bottom:22px}
+.airport-timeline>li:not(:last-child)::after{content:"";position:absolute;left:15px;top:32px;bottom:0;width:2px;background:var(--line)}
+.airport-step-number{position:relative;z-index:1;display:grid;place-items:center;width:32px;height:32px;border:1px solid var(--line);border-radius:50%;background:var(--paper);font-size:12px;font-weight:700;line-height:1;color:var(--accent)}
+.airport-line-label{display:inline-block;padding:3px 7px;border-radius:4px;background:var(--soft);color:var(--accent);font-size:11px;font-weight:800;line-height:1.4}
+.route-lrt .airport-line-label{background:#f0eaf8;color:#63428a}
+.route-line2 .airport-line-label{background:#edf3df;color:#466617}
+.route-line1 .airport-line-label{background:#fff0e6;color:#9e410d}
+.airport-timeline h4{margin:7px 0 8px;font-size:17px;font-weight:800;line-height:1.4;color:var(--ink);word-break:keep-all}
+.airport-timeline p{font-size:15px;font-weight:600;line-height:1.7}
+.airport-last-mile{margin:0 0 24px}.airport-last-mile>.outline-button{display:flex;width:100%}
+.airport-boarding{margin:24px 0}.airport-boarding>p{font-size:14px;font-weight:600;line-height:1.7;margin-top:12px}
+.airport-boarding .device-visual{margin-top:0}
+.airport-conditions{border-top:1px solid var(--line);border-bottom:1px solid var(--line);margin:24px 0}
+.airport-conditions>summary{min-height:52px;padding:15px 0;font-size:14px;font-weight:800;line-height:1.5;cursor:pointer}
+.airport-conditions>p{font-size:14px;font-weight:600;line-height:1.7;margin:0 0 16px}
+.airport-sources>h3{font-size:16px;font-weight:800;line-height:1.4;margin-bottom:12px}
+.airport-sources>div{display:grid;gap:8px}.airport-sources .text-link{font-size:13px;line-height:1.5;min-height:44px;gap:12px}
+.airport-shell>.content-date{font-size:12px;margin:24px 0 0;line-height:1.6}
+@media(max-width:359px){.airport-direction button{font-size:13px}.airport-compare-facts b{font-size:13px}body[data-route="airport"] .page-heading h1{font-size:30px}.airport-driver>strong{font-size:18px}}
