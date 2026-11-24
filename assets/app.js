@@ -4,7 +4,7 @@
   const languages=['ko','en','ja','zh','tw'];
   const guideMediaUrl=file=>file.startsWith('assets/diagrams/')?`${file}?v=20261113-pine1`:file;
   let language='ko';try{const saved=localStorage.getItem('extayjeonpo-language');if(languages.includes(saved))language=saved;}catch{}
-  let route='home',category='all',localCategory='all',query='',lightboxItems=[],lightboxIndex=0,toastTimer,deviceResizeObserver;
+  let route='home',category='all',localCategory='all',query='',lightboxItems=[],lightboxIndex=0,toastTimer,deviceResizeObserver,galleryResizeObserver;
   const heroPhotos=[1,9,8], scrolls=new Map();
   const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
   const t=v=>typeof v==='object'&&v!==null?(v[language]??v.en??v.ko??''):String(v??'');
@@ -176,6 +176,37 @@
     <section class="faq-section section"><p class="eyebrow">BEFORE YOU BOOK</p><h2>${tr('faq')}</h2><div class="faq-list">${D.faqs.map(x=>`<details><summary>${text(x.q)}</summary><p>${text(x.a)}</p></details>`).join('')}</div></section><section class="booking-section section"><p class="eyebrow">A GOOD PLACE, WITH GOOD PEOPLE</p><h2>${lines(D.home.bookingTitle)}</h2><p>${text(D.home.bookingBody)}</p><button class="primary-button" data-book>${tr('book')}<span aria-hidden="true">↗</span></button><span class="booking-location">JEONPO<br>BUSAN, KOREA</span></section>${footer()}`;}
   const galleryPhotoOrder=[2,5,6,1,16,17,3,15,29,9,11,12,14,10,25,26,13,22,27,4,31,32,34,7,28,35,30,24,33,8,18,19,20,21,23];
   const galleryItems=()=>galleryPhotoOrder.map(id=>D.gallery.find(photo=>photo.id===id)).filter(photo=>category==='all'||photo.category===category);
+  function bindGalleryLayout(){
+    galleryResizeObserver?.disconnect();galleryResizeObserver=null;
+    const grid=$('.gallery-grid');if(!grid)return;
+    grid.classList.add('natural-photos');
+    let lastWidth=0;
+    const fit=()=>{
+      const width=grid.getBoundingClientRect().width;if(!width||width===lastWidth)return;lastWidth=width;
+      // Preserve each photo's side and order; size its frame from the original.
+      const columns=[[1,8],[9,4],[9,4],[1,12],[1,5],[6,7],[1,5],[1,7],[8,5],[1,12]];
+      const frames=$$('.gallery-item',grid).map((card,index)=>{
+        const [column,span]=columns[index%10],[photoWidth,photoHeight]=D.photoSizes[card.dataset.photo];
+        const photoWidthPx=(width+8)*span/12-8;
+        return {card,column,span,rows:Math.ceil(photoWidthPx*photoHeight/photoWidth)+8};
+      });
+      let nextRow=1;
+      for(let base=0;base<frames.length;base+=10){
+        for(const group of [[[0],[1],[2,1]],[[3]],[[4],[5],[6,4]],[[7],[8]],[[9]]]){
+          const start=nextRow;
+          for(const [offset,above] of group){
+            const frame=frames[base+offset];if(!frame)continue;
+            frame.start=above===undefined?start:frames[base+above].end;
+            frame.end=frame.start+frame.rows;nextRow=Math.max(nextRow,frame.end);
+          }
+        }
+      }
+      frames.forEach(({card,column,span,start,rows})=>{
+        card.style.gridColumn=`${column} / span ${span}`;card.style.gridRow=`${start} / span ${rows}`;
+      });
+    };
+    fit();galleryResizeObserver=new ResizeObserver(fit);galleryResizeObserver.observe(grid);
+  }
   function gallery(){
     const items=galleryItems();
     return `<section class="gallery-section section"><header class="gallery-reference-head"><p>ROOM GALLERY</p><h1>${tr('gallery')}</h1></header><section class="gallery-story"><div class="gallery-story-head"><p>STAY STORY</p><span>EXTAY JEONPO · BUSAN</span></div><h2 class="gallery-story-title" lang="en">ONE FLOOR.<br>JUST YOURS.</h2><div class="gallery-story-layout"><p class="gallery-story-body">${text(D.home.introBody)}</p><div class="gallery-story-facts"><div><small>ROOMS</small><span>${tr('bedrooms')} 2 · ${tr('queenBeds')} 4</span></div><div><small>BATHROOMS</small><span>${tr('bathrooms')} 2</span></div><div><small>LOCATION</small><span>${text(L('부전역 도보 5–8분','Bujeon · 5–8 min walk','釜田駅 徒歩5–8分','釜田站步行5–8分钟','釜田站步行5–8分鐘'))}</span></div></div></div></section><div class="filter-tabs gallery-filters" role="group" aria-label="${tr('gallery')}">${['all','living','bedroom1','bedroom2','kitchen','terrace','bath'].map(k=>`<button data-category="${k}" class="${k===category?'active':''}" aria-pressed="${k===category}">${tr(k)}</button>`).join('')}</div><div class="gallery-grid">${items.map((x,i)=>`<button type="button" class="gallery-item photo-button" data-photo="${x.id}" aria-label="${String(i+1).padStart(2,'0')} · ${text(D.captions[x.id])} · ${tr('zoomIn')}">${img(x.id,'loading="lazy"')}<span class="gallery-number" aria-hidden="true">${String(i+1).padStart(2,'0')}</span></button>`).join('')}</div></section>${footer()}`;
@@ -288,7 +319,7 @@
       if(selected&&selected.left<bounds.left)galleryFilters.scrollLeft+=selected.left-bounds.left;
       else if(selected&&selected.right>bounds.right)galleryFilters.scrollLeft+=selected.right-bounds.right;
     }
-    updateNavigation();bindDeviceCarousels();bindHomePhotoCarousels();if(focus)$('#main').focus({preventScroll:true});if(restore)window.scrollTo({top:scrolls.get(route)||0,behavior:'instant'});
+    updateNavigation();bindGalleryLayout();bindDeviceCarousels();bindHomePhotoCarousels();if(focus)$('#main').focus({preventScroll:true});if(restore)window.scrollTo({top:scrolls.get(route)||0,behavior:'instant'});
   }
   function navigate(){const next=location.hash.slice(1)||'home',known=['home','gallery','guide','airport','transport','nearby','tours',...Object.keys(D.guides)];scrolls.set(route,window.scrollY);const resolved=known.includes(next)?next:'home';if(route!==resolved){localCategory='all';query='';}route=resolved;$$('dialog[open]').forEach(x=>x.close());render(true,true);}
   function showToast(message){clearTimeout(toastTimer);$('.toast').textContent=message;$('.toast').classList.add('visible');toastTimer=setTimeout(()=>$('.toast').classList.remove('visible'),3300);}
