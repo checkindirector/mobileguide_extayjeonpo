@@ -140,29 +140,38 @@ body[data-route="home"] .hero-photo .home-carousel-controls{position:absolute;ri
 @media(max-width:400px){.drawer-copy>strong{font-size:17px}.drawer-subtitle{font-size:12px}}
 @media(max-width:359px){.guide-categories button{padding:14px 12px}.guide-device-options button{padding:10px;font-size:13px}.airport-choice{padding:16px}.airport-choice b{font-size:14px}}
 
-/* A deep-pine photo journal: uncropped, alternating two-column spreads. */
-.gallery-cover{padding:24px var(--gutter) 26px;background:#123D30;color:var(--paper)}
-.gallery-kicker,.gallery-edition{display:flex;justify-content:space-between;align-items:baseline;gap:16px;font-size:11px;line-height:1.5;font-weight:700;letter-spacing:.06em}
-.gallery-kicker>span:first-child{letter-spacing:0;font-size:13px;font-weight:800}
-.gallery-cover h1{color:var(--paper);margin:22px 0 24px;font-family:Oxanium,'Arial Narrow',Arial,sans-serif;font-size:clamp(46px,12vw,60px);font-weight:300;line-height:.88;letter-spacing:-.055em}
-.gallery-cover h1>span{display:block}
-.gallery-edition{padding-top:12px;border-top:1px solid #ffffff40;font-size:10px;font-weight:600;letter-spacing:.09em;color:#DFE9E2}
-.gallery-section.section{padding-top:0;padding-bottom:32px;background:#123D30;color:var(--paper)}
-.gallery-section .gallery-filters{display:flex;flex-wrap:nowrap;gap:20px;max-width:100%;overflow-x:auto;overflow-y:hidden;scrollbar-width:none;overscroll-behavior-x:contain;margin:0 0 20px;padding:0;border:0}
-.gallery-filters::-webkit-scrollbar{display:none}
-.gallery-section .gallery-filters button{flex:0 0 auto;min-height:44px;padding:10px 0;border:0;border-bottom:2px solid transparent;border-radius:0;background:transparent;color:#C8D9CF;font-size:14px;font-weight:700;line-height:1.4;white-space:nowrap}
-.gallery-section .gallery-filters button.active{background:transparent;color:var(--paper);border-bottom-color:var(--paper);font-weight:800}
-.gallery-section .gallery-grid{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));grid-auto-flow:row;grid-auto-rows:auto;gap:20px 12px;align-items:start}
-.gallery-section .gallery-item{position:relative;display:block;grid-row:auto;min-width:0;min-height:0;margin:0;padding:0;border:0;border-radius:0;background:transparent;overflow:hidden;cursor:zoom-in;isolation:isolate;aspect-ratio:var(--gallery-ratio)}
-.gallery-section .gallery-item.room-overview{grid-column:1/-1;width:calc(100% + 2 * var(--gutter) - 16px);margin-inline:calc(8px - var(--gutter));margin-block:6px}
-.gallery-section .gallery-item.room-overview:first-child{margin-top:0}
-.gallery-section .gallery-item.detail-left{grid-column:1/span 7;align-self:start}
-.gallery-section .gallery-item.detail-right{grid-column:8/span 5;align-self:end}
-.gallery-section .gallery-item.detail-left.spread-reverse{grid-column:1/span 5;align-self:end}
-.gallery-section .gallery-item.detail-right.spread-reverse{grid-column:6/span 7;align-self:start;margin-top:12px}
-.gallery-section .gallery-item img{display:block;width:100%;height:100%;aspect-ratio:var(--gallery-ratio);object-fit:contain;object-position:center;transform:none}
-.gallery-section .gallery-item:focus-visible,.gallery-section .gallery-filters button:focus-visible{outline:2px solid var(--paper);outline-offset:3px}
-.gallery-section .gallery-item:active img{transform:none}
-.gallery-section .gallery-grid.single-photo{display:block}
-.gallery-section .gallery-item:only-child{width:100%;margin:0}
-.gallery-section>.show-more{min-height:54px;margin-top:26px;padding:16px 0;border:0;border-top:1px solid #ffffff80;border-bottom:1px solid #ffffff40;border-radius:0;background:transparent;color:var(--paper);font-size:14px;font-weight:700}
+/* Another House's current gallery layout: 12 columns, dense ten-photo motif,
+   8px gutters/corners, and a lower-right two-digit counter. */
+.gallery-section.section{padding:24px 15px 44px;background:var(--paper);color:var(--ink)}
+.gallery-reference-head{padding:8px 0 20px}
+.gallery-reference-head>p{margin:0 0 10px;color:var(--muted);font-size:13px;font-weight:800;line-height:1.55;letter-spacing:.13em}
+.gallery-reference-head h1{margin:0 0 10px;color:var(--ink);font-size:37px;font-weight:800;line-height:1.08;letter-spacing:0}
+.gallery-story{position:relative;margin:2px 0 32px;padding:36px 0 34px;border-top:1px solid var(--line)}
+.gallery-story-head{display:flex;align-items:center;justify-content:space-between;gap:16px;margin-bottom:22px;color:var(--muted)}
+.gallery-story-head>p,.gallery-story-head>span{margin:0;font-size:13px;font-weight:800;line-height:1.3;letter-spacing:.11em}
+.gallery-story-title{margin:0;color:var(--accent);font-family:Oxanium,'Arial Narrow',Arial,sans-serif;font-size:clamp(38px,10vw,42px);font-weight:300;line-height:.92;letter-spacing:-.035em}
+.gallery-story-layout{display:grid;grid-template-columns:1fr;gap:24px;margin-top:29px}
+.gallery-story-body{margin:0;color:var(--ink);font-size:16px;font-weight:600;line-height:1.9;word-break:keep-all}
+.gallery-story-facts{display:grid;border-top:1px solid var(--line)}
+.gallery-story-facts>div{display:grid;grid-template-columns:74px minmax(0,1fr);align-items:center;gap:14px;min-height:58px;border-bottom:1px solid var(--line);line-height:1.5}
+.gallery-story-facts small{color:var(--accent);font-size:11px;font-weight:800;letter-spacing:.1em}
+.gallery-story-facts span{text-align:right;font-size:15px;font-weight:600;line-height:1.5}
+.gallery-section .gallery-filters{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:7px;margin:0 0 18px;padding:6px;border:1px solid var(--line);border-radius:12px;background:#ffffffb8;overflow:visible}
+.gallery-section .gallery-filters button{min-width:0;min-height:52px;padding:8px 7px;border:0;border-radius:8px;background:transparent;color:var(--muted);font-size:15px;font-weight:800;line-height:1.25;white-space:normal;word-break:keep-all}
+.gallery-section .gallery-filters button.active{background:var(--accent);color:#fff}
+.gallery-section .gallery-grid{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));grid-auto-flow:dense;grid-auto-rows:44px;gap:8px;align-items:stretch;padding-bottom:26px}
+.gallery-section .gallery-item,.gallery-section .gallery-item:nth-child(n){position:relative;display:block;grid-column:span 6;grid-row:span 4;min-width:0;min-height:0;width:auto;margin:0;padding:0;border:0;border-radius:8px;background:var(--sand);overflow:hidden;cursor:zoom-in;isolation:isolate;aspect-ratio:auto}
+.gallery-section .gallery-item:nth-child(10n+1){grid-column:span 8;grid-row:span 7}
+.gallery-section .gallery-item:nth-child(10n+2){grid-column:span 4;grid-row:span 4}
+.gallery-section .gallery-item:nth-child(10n+3){grid-column:span 4;grid-row:span 3}
+.gallery-section .gallery-item:nth-child(10n+4){grid-column:span 12;grid-row:span 4}
+.gallery-section .gallery-item:nth-child(10n+5){grid-column:span 5;grid-row:span 5}
+.gallery-section .gallery-item:nth-child(10n+6){grid-column:span 7;grid-row:span 7}
+.gallery-section .gallery-item:nth-child(10n+7){grid-column:span 5;grid-row:span 2}
+.gallery-section .gallery-item:nth-child(10n+8){grid-column:span 7;grid-row:span 4}
+.gallery-section .gallery-item:nth-child(10n+9){grid-column:span 5;grid-row:span 4}
+.gallery-section .gallery-item:nth-child(10n+10){grid-column:span 12;grid-row:span 5}
+.gallery-section .gallery-item img{display:block;width:100%;height:calc(100% + 20px);margin-top:-10px;aspect-ratio:auto;object-fit:cover;object-position:center;transform:none}
+.gallery-section .gallery-item>.gallery-number{position:absolute;right:9px;bottom:8px;z-index:2;display:block;margin:0;color:#fff;font-family:Oxanium,Arial,sans-serif;font-size:9px;font-weight:500;line-height:1.55;letter-spacing:.1em;text-shadow:0 1px 8px rgb(0 0 0 / .65)}
+.gallery-section .gallery-item:focus-visible,.gallery-section .gallery-filters button:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
+@media(max-width:380px){.gallery-section .gallery-grid{grid-auto-rows:40px}.gallery-section .gallery-filters button{font-size:14px}.gallery-story-facts span{font-size:14px}}
