@@ -203,7 +203,8 @@
     return `<section class="gallery-section section"><header class="gallery-reference-head"><p>ROOM GALLERY</p><h1>${tr('gallery')}</h1></header><section class="gallery-story"><div class="gallery-story-head"><p>STAY STORY</p><span>EXTAY JEONPO · BUSAN</span></div><h2 class="gallery-story-title" lang="en">ONE FLOOR.<br>JUST YOURS.</h2><div class="gallery-story-layout"><p class="gallery-story-body">${text(D.home.introBody)}</p><div class="gallery-story-facts"><div><small>ROOMS</small><span>${tr('bedrooms')} 2 · ${tr('queenBeds')} 4</span></div><div><small>BATHROOMS</small><span>${tr('bathrooms')} 2</span></div><div><small>LOCATION</small><span>${text(L('부전역 도보 5–8분','Bujeon · 5–8 min walk','釜田駅 徒歩5–8分','釜田站步行5–8分钟','釜田站步行5–8分鐘'))}</span></div></div></div></section><div class="filter-tabs gallery-filters" role="group" aria-label="${tr('gallery')}">${['all','living','bedroom1','bedroom2','kitchen','terrace','bath'].map(k=>`<button data-category="${k}" class="${k===category?'active':''}" aria-pressed="${k===category}">${tr(k)}</button>`).join('')}</div><div class="gallery-grid natural-photos">${galleryPhotos(items)}</div></section>${footer()}`;
   }
   function guideIndex(){return `${heading('YOUR STAY, MADE EASY',D.ui.guide,D.ui.infoBody)}<section class="guide-index section"><div class="guide-rows">${guideRows()}</div><div class="guide-message">${icon('checkin')}<p>${tr('message')}</p></div></section>${help()}${footer()}`;}
-  let selectedDevice='living-ac',selectedAirport='rail',airportDirection='arrival';
+  let selectedDevice='living-ac';
+  const airportOpenGuides=new Set();
   const deviceGroups=[
     {id:'climate',title:L('냉난방 · 조명','Climate & lighting','空調・照明','空调与照明','空調與照明'),ids:['living-ac','bedroom-ac','fan','floor']},
     {id:'tv',title:L('TV · OTT','TV & streaming','TV・動画配信','电视与流媒体','電視與串流'),ids:['tv','mobile-tv']},
@@ -251,37 +252,25 @@
   }
   function nearby(){return discoveryPage(true);}
   function tours(){return discoveryPage(false);}
-  function airportComparison(){
-    const a=D.airport,u=a.guide.labels;
-    return a.options.map(x=>{const m=a.guide.methods[x.id],active=selectedAirport===x.id,price=t(x.fare).split(/[\/／]/)[0].trim(),unit=x.id==='taxi'?L('1대','per car','1台','每车','每車'):L('1인','per person','1人','每人','每人');
-      return `<button type="button" class="airport-compare-choice" data-select-airport="${x.id}" aria-pressed="${active}" aria-controls="airport-panel"><span class="airport-compare-heading"><strong>${text(m.name)}</strong><span class="airport-choice-state" aria-hidden="true">${active?'✓ '+text(u.selected):'○'}</span></span><span class="airport-compare-facts"><span><small>${text(u.fare)} · ${text(unit)}</small><b>${esc(price)}</b></span><span><small>${text(u.time)}</small><b>${text(m.time)}</b></span></span><small class="airport-compare-note">${text(m.note)}</small></button>`;
-    }).join('');
+  function airportMethod(x,direction){
+    const g=D.airport.guide,u=g.labels,m=g.methods[x.id],key=direction+'-'+x.id;
+    const price=t(x.fare).split(/[\/／]/)[0].trim(),unit=x.id==='taxi'?L('1대','per car','1台','每车','每車'):L('1인','per person','1人','每人','每人');
+    return `<details class="airport-method" id="airport-${key}" data-airport-guide="${key}" ${airportOpenGuides.has(key)?'open':''}><summary id="airport-summary-${key}" aria-controls="airport-content-${key}"><span class="airport-method-name">${text(m.name)}</span><span class="airport-method-best">${text(x.best)}</span><span class="airport-method-facts"><span><small>${text(u.fareShort)} · ${text(unit)}</small><strong>${esc(price)}</strong></span><span><small>${text(u.timeShort)}</small><strong>${text(m.time)}</strong></span></span><span class="airport-method-note">${text(m.note)}</span><span class="airport-expand-action"><span class="airport-when-closed">${text(u.openGuide)}</span><span class="airport-when-open">${text(u.hideGuide)}</span><span class="airport-expand-arrow" aria-hidden="true">⌄</span></span></summary><div class="airport-method-content" id="airport-content-${key}" role="region" aria-labelledby="airport-summary-${key}">${airportPanel(x.id,direction)}<button type="button" class="airport-close-guide" data-close-airport="airport-${key}">${text(u.closeGuide)}<span aria-hidden="true">↑</span></button></div></details>`;
   }
-  function airportPanel(){
-    const a=D.airport,g=a.guide,u=g.labels,x=a.options.find(x=>x.id===selectedAirport),j=g.journeys[airportDirection][selectedAirport],outbound=airportDirection==='departure';
+  function airportPanel(method,direction){
+    const a=D.airport,g=a.guide,u=g.labels,x=a.options.find(x=>x.id===method),j=g.journeys[direction][method],outbound=direction==='departure';
     const metroMap='https://www.google.com/maps/dir/?api=1&origin='+encodeURIComponent(outbound?D.address:'김해국제공항')+'&destination='+encodeURIComponent(outbound?'김해국제공항':D.address)+'&travelmode=transit';
     const walkMap=j.walkMap;
     const mapLabel=L('대중교통 길찾기','Transit directions','公共交通ルート','公共交通路线','公共交通路線');
-    const actions=x.id==='bus'?`${ext('https://www.bustago.or.kr',text(u.book),'primary-button')}${ext(walkMap,text(u.walkMap),'outline-button')}`:x.id==='rail'?`${ext(metroMap,text(mapLabel),'primary-button')}${link('transport',text(u.walkPhotos),'outline-button')}`:'';
+    const actions=x.id==='bus'?`${ext('https://www.bustago.or.kr',text(u.book),'primary-button')}${ext(walkMap,text(outbound?u.walkToStop:u.walkToStay),'outline-button')}`:x.id==='rail'?`${ext(metroMap,text(mapLabel),'primary-button')}${link('transport',text(u.walkPhotos),'outline-button')}`:'';
     const driver=x.id==='taxi'?`<section class="airport-driver"><p>${text(u.driver)}</p><strong lang="ko">${esc(j.driver)}</strong><div class="airport-driver-actions">${outbound?`<button type="button" class="primary-button" data-copy="김해국제공항 국내선 출발층, 부산광역시 강서구 공항진입로 108">${text(u.domestic)}<span aria-hidden="true">⧉</span></button><button type="button" class="outline-button" data-copy="김해국제공항 국제선 출발층, 부산광역시 강서구 공항진입로 108">${text(u.international)}<span aria-hidden="true">⧉</span></button>`:`<button type="button" class="primary-button" data-copy="${esc(j.driver)}">${tr('copy')}<span aria-hidden="true">⧉</span></button>${ext(N(D.address),text(u.stayMap),'outline-button')}`}</div></section>`:'';
     const hours=j.hours?`<p class="airport-hours"><span>${text(L('출발편 운행','Departures','出発便','发车时间','發車時間'))}</span><strong>${esc(j.hours)}</strong></p>`:'';
     const boarding=x.id==='bus'&&!outbound?`<section class="airport-boarding" id="airport-boarding"><h3>${text(u.boarding)}</h3>${deviceCarousel({title:u.terminalMap},g.boardingSlides,'airport-boarding')}<p>${text(g.boardingNote)}</p></section>`:'';
     return `<article class="airport-detail"><header class="airport-detail-heading"><p class="eyebrow">${esc(x.tag)}</p><h2>${text(x.id==='rail'?x.title:x.id==='bus'?L('공항리무진2','Airport Limousine 2','空港リムジン2','机场巴士2号','機場巴士2號'):g.methods.taxi.name)}</h2><p class="airport-route-endpoints"><span>${text(j.from)}</span><i aria-hidden="true">→</i><span>${text(j.to)}</span></p><p class="airport-fit">${text(x.best)}</p></header>${outbound?`<aside class="airport-trip-note">${text(u.flightNote)}</aside>`:''}${actions?`<div class="airport-quick-actions">${actions}</div>`:''}${driver}${hours}<aside class="airport-key-note">${text(g.notices[x.id])}</aside><section class="airport-route"><h3>${text(u.route)}</h3><ol class="airport-timeline">${j.route.map((step,i)=>`<li class="route-${step.kind}"><span class="airport-step-number" aria-hidden="true">${String(i+1).padStart(2,'0')}</span><div><span class="airport-line-label">${text(g.modes[step.kind])}</span><h4>${text(step.title)}</h4><p>${text(step.body)}</p></div></li>`).join('')}</ol></section>${boarding}<details class="airport-conditions"><summary>${text(u.conditions)}</summary><p>${text(x.id==='rail'?g.fareNote:x.body)}</p>${x.extra?`<p>${text(x.extra)}</p>`:''}</details><section class="airport-sources"><h3>${text(u.official)}</h3><div>${x.links.filter(l=>!l.url.includes('bustago')).map(l=>ext(l.url,text(l.title))).join('')}${x.id==='bus'?ext(N('공항리무진2'),text(u.stopMap))+ext('https://www.airport.co.kr/gimhae/cms/frCon/index.do?MENU_ID=170&CONTENTS_NO=1',text(u.terminalMap)):''}</div></section></article>`;
   }
-  function updateAirportSelection(){
-    const y=window.scrollY,g=D.airport.guide;
-    $$('[data-airport-direction]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.airportDirection===airportDirection)));
-    $$('[data-select-airport]').forEach(b=>{const active=b.dataset.selectAirport===selectedAirport;
-      if(b.getAttribute('role')==='tab'){b.setAttribute('aria-selected',String(active));b.tabIndex=active?0:-1;}
-      else{b.setAttribute('aria-pressed',String(active));$('.airport-choice-state',b).textContent=active?'✓ '+t(g.labels.selected):'○';}
-    });
-    const panel=$('#airport-panel');panel.setAttribute('aria-labelledby','airport-tab-'+selectedAirport);panel.dataset.direction=airportDirection;panel.dataset.method=selectedAirport;panel.innerHTML=airportPanel();
-    $('#airport-selection-status').textContent=t(g.labels[airportDirection])+' · '+t(g.methods[selectedAirport].name);
-    bindDeviceCarousels();window.scrollTo({top:y,behavior:'instant'});
-  }
   function airport(){
     const g=D.airport.guide,u=g.labels;
-    return `${heading('GIMHAE AIRPORT / EXTAY JEONPO',g.title,g.lead)}<section class="airport-shell section"><div class="airport-controls"><div class="airport-direction" role="group" aria-label="${text(u.direction)}">${['arrival','departure'].map(id=>`<button type="button" data-airport-direction="${id}" aria-pressed="${airportDirection===id}" aria-controls="airport-panel">${text(u[id])}</button>`).join('')}</div><div class="airport-method-tabs" role="tablist" aria-label="${text(u.methods)}">${['rail','bus','taxi'].map(id=>`<button type="button" class="airport-method-tab" id="airport-tab-${id}" role="tab" data-select-airport="${id}" aria-selected="${selectedAirport===id}" aria-controls="airport-panel" tabindex="${selectedAirport===id?0:-1}">${text(g.methods[id].name)}</button>`).join('')}</div></div><p class="sr-only" role="status" id="airport-selection-status">${text(u[airportDirection])} · ${text(g.methods[selectedAirport].name)}</p><section class="airport-comparison" aria-label="${text(u.compare)}"><h2>${text(u.compare)}</h2><div>${airportComparison()}</div><p class="airport-comparison-basis">${text(u.basis)}</p></section><div id="airport-panel" role="tabpanel" aria-labelledby="airport-tab-${selectedAirport}" data-direction="${airportDirection}" data-method="${selectedAirport}">${airportPanel()}</div><p class="content-date">${text(u.checked)}</p></section>${help()}${footer()}`;
+    return `${heading('GIMHAE AIRPORT / EXTAY JEONPO',g.title,g.lead)}<section class="airport-shell section"><nav class="airport-direction-links" aria-label="${text(u.direction)}">${['arrival','departure'].map((direction,i)=>`<button type="button" data-scroll="airport-direction-${direction}"><small>0${i+1}</small><strong>${text(u[direction+'Guide'])}</strong><span>${text(u.jumpGuide)} ↓</span></button>`).join('')}</nav>${['arrival','departure'].map((direction,i)=>`<section class="airport-direction-section" id="airport-direction-${direction}"><header><p class="eyebrow">0${i+1}</p><h2>${text(u[direction+'Guide'])}</h2></header><div class="airport-method-list">${D.airport.options.map(x=>airportMethod(x,direction)).join('')}</div></section>`).join('')}<p class="airport-comparison-basis">${text(u.basis)}</p><p class="content-date">${text(u.checked)}</p></section>${help()}${footer()}`;
   }
 
   function updateNavigation(){
@@ -353,8 +342,7 @@
     const homeIndex=e.target.closest('[data-home-index]');if(homeIndex){moveHomePhotoCarousel(homeIndex.closest('[data-home-carousel]'),Number(homeIndex.dataset.homeIndex));return;}
     const deviceGroup=e.target.closest('[data-device-group]');if(deviceGroup){selectedDevice=deviceGroups.find(g=>g.id===deviceGroup.dataset.deviceGroup).ids[0];const y=scrollY;render();window.scrollTo({top:y,behavior:'instant'});$(`[data-device-group="${deviceGroup.dataset.deviceGroup}"]`).focus({preventScroll:true});return;}
     const selected=e.target.closest('[data-select-device]');if(selected){selectedDevice=selected.dataset.selectDevice;render();const target=document.getElementById('device-'+selectedDevice);target.focus({preventScroll:true});target.scrollIntoView({block:'start',behavior:'instant'});return;}
-    const airportDirectionButton=e.target.closest('[data-airport-direction]');if(airportDirectionButton){if(airportDirection!==airportDirectionButton.dataset.airportDirection){airportDirection=airportDirectionButton.dataset.airportDirection;updateAirportSelection();}return;}
-    const airportChoice=e.target.closest('[data-select-airport]');if(airportChoice){if(selectedAirport!==airportChoice.dataset.selectAirport){selectedAirport=airportChoice.dataset.selectAirport;updateAirportSelection();}return;}
+    const airportClose=e.target.closest('[data-close-airport]');if(airportClose){const card=document.getElementById(airportClose.dataset.closeAirport);card.open=false;const summary=$('summary',card);summary.focus({preventScroll:true});summary.scrollIntoView({block:'start',behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'instant':'smooth'});return;}
     const device=e.target.closest('[data-device-media]');if(device){const[id,index]=device.dataset.deviceMedia.split(':'),set=visualSets[id];lightboxItems=set.slides.map(s=>({file:s.photo!==undefined?'assets/images/photo-'+String(s.photo).padStart(2,'0')+'.webp':s.file,caption:t(set.title)+' · '+t(s.title)+(s.keys?' · '+s.keys.map((k,i)=>(i+1)+'. '+t(k)).join(' / '):'')}));lightboxIndex=Number(index);updatePhoto();$('#lightbox').showModal();requestAnimationFrame(fitPhoto);return;}
     const guideShift=e.target.closest('[data-guide-shift]');if(guideShift){const root=guideShift.closest('.device-visual'),track=$('[data-device-track]',root);moveDeviceCarousel(root,Number(track.dataset.active||0)+Number(guideShift.dataset.guideShift));return;}
     const guideIndex=e.target.closest('[data-guide-index]');if(guideIndex){moveDeviceCarousel(guideIndex.closest('.device-visual'),Number(guideIndex.dataset.guideIndex));return;}
@@ -372,12 +360,11 @@
     const scroll=e.target.closest('[data-scroll]');if(scroll){const target=document.getElementById(scroll.dataset.scroll);if(target?.matches('details'))target.open=true;target?.closest('details')?.setAttribute('open','');target?.scrollIntoView({behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'instant':'smooth'});}
     const a=e.target.closest('a[href^="#"]');if(a&&a.getAttribute('href')===location.hash&&$('#menuDialog').open)$('#menuDialog').close();
   });
-  document.addEventListener('keydown',e=>{
-    const tab=e.target.closest('.airport-method-tab');if(!tab||!['ArrowLeft','ArrowRight','Home','End'].includes(e.key))return;
-    e.preventDefault();const ids=['rail','bus','taxi'],index=ids.indexOf(selectedAirport);
-    selectedAirport=ids[e.key==='Home'?0:e.key==='End'?2:(index+(e.key==='ArrowRight'?1:2))%3];
-    updateAirportSelection();$('#airport-tab-'+selectedAirport).focus({preventScroll:true});
-  });
+  document.addEventListener('toggle',e=>{
+    const card=e.target;if(!card.matches?.('.airport-method'))return;
+    if(card.open){airportOpenGuides.add(card.dataset.airportGuide);requestAnimationFrame(()=>$$('[data-device-track]',card).forEach(track=>{syncDeviceCarousel(track);fitDeviceTrack(track);}));}
+    else airportOpenGuides.delete(card.dataset.airportGuide);
+  },true);
   $('#language').addEventListener('change',e=>{const y=scrollY;language=e.target.value;try{localStorage.setItem('extayjeonpo-language',language)}catch{}render();window.scrollTo({top:y,behavior:'instant'})});
   document.addEventListener('input',e=>{if(e.target.id==='localSearch'){query=e.target.value;$('#localResults').innerHTML=localCards();compactLists()}});
   $('#menuDialog').addEventListener('close',()=>$('.menu-button').setAttribute('aria-expanded','false'));
