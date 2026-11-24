@@ -174,15 +174,19 @@
     <section class="local-edit section"><div class="local-copy"><p class="eyebrow">03 / JEONPO, AT YOUR PACE</p><h2>${lines(D.home.localTitle)}</h2><p>${text(D.home.localBody)}</p><div class="local-links">${link('nearby',tr('nearby'))}${link('tours',tr('tours'))}</div></div>${localPhoto('jeonpo',t(D.sights[0].title),'home-local-photo')}</section>
     <section class="home-guide section"><div class="section-heading"><div><p class="eyebrow">04 / YOUR STAY, MADE EASY</p><h2>${tr('infoTitle')}</h2></div><p>${tr('infoBody')}</p></div><div class="guide-rows">${guideRows()}</div></section>
     <section class="faq-section section"><p class="eyebrow">BEFORE YOU BOOK</p><h2>${tr('faq')}</h2><div class="faq-list">${D.faqs.map(x=>`<details><summary>${text(x.q)}</summary><p>${text(x.a)}</p></details>`).join('')}</div></section><section class="booking-section section"><p class="eyebrow">A GOOD PLACE, WITH GOOD PEOPLE</p><h2>${lines(D.home.bookingTitle)}</h2><p>${text(D.home.bookingBody)}</p><button class="primary-button" data-book>${tr('book')}<span aria-hidden="true">↗</span></button><span class="booking-location">JEONPO<br>BUSAN, KOREA</span></section>${footer()}`;}
+  const galleryPhotoOrder=[1,2,5,9,6,10,3,11,12,4,13,14,7,15,16,8,17,18,20,19,21,22,25,26,23,24,27,28,29,30,31,32,33,34,35];
+  const galleryOverview=photo=>photo.category==='living'&&D.photoSizes[photo.id][0]>D.photoSizes[photo.id][1];
+  const galleryItems=()=>galleryPhotoOrder.map(id=>D.gallery.find(photo=>photo.id===id)).filter(photo=>category==='all'||photo.category===category);
   function galleryPhotoLayout(items,index){
-    const portrait=photo=>photo&&D.photoSizes[photo.id][1]>D.photoSizes[photo.id][0];
-    if(!portrait(items[index]))return 'landscape-view';
-    let runStart=index;
-    while(runStart>0&&portrait(items[runStart-1]))runStart--;
-    if((index-runStart)%2)return 'portrait-right';
-    return portrait(items[index+1])?'portrait-left':'portrait-solo';
+    if(galleryOverview(items[index]))return 'room-overview';
+    let detailIndex=0;
+    for(let i=index-1;i>=0&&!galleryOverview(items[i]);i--)detailIndex++;
+    return detailIndex%2?'detail-right':'detail-left';
   }
-  function gallery(){const items=D.gallery.filter(x=>category==='all'||x.category===category);return `${heading('THE SPACE EDIT',D.ui.gallery,L('창가의 빛부터, 하루를 마무리하는 침실까지.','From the light by the window to the room you end your day in.','窓辺の光から、一日を終える寝室まで。','从窗边阳光，到结束一天的卧室。','從窗邊陽光，到結束一天的臥室。'))}<section class="gallery-section section"><div class="gallery-top">${stats()}<span class="gallery-total">35 PHOTOGRAPHS</span></div><div class="filter-tabs" role="group" aria-label="${tr('gallery')}">${['all','living','bedroom1','bedroom2','kitchen','terrace','bath'].map(k=>`<button data-category="${k}" class="${k===category?'active':''}" aria-pressed="${k===category}">${tr(k)}</button>`).join('')}</div><div class="gallery-grid ${items.length===1?'single-photo':''}">${items.map((x,i)=>`<button type="button" class="gallery-item photo-button ${galleryPhotoLayout(items,i)}" data-photo="${x.id}" style="--gallery-ratio:${D.photoSizes[x.id][0]} / ${D.photoSizes[x.id][1]}" aria-label="${text(D.captions[x.id])} · ${tr('zoomIn')}">${img(x.id,'loading="lazy"')}</button>`).join('')}</div></section>${help()}${footer()}`;}
+  function gallery(){
+    const items=galleryItems();
+    return `<header class="gallery-cover"><div class="gallery-kicker"><span>${tr('gallery')}</span><span lang="en">BUSAN · JEONPO</span></div><h1 aria-label="${tr('gallery')}" lang="en"><span>THE SPACE</span><span>EDIT.</span></h1><div class="gallery-edition" lang="en"><span>EXTAY JEONPO</span><span>35 PHOTOGRAPHS</span></div></header><section class="gallery-section section"><div class="filter-tabs gallery-filters" role="group" aria-label="${tr('gallery')}">${['all','living','bedroom1','bedroom2','kitchen','terrace','bath'].map(k=>`<button data-category="${k}" class="${k===category?'active':''}" aria-pressed="${k===category}">${tr(k)}</button>`).join('')}</div><div class="gallery-grid ${items.length===1?'single-photo':''}">${items.map((x,i)=>`<button type="button" class="gallery-item photo-button ${galleryPhotoLayout(items,i)}" data-photo="${x.id}" style="--gallery-ratio:${D.photoSizes[x.id][0]} / ${D.photoSizes[x.id][1]}" aria-label="${text(D.captions[x.id])} · ${tr('zoomIn')}">${img(x.id,'loading="lazy"')}</button>`).join('')}</div></section>${footer()}`;
+  }
   function guideIndex(){return `${heading('YOUR STAY, MADE EASY',D.ui.guide,D.ui.infoBody)}<section class="guide-index section"><div class="guide-rows">${guideRows()}</div><div class="guide-message">${icon('checkin')}<p>${tr('message')}</p></div></section>${help()}${footer()}`;}
   let selectedDevice='living-ac',selectedAirport='rail';
   const deviceGroups=[
@@ -279,15 +283,23 @@
   }
 
   function render(focus=false,restore=false){
+    const galleryFilterOffset=$('.gallery-filters')?.scrollLeft||0;
     document.documentElement.lang={zh:'zh-CN',tw:'zh-TW'}[language]||language;
     const pages={home,gallery,guide:guideIndex,airport,transport,nearby,tours};
     $('#main').innerHTML=(pages[route]||guidePage)();
     document.body.dataset.route=route;document.title=route==='home'?'EXTAY JEONPO — Busan Private Stay':`${tr(route)} · EXTAY JEONPO`;
-    compactPage();updateNavigation();bindDeviceCarousels();bindHomePhotoCarousels();if(focus)$('#main').focus({preventScroll:true});if(restore)window.scrollTo({top:scrolls.get(route)||0,behavior:'instant'});
+    compactPage();const galleryFilters=$('.gallery-filters');
+    if(galleryFilters){
+      galleryFilters.scrollLeft=galleryFilterOffset;
+      const active=$('[aria-pressed="true"]',galleryFilters),bounds=galleryFilters.getBoundingClientRect(),selected=active?.getBoundingClientRect();
+      if(selected&&selected.left<bounds.left)galleryFilters.scrollLeft+=selected.left-bounds.left;
+      else if(selected&&selected.right>bounds.right)galleryFilters.scrollLeft+=selected.right-bounds.right;
+    }
+    updateNavigation();bindDeviceCarousels();bindHomePhotoCarousels();if(focus)$('#main').focus({preventScroll:true});if(restore)window.scrollTo({top:scrolls.get(route)||0,behavior:'instant'});
   }
   function navigate(){const next=location.hash.slice(1)||'home',known=['home','gallery','guide','airport','transport','nearby','tours',...Object.keys(D.guides)];scrolls.set(route,window.scrollY);const resolved=known.includes(next)?next:'home';if(route!==resolved){localCategory='all';query='';}route=resolved;$$('dialog[open]').forEach(x=>x.close());render(true,true);}
   function showToast(message){clearTimeout(toastTimer);$('.toast').textContent=message;$('.toast').classList.add('visible');toastTimer=setTimeout(()=>$('.toast').classList.remove('visible'),3300);}
-  function openPhoto(id){lightboxItems=route==='gallery'?D.gallery.filter(x=>category==='all'||x.category===category).map(x=>x.id):route==='transport'?[36,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51,52,53]:D.guides[route]?[...new Set([D.guides[route].image,...D.guides[route].cards.flatMap(x=>[x.image,...(x.photos||[])]).filter(x=>x!==null)])]:D.gallery.map(x=>x.id);if(!lightboxItems.includes(id))lightboxItems.push(id);lightboxIndex=lightboxItems.indexOf(id);updatePhoto();$('#lightbox').showModal();requestAnimationFrame(fitPhoto);}
+  function openPhoto(id){lightboxItems=route==='gallery'?galleryItems().map(x=>x.id):route==='transport'?[36,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51,52,53]:D.guides[route]?[...new Set([D.guides[route].image,...D.guides[route].cards.flatMap(x=>[x.image,...(x.photos||[])]).filter(x=>x!==null)])]:D.gallery.map(x=>x.id);if(!lightboxItems.includes(id))lightboxItems.push(id);lightboxIndex=lightboxItems.indexOf(id);updatePhoto();$('#lightbox').showModal();requestAnimationFrame(fitPhoto);}
   function updatePhoto(){photoZoom=1;const item=lightboxItems[lightboxIndex],isFile=typeof item==='object';$('#lightboxImage').src=isFile?guideMediaUrl(item.file):`assets/images/photo-${String(item).padStart(2,'0')}.webp`;$('#lightboxImage').alt=isFile?item.caption:t(D.captions[item]);$('#lightboxCaption').textContent=isFile?item.caption:t(D.captions[item]);$('#lightboxCaption').hidden=route==='gallery';$('.lightbox-counter').textContent=`${String(lightboxIndex+1).padStart(2,'0')} / ${String(lightboxItems.length).padStart(2,'0')}`;requestAnimationFrame(fitPhoto);}
   function shiftPhoto(n){lightboxIndex=(lightboxIndex+n+lightboxItems.length)%lightboxItems.length;updatePhoto();}
 
