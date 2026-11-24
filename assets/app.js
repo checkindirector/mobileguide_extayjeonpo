@@ -180,8 +180,8 @@
   function galleryPhotoLayout(items,index){
     if(galleryOverview(items[index]))return 'room-overview';
     let detailIndex=0;
-    for(let i=index-1;i>=0&&!galleryOverview(items[i]);i--)detailIndex++;
-    return detailIndex%2?'detail-right':'detail-left';
+    for(let i=0;i<index;i++)if(!galleryOverview(items[i]))detailIndex++;
+    return (detailIndex%2?'detail-right':'detail-left')+(Math.floor(detailIndex/2)%2?' spread-reverse':'');
   }
   function gallery(){
     const items=galleryItems();
