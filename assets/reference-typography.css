@@ -278,3 +278,15 @@ body[data-route="airport"] .page-heading .lead{font-size:15px;line-height:1.6;ma
 .airport-shell>.airport-comparison-basis{margin:20px 0 0;font-size:13px;font-weight:500;line-height:1.7;color:var(--muted)}
 .airport-method-summary:focus-visible,.airport-close-guide:focus-visible,.airport-return-shortcut:focus-visible{outline:2px solid var(--accent);outline-offset:-4px}
 @media(max-width:359px){.airport-method-summary{padding:10px}.airport-method-heading{gap:7px}.airport-method-heading>span:first-child{gap:5px}.airport-method-heading strong{font-size:17px}.airport-route-toggle{gap:3px}.airport-direction-section>h2{font-size:16px}.airport-route-endpoints{font-size:16px}}
+@media(max-height:720px){
+body[data-route="airport"] .page-heading{padding:12px 18px 10px}
+body[data-route="airport"] .page-heading h1{font-size:30px}
+body[data-route="airport"] .page-heading .lead{font-size:14px;line-height:1.5;margin-top:8px}
+.airport-return-shortcut{margin-bottom:6px}
+.airport-direction-section>h2{padding-bottom:6px;margin-bottom:8px}
+.airport-method-list{gap:6px}
+.airport-method-summary{padding:8px 10px;gap:6px}
+.airport-method-heading .airport-illustration{width:24px;height:24px}
+.airport-method-facts>span{padding-top:4px;padding-bottom:4px}
+.airport-method-facts svg{top:5px}
+}
