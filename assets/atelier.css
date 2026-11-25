@@ -43,7 +43,7 @@ body[data-route="home"] .topbar .brand>.home-guide-label{display:block;font-fami
 .language-label option{background:var(--paper);color:var(--ink)}
 body[data-route="home"] .topbar.over-photo{background:transparent;border-color:transparent;color:#fff;text-shadow:0 1px 8px #0009}
 body[data-route="home"][data-hero="2"] .topbar.over-photo{color:#fff}
-body[data-route="home"] .atelier-cover{position:relative;height:100svh;padding:0;margin:0;width:100%;overflow:hidden;background:var(--sand);isolation:isolate}
+body[data-route="home"] .atelier-cover{position:relative;min-height:580px;height:calc(100svh - 24px - var(--safe));max-height:875px;padding:0;margin:0;width:100%;overflow:hidden;background:var(--sand);isolation:isolate}
 body[data-route="home"] .atelier-cover .hero-photo{height:100%;width:100%;margin:0}
 body[data-route="home"] .atelier-cover .hero-photo::after{content:'';position:absolute;inset:0;z-index:1;background:#0000002E;pointer-events:none}
 body[data-route="home"] .atelier-cover .home-photo-track{height:100%!important;align-items:stretch;transition:none}
@@ -240,4 +240,8 @@ body[data-route="transport"] .travel-alert>strong{font-size:14px;font-weight:600
   body[data-route="airport"] .page-heading{padding:15px var(--gutter) 12px}
   body[data-route="airport"] .page-heading h1{font-size:28px}
   body[data-route="airport"] .page-heading .lead{font-size:14px;line-height:1.5;margin-top:8px}
+}
+
+@media(max-height:690px){
+  body[data-route="home"] .atelier-cover{min-height:515px}
 }
