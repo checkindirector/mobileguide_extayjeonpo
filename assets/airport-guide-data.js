@@ -11,10 +11,12 @@
   const airportBus='https://www.airport.co.kr/gimhae/cms/frCon/index.do?MENU_ID=170&CONTENTS_NO=1';
   a.guide={
     title:L('김해공항 교통편','Gimhae Airport transfers','金海空港アクセス','金海机场交通','金海機場交通'),
-    lead:L('교통편의 ‘이용 방법 보기’를 누르면 바로 아래에 안내가 펼쳐집니다.','Tap “View instructions” on a transport option to read its guide directly below.','交通手段の「利用方法を見る」を押すと、すぐ下に案内が開きます。','点击交通方式下的“查看乘车指南”，说明会在下方展开。','點選交通方式下的「查看乘車指南」，說明會在下方展開。'),
+    lead:L('철도·리무진 버스·택시 경로를 확인하세요.','Rail, airport bus and taxi routes at a glance.','鉄道・空港バス・タクシーのルートをご案内。','查看轨道交通、机场巴士及出租车路线。','查看軌道交通、機場巴士及計程車路線。'),
     labels:{
       fromLabel:L('출발','From','出発','出发','出發'),
       toLabel:L('도착','To','到着','到达','抵達'),
+      transportPreview:L('철도 · 리무진 버스 · 택시 경로 보기','Rail · airport bus · taxi routes','鉄道・空港バス・タクシーのルート','轨道交通·机场巴士·出租车路线','軌道交通・機場巴士・計程車路線'),
+      closeDirection:L('이 방향의 안내 접기','Close this direction’s guide','この方向の案内を閉じる','收起此方向指南','收起此方向指南'),
       fareShort:L('요금','Fare','料金','费用','費用'),
       timeShort:L('소요 시간','Travel time','所要時間','所需时间','所需時間'),
       arrivalGuide:L('익스테이 전포로\n오시는 길','Getting to EXTAY JEONPO','EXTAY JEONPOへのアクセス','前往EXTAY JEONPO','前往EXTAY JEONPO'),
