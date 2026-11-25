@@ -192,12 +192,12 @@ body[data-route="airport"] .page-heading .lead{font-size:15px;line-height:1.6;ma
 .airport-shell.section{padding:0 18px 32px}
 .airport-trip-note{padding:12px;background:var(--soft);font-size:14px;font-weight:600;line-height:1.65;margin:0 0 20px;border-left:3px solid var(--accent)}
 .airport-detail{padding:24px 0 0;border-top:1px solid var(--accent)}
-.airport-detail-heading>.eyebrow{font-size:11px;margin-bottom:8px}
-.airport-detail-heading>h2{font-size:23px;line-height:1.3;font-weight:800;color:var(--accent)}
-.airport-route-endpoints{display:flex;flex-wrap:wrap;align-items:baseline;gap:6px 9px;font-size:14px;font-weight:700;line-height:1.5;margin:10px 0 0}
-.airport-route-endpoints i{font-style:normal;color:var(--accent)}
-.airport-fit{font-size:14px;line-height:1.6;font-weight:600;margin-top:10px;color:var(--muted)}
-.airport-quick-actions,.airport-driver-actions{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;margin-top:16px}
+.airport-route-endpoints{display:grid;grid-template-columns:minmax(0,1fr) 24px minmax(0,1fr);align-items:center;gap:10px;padding:14px 0;border-bottom:1px solid var(--line);margin:0 0 16px;font-size:15px;line-height:1.5;color:var(--accent)}
+.airport-route-endpoints>span{display:grid;gap:4px;min-width:0}
+.airport-route-endpoints small{font-size:13px;font-weight:500;color:var(--muted)}
+.airport-route-endpoints strong{font-size:15px;font-weight:700;word-break:keep-all;overflow-wrap:anywhere}
+.airport-route-endpoints>svg{width:24px;height:16px}
+.airport-quick-actions,.airport-driver-actions{display:grid;grid-template-columns:minmax(0,1fr);gap:8px;margin-top:16px}
 .airport-shell :is(.airport-quick-actions,.airport-driver-actions,.airport-last-mile) :is(.primary-button,.outline-button){min-height:48px;padding:12px 10px;font-size:13px;font-weight:800;line-height:1.45;gap:8px;word-break:keep-all;overflow-wrap:anywhere}
 .airport-shell :is(.airport-quick-actions,.airport-driver-actions,.airport-last-mile) :is(.primary-button,.outline-button)>span{font-size:18px;flex-shrink:0}
 .airport-driver{margin:16px 0;padding:16px;border:1px solid var(--line);border-left:3px solid var(--accent);background:var(--soft)}
@@ -228,17 +228,19 @@ body[data-route="airport"] .page-heading .lead{font-size:15px;line-height:1.6;ma
 .airport-shell>.content-date{font-size:12px;margin:24px 0 0;line-height:1.6}
 @media(max-width:359px){body[data-route="airport"] .page-heading h1{font-size:30px}.airport-driver>strong{font-size:18px}}
 
-/* Familiar travel pictograms reinforce the plain-language, in-place guides. */
-.airport-direction-links{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin:0 0 18px}
-.airport-direction-links button{display:grid;align-content:start;gap:9px;min-width:0;min-height:100px;padding:13px 12px;text-align:left;border:1px solid #a4bcb0;border-radius:8px;background:var(--soft);color:var(--accent)}
-.airport-direction-picture{display:flex;align-items:center;gap:7px;font-family:"Apple Color Emoji","Segoe UI Emoji",sans-serif;font-size:24px;line-height:1.2}
-.airport-direction-picture i{font-family:Arial,sans-serif;font-size:20px;font-style:normal;color:var(--accent)}
-.airport-direction-links strong{font-size:18px;font-weight:800;line-height:1.4;word-break:keep-all}
-.airport-direction-jump{display:flex;align-items:center;justify-content:space-between;gap:5px;font-size:14px;font-weight:600;line-height:1.5}
+/* Editorial line illustrations and explicit origin/destination labels. */
+.airport-direction-links{display:grid;gap:10px;margin:0 0 22px}
+.airport-direction-links button{display:grid;grid-template-columns:minmax(0,1fr) 26px minmax(0,1fr);align-items:center;gap:8px;padding:12px;text-align:left;border:1px solid #a4bcb0;border-radius:5px;background:var(--paper);color:var(--accent)}
+.airport-direction-endpoint{display:grid;gap:4px;min-width:0}
+.airport-direction-endpoint small{font-size:14px;line-height:1.4;font-weight:500;color:var(--muted)}
+.airport-direction-endpoint strong{font-size:18px;font-weight:800;line-height:1.45;word-break:keep-all;overflow-wrap:anywhere}
+.airport-direction-endpoint:nth-of-type(3) strong{color:var(--accent)}
+.airport-direction-arrow>svg{display:block;width:26px;height:16px}
+.airport-direction-jump{grid-column:1/-1;display:flex;align-items:center;justify-content:flex-end;gap:10px;font-size:14px;font-weight:600;line-height:1.5}
 .airport-direction-jump b{font-size:19px;line-height:1}
 .airport-shell>.airport-comparison-basis{font-size:14px;line-height:1.7;margin:0 0 30px;color:var(--muted)}
 .airport-direction-section{margin:0 0 36px;scroll-margin-top:86px}
-.airport-direction-section>header{display:flex;align-items:center;gap:12px;padding:14px;border-radius:8px;margin-bottom:14px;background:var(--accent);color:#fff}
+.airport-direction-section>header{display:flex;align-items:center;gap:12px;padding:14px;border-radius:5px;margin-bottom:14px;background:var(--accent);color:#fff}
 .airport-direction-section h2{font-size:21px;line-height:1.45;font-weight:800;color:inherit;word-break:keep-all}
 .airport-method-list{display:grid;gap:14px}
 .airport-method{border:1px solid #a4bcb0;border-top:3px solid var(--accent);border-radius:8px;background:#fff;scroll-margin-top:86px;overflow:hidden;overflow-anchor:none}
@@ -246,8 +248,11 @@ body[data-route="airport"] .page-heading .lead{font-size:15px;line-height:1.6;ma
 .airport-method>summary::marker{content:""}.airport-method>summary::-webkit-details-marker{display:none}
 .airport-method-heading{display:flex;align-items:center;gap:12px;min-width:0}
 .airport-method-heading>span:last-child{min-width:0}
-.airport-pictogram{display:grid;place-items:center;flex:0 0 50px;width:50px;height:50px;border-radius:10px;background:var(--soft);font-family:"Apple Color Emoji","Segoe UI Emoji",sans-serif;font-size:30px;line-height:1}
-.airport-direction-section>header>.airport-pictogram{flex-basis:42px;width:42px;height:42px;font-size:27px}
+.airport-pictogram{display:grid;place-items:center;flex:0 0 54px;width:54px;height:54px;border:1px solid #d7e3da;border-radius:4px;background:var(--paper);color:var(--accent)}
+.airport-illustration{display:block;width:44px;height:44px}
+.airport-icon-wash{fill:currentColor;fill-opacity:.07;stroke:none}
+.airport-direction-section>header>.airport-pictogram{flex-basis:42px;width:42px;height:42px;background:transparent;color:inherit;border:0}
+.airport-direction-section>header .airport-illustration{width:40px;height:40px}
 .airport-method-name{display:block;font-size:22px;font-weight:800;line-height:1.35;color:var(--accent)}
 .airport-method-best{display:block;margin-top:4px;font-size:14px;font-weight:500;line-height:1.6;color:var(--ink)}
 .airport-method-facts{display:grid;gap:8px;padding:12px 10px;border:1px solid #d7e3da;border-radius:6px;background:var(--soft)}
@@ -266,7 +271,6 @@ body[data-route="airport"] .page-heading .lead{font-size:15px;line-height:1.6;ma
 .airport-method[open] .airport-expand-arrow{transform:rotate(180deg)}
 .airport-method-content{padding:0 16px 16px}
 .airport-method-content .airport-detail{padding:0;border:0}
-.airport-method-content .airport-detail-heading{display:none}
 .airport-method-content :is(.airport-trip-note,.airport-key-note,.airport-boarding>p,.airport-conditions>p){font-size:15px;line-height:1.75}
 .airport-method-content .airport-timeline p{font-size:16px;line-height:1.75}
 .airport-method-content :is(.airport-quick-actions,.airport-driver-actions) :is(.primary-button,.outline-button){font-size:15px;min-height:52px;line-height:1.5}
