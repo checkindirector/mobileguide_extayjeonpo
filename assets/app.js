@@ -28,7 +28,7 @@
   const heading=(label,title,lead='')=>`<div class="page-heading"><p class="eyebrow">${label}</p><h1>${lines(title)}</h1>${lead?`<p class="lead">${text(lead)}</p>`:''}</div>`;
   const mapButtons=(q=D.address)=>`<div class="button-row">${ext(N(q),tr('naver'),'outline-button')}${ext(G(q),tr('google'),'outline-button')}</div>`;
   const help=()=>`<aside class="help-block"><div><p class="eyebrow">HERE TO HELP</p><h2>${tr('guideCaption')}</h2><p>${tr('askBody')}</p></div>${ext(D.bookingUrl,tr('ask'),'primary-button')}</aside>`;
-  const guideRows=()=>['airport','transport','checkin','wifi','appliances','laundry','rules'].map((r,i)=>`<a href="#${r}" class="guide-row"><span class="row-number">0${i+1}</span>${icon(r)}<span>${tr(r)}</span><span aria-hidden="true">↗</span></a>`).join('');
+  const guideRows=()=>['airport','transport','checkin','wifi','appliances','laundry','rules'].map((r,i)=>`<a href="#${r}" class="guide-row"><span class="row-number">0${i+1}</span>${icon(r)}<span class="guide-row-copy"><strong>${tr(r)}</strong><small>${text(D.menuDescriptions[r])}</small></span><span aria-hidden="true">↗</span></a>`).join('');
   const visualSets={};
   function deviceCarousel(c,slides=D.deviceMedia[c.id],key=c.id){
     visualSets[key]={title:c.title,slides};
@@ -53,7 +53,7 @@
   }
   function fitDeviceTrack(track){const current=track.children[Number(track.dataset.active||0)];if(track.clientWidth&&current?.offsetHeight)track.style.height=current.offsetHeight+'px';}
   function photoCredits(){
-    const photos=route==='nearby'?D.dining.map(x=>({...D.diningPhotoSources[x.id],title:t(x.title),publisher:''})):route==='tours'?D.photoCredits:['home','nearby'].includes(route)?D.photoCredits.filter(p=>p.id==='jeonpo'):[];
+    const photos=route==='home'?[...D.photoCredits.filter(p=>p.id==='sea'),{...D.diningPhotoSources[D.dining[0].id],title:t(D.dining[0].title),publisher:''}]:route==='nearby'?D.dining.map(x=>({...D.diningPhotoSources[x.id],title:t(x.title),publisher:''})):route==='tours'?D.photoCredits:['home','nearby'].includes(route)?D.photoCredits.filter(p=>p.id==='jeonpo'):[];
     if(!photos.length)return '';
     return `<details class="photo-credits"><summary>${tr('photoCredits')}</summary>${route==='nearby'?'':`<p>${tr('photoLicense')}</p>`}<ul>${photos.map(p=>`<li>${ext(p.source,esc(p.title))}<span>${esc(p.creator)} · ${esc(p.publisher)}${p.created?` · ${esc(p.created)}`:''}</span></li>`).join('')}</ul></details>`;
   }
@@ -93,7 +93,7 @@
   function syncHomePhotoCarousel(track){
     const root=track.closest('[data-home-carousel]'),key=root.dataset.homeCarousel;
     const index=Math.max(0,Math.min(track.children.length-1,Math.round(track.scrollLeft/Math.max(1,track.getBoundingClientRect().width))));
-    homePhotoIndices[key]=index;
+    homePhotoIndices[key]=index;if(key==='hero')document.body.dataset.hero=String(index);
     if(track.dataset.active!==String(index)){
       if(track.contains(document.activeElement)&&document.activeElement!==track&&!track.children[index].contains(document.activeElement))track.focus({preventScroll:true});
       track.dataset.active=String(index);
@@ -162,18 +162,22 @@
     });
   }
 
-  function home(){return `
-    <section class="cover">
-      <div class="cover-title"><h1 aria-label="EXTAY JEONPO"><img class="cover-logo" src="assets/images/extay-logo.svg?v=20261113-logo1" width="518" height="155" alt="EXTAY"><span>JEONPO</span></h1></div>
+  function home(){
+    const quick=[['checkin','checkIn','16:00'],['checkin','checkOut','11:00'],['transport','transport',text(L('부전역 도보 5–8분','Bujeon · 5–8 min walk','釜田駅 徒歩5–8分','釜田站步行5–8分钟','釜田站步行5–8分鐘'))],['wifi','wifi','5G · 2.4G']];
+    const localTeaser=(destination,place,label)=>{const photo=D.localPhotos[place.id];return `<a class="atelier-local-card" href="#${destination}"><img src="${esc(photo.file)}" width="${photo.width}" height="${photo.height}" alt="${text(place.title)}" loading="lazy" decoding="async"><small>${label}</small><span>${tr(destination)}<i aria-hidden="true">↗</i></span></a>`;};
+    return `
+    <section class="cover atelier-cover" aria-label="${text(L('익스테이 전포의 첫 장면','Your first look at EXTAY JEONPO','EXTAY JEONPOの最初の風景','EXTAY JEONPO的第一印象','EXTAY JEONPO的第一印象'))}">
       ${homePhotoCarousel('hero')}
+      <div class="cover-title"><p class="cover-location">BUSAN · PRIVATE STAY</p><h1 aria-label="EXTAY JEONPO"><img class="cover-logo" src="assets/images/extay-logo.svg?v=20261113-logo1" width="518" height="155" alt="EXTAY"><span>JEONPO</span></h1><p class="cover-tagline">${text(L('부산 전포, 함께 머무는 우리만의 집.','Your private place, together in Jeonpo.','釜山・全浦、みんなで過ごす私たちの家。','釜山田浦，与旅伴共享的私人空间。','釜山田浦，與旅伴共享的私人空間。'))}</p></div>
     </section>
-    <section class="intro section" id="introduction"><div><p class="eyebrow">01 / THE STAY</p><h2>${lines(D.home.introTitle)}</h2></div><div class="intro-copy"><p>${text(D.home.introBody)}</p>${stats()}${link('gallery',tr('gallery'))}</div></section>
-    <section class="essentials section"><div class="section-heading"><div><p class="eyebrow">STAY ESSENTIALS</p><h2>${text(D.home.essentials)}</h2></div><span class="small-note">THE PRACTICAL SIDE<br>OF A GOOD STAY</span></div><div class="essential-grid">${[['checkin','checkIn','16:00'],['checkin','checkOut','11:00'],['transport','transport',text(L('부전역 도보 5–8분','Bujeon · 5–8 min walk','釜田駅 徒歩5–8分','釜田站步行5–8分钟','釜田站步行5–8分鐘'))],['wifi','wifi','5G · 2.4G']].map(([r,k,v])=>`<a href="#${r}">${icon(r)}<span>${tr(k)}</span><strong>${v}</strong><i aria-hidden="true">↗</i></a>`).join('')}</div><a href="#transport" class="arrival-note"><strong>${tr('stairs')}</strong><span>${text(D.home.floorBody)}</span><span aria-hidden="true">↗</span></a></section>
-    <section class="signature section"><button class="signature-image photo-button" data-photo="9">${img(9,'loading="lazy" width="1448" height="1086"')}<span class="photo-open" aria-hidden="true">↗</span></button><div class="signature-copy"><p class="eyebrow">ROOM FOR YOUR PEOPLE</p><h2>${lines(D.home.signatureTitle)}</h2><p>${text(D.home.signatureBody)}</p>${link('gallery',tr('gallery'))}<span class="signature-mark">ONE FLOOR.<br>JUST YOURS.</span></div></section>
-    <section class="space-edit section"><div class="section-heading"><div><p class="eyebrow">02 / THE SPACE EDIT</p><h2>${text(D.home.galleryTitle)}</h2></div>${link('gallery',tr('viewAll'))}</div>${homePhotoCarousel('spaces')}</section>
-    <section class="local-edit section"><div class="local-copy"><p class="eyebrow">03 / JEONPO, AT YOUR PACE</p><h2>${lines(D.home.localTitle)}</h2><p>${text(D.home.localBody)}</p><div class="local-links">${link('nearby',tr('nearby'))}${link('tours',tr('tours'))}</div></div>${localPhoto('jeonpo',t(D.sights[0].title),'home-local-photo')}</section>
-    <section class="home-guide section"><div class="section-heading"><div><p class="eyebrow">04 / YOUR STAY, MADE EASY</p><h2>${tr('infoTitle')}</h2></div><p>${tr('infoBody')}</p></div><div class="guide-rows">${guideRows()}</div></section>
-    <section class="faq-section section"><p class="eyebrow">BEFORE YOU BOOK</p><h2>${tr('faq')}</h2><div class="faq-list">${D.faqs.map(x=>`<details><summary>${text(x.q)}</summary><p>${text(x.a)}</p></details>`).join('')}</div></section><section class="booking-section section"><p class="eyebrow">A GOOD PLACE, WITH GOOD PEOPLE</p><h2>${lines(D.home.bookingTitle)}</h2><p>${text(D.home.bookingBody)}</p><button class="primary-button" data-book>${tr('book')}<span aria-hidden="true">↗</span></button><span class="booking-location">JEONPO<br>BUSAN, KOREA</span></section>${footer()}`;}
+    <section class="essentials section" id="stay-essentials"><div class="section-heading"><div><p class="eyebrow">STAY ESSENTIALS</p><h2>${text(L('도착부터 퇴실까지.','From arrival to departure.','到着からチェックアウトまで。','从抵达到离开。','從抵達到離開。'))}</h2></div></div><div class="essential-grid">${quick.map(([r,k,v])=>`<a href="#${r}">${icon(r)}<span>${tr(k)}</span><strong>${v}</strong><i aria-hidden="true">↗</i></a>`).join('')}</div><a href="#transport" class="arrival-note"><strong>${tr('stairs')} · ${tr('noParking')}</strong><span>${text(D.home.floorBody)}</span><span aria-hidden="true">↗</span></a></section>
+    <section class="intro section" id="introduction"><p class="eyebrow">THE JEONPO STAY</p><h2>${lines(L('부산 전포의 풍경을,\n우리만의 속도로.','A view of Jeonpo.\nA pace of your own.','釜山・全浦の風景を、\n自分たちのペースで。','以自己的节奏，\n看釜山田浦的风景。','以自己的節奏，\n看釜山田浦的風景。'))}</h2><div class="intro-copy"><p>${text(D.home.introBody)}</p>${stats()}</div></section>
+    <section class="atelier-spaces section"><div class="section-heading"><div><p class="eyebrow">ROOMS & LITTLE DETAILS</p><h2>${text(L('거실부터 테라스까지.','From living room to terrace.','リビングからテラスまで。','从客厅到露台。','從客廳到露台。'))}</h2></div></div><a href="#gallery" class="atelier-room-wide" aria-label="${text(D.captions[15])}">${img(15,'loading="lazy"')}<span aria-hidden="true">01</span></a><div class="atelier-room-pair">${[2,29].map((id,i)=>`<a href="#gallery" aria-label="${text(D.captions[id])}">${img(id,'loading="lazy"')}<span aria-hidden="true">0${i+2}</span></a>`).join('')}</div>${link('gallery',tr('viewAll'),'outline-button atelier-view-all')}</section>
+    <section class="atelier-local section"><p class="eyebrow">OUT IN JEONPO</p><h2>${text(L('골목의 커피, 부산의 바다.','Coffee in the lanes. Sea air in Busan.','路地のコーヒー、釜山の海。','巷里的咖啡，釜山的海。','巷裡的咖啡，釜山的海。'))}</h2><p>${text(L('가까운 전포의 맛집부터 부산의 풍경까지, 오늘의 동선을 골라보세요.','Find your next stop, from nearby Jeonpo cafés to the sights of Busan.','全浦のグルメから釜山の風景まで、今日の行き先を。','从田浦附近的餐厅咖啡馆到釜山风景，选择今天的去处。','從田浦附近的餐廳咖啡館到釜山風景，選擇今天的去處。'))}</p><div class="atelier-local-grid">${localTeaser('nearby',D.dining[0],'FOOD & CAFÉS')}${localTeaser('tours',D.sights.find(x=>x.id==='sea'),'BUSAN & BEYOND')}</div></section>
+    <section class="home-guide section"><div class="section-heading"><div><p class="eyebrow">GUEST GUIDE</p><h2>${text(L('머무는 동안, 필요한 안내.','A little help for your stay.','滞在中に必要なご案内。','入住期间，所需指南。','入住期間，所需指南。'))}</h2></div></div><div class="guide-rows">${guideRows()}</div></section>
+    <section class="faq-section section"><p class="eyebrow">BEFORE YOUR STAY</p><h2>${tr('faq')}</h2><div class="faq-list">${D.faqs.map(x=>`<details><summary>${text(x.q)}</summary><p>${text(x.a)}</p></details>`).join('')}</div></section>
+    <section class="booking-section section"><p class="eyebrow">YOUR NEXT STAY</p><h2>${lines(D.home.bookingTitle)}</h2><p>${text(D.home.bookingBody)}</p><button class="primary-button" data-book>${tr('book')}<span aria-hidden="true">↗</span></button><span class="booking-location">EXTAY JEONPO · BUSAN</span></section>${footer()}`;
+  }
   const galleryPhotoOrder=[2,5,6,1,16,17,3,15,29,9,11,12,14,10,25,26,13,22,27,4,31,32,34,7,28,35,30,24,33,8,18,19,20,21,23];
   const galleryItems=()=>galleryPhotoOrder.map(id=>D.gallery.find(photo=>photo.id===id)).filter(photo=>category==='all'||photo.category===category);
   function galleryPhotos(items){
@@ -200,7 +204,7 @@
   }
   function gallery(){
     const items=galleryItems();
-    return `<section class="gallery-section section"><header class="gallery-reference-head"><p>ROOM GALLERY</p><h1>${tr('gallery')}</h1></header><section class="gallery-story"><div class="gallery-story-head"><p>STAY STORY</p><span>EXTAY JEONPO · BUSAN</span></div><h2 class="gallery-story-title" lang="en">ONE FLOOR.<br>JUST YOURS.</h2><div class="gallery-story-layout"><p class="gallery-story-body">${text(D.home.introBody)}</p><div class="gallery-story-facts"><div><small>ROOMS</small><span>${tr('bedrooms')} 2 · ${tr('queenBeds')} 4</span></div><div><small>BATHROOMS</small><span>${tr('bathrooms')} 2</span></div><div><small>LOCATION</small><span>${text(L('부전역 도보 5–8분','Bujeon · 5–8 min walk','釜田駅 徒歩5–8分','釜田站步行5–8分钟','釜田站步行5–8分鐘'))}</span></div></div></div></section><div class="filter-tabs gallery-filters" role="group" aria-label="${tr('gallery')}">${['all','living','bedroom1','bedroom2','kitchen','terrace','bath'].map(k=>`<button data-category="${k}" class="${k===category?'active':''}" aria-pressed="${k===category}">${tr(k)}</button>`).join('')}</div><div class="gallery-grid natural-photos">${galleryPhotos(items)}</div></section>${footer()}`;
+    return `<section class="gallery-section section"><header class="gallery-reference-head"><p>ROOM GALLERY</p><h1>${tr('gallery')}</h1></header><p class="gallery-lead">${text(L('한 팀만을 위한 한 층의 공간. 거실과 침실, 테라스의 장면들을 둘러보세요.','One floor, just for your group. Explore the living room, bedrooms and terrace.','1フロアをひと組だけで。リビング、寝室、テラスの風景をご覧ください。','一整层，只留给同行的旅伴。看看客厅、卧室和露台的风景。','一整層，只留給同行的旅伴。看看客廳、臥室和露台的風景。'))}</p><p class="gallery-facts-inline">${text(L('최대 10인 · 침실 2 · 퀸 베드 4 · 욕실 2','Up to 10 guests · 2 bedrooms · 4 queen beds · 2 bathrooms','最大10名・寝室2・クイーンベッド4・バスルーム2','最多10人·2间卧室·4张大床·2间浴室','最多10人・2間臥室・4張大床・2間浴室'))}</p><div class="filter-tabs gallery-filters" role="group" aria-label="${tr('gallery')}">${['all','living','bedroom1','bedroom2','kitchen','terrace','bath'].map(k=>`<button data-category="${k}" class="${k===category?'active':''}" aria-pressed="${k===category}">${tr(k)}</button>`).join('')}</div><div class="gallery-grid natural-photos">${galleryPhotos(items)}</div></section>${footer()}`;
   }
   function guideIndex(){return `${heading('YOUR STAY, MADE EASY',D.ui.guide,D.ui.infoBody)}<section class="guide-index section"><div class="guide-rows">${guideRows()}</div><div class="guide-message">${icon('checkin')}<p>${tr('message')}</p></div></section>${help()}${footer()}`;}
   const airportOpenGuides=new Set();
@@ -310,7 +314,7 @@
     $('.desktop-nav').innerHTML=[['gallery','gallery'],['guide','guide'],['nearby','local']].map(([r,k])=>`<a href="#${r}" ${route===r?'aria-current="page"':''}>${tr(k)}</a>`).join('');
     $('.header-book').textContent=tr('book');
     $('.bottom-nav').innerHTML=[['home','home','home'],['gallery','space','gallery'],['guide','guide','guide'],['nearby','local','nearby'],['book','book','book']].map(([r,k,i])=>r==='book'?`<button data-book>${icon(i)}<span>${tr(k)}</span></button>`:`<a href="#${r}" ${route===r||(r==='guide'&&['airport','transport',...Object.keys(D.guides)].includes(route))||(r==='nearby'&&route==='tours')?'aria-current="page"':''}>${icon(i)}<span>${tr(k)}</span></a>`).join('');
-    $('.drawer-nav').innerHTML=['home','gallery','airport','transport','checkin','wifi','appliances','laundry','rules','nearby','tours'].map((r,i)=>`<a href="#${r}" ${route===r?'aria-current="page"':''}><small aria-hidden="true">${String(i+1).padStart(2,'0')}</small><span class="drawer-copy"><strong>${esc(tr(r))}</strong><span class="drawer-subtitle">${text(D.menuDescriptions[r])}</span></span><i aria-hidden="true">↗</i></a>${i===4?`<aside class="drawer-journal"><p>EXTAY JEONPO JOURNAL</p><strong>${lines(L('도시를 바라보고,\n우리답게 머무는 곳.','A view of the city.\nA stay of your own.','街を眺めて、\n自分たちらしく滞在。','望见城市，\n自在相聚。','望見城市，\n自在相聚。'))}</strong><small>BUSAN · JEONPO<br>A PRIVATE STAY, TOGETHER.</small></aside>`:''}`).join('');
+    $('.drawer-nav').innerHTML=['home','gallery','airport','transport','checkin','wifi','appliances','laundry','rules','nearby','tours'].map((r,i)=>`<a href="#${r}" ${route===r?'aria-current="page"':''}><span class="drawer-icon" aria-hidden="true">${icon(r)}</span><span class="drawer-copy"><strong>${esc(tr(r))}</strong><span class="drawer-subtitle">${text(D.menuDescriptions[r])}</span></span><i aria-hidden="true">↗</i></a>${i===4?`<aside class="drawer-journal"><p>EXTAY JEONPO JOURNAL</p><strong>${lines(L('도시를 바라보고,\n우리답게 머무는 곳.','A view of the city.\nA stay of your own.','街を眺めて、\n自分たちらしく滞在。','望见城市，\n自在相聚。','望見城市，\n自在相聚。'))}</strong><small>BUSAN · JEONPO<br>A PRIVATE STAY, TOGETHER.</small></aside>`:''}`).join('');
     $('#language').value=language;$('#languageLabel').textContent=tr('language');$('.skip-link').textContent=tr('skip');$('.menu-button').setAttribute('aria-label',tr('menu'));$('.bottom-nav').setAttribute('aria-label',tr('quick'));
     $('#zoomIn').setAttribute('aria-label',tr('zoomIn'));$('#zoomOut').setAttribute('aria-label',tr('zoomOut'));$('#zoomReset').setAttribute('aria-label',tr('zoomReset'));
     $$('[data-close]').forEach(b=>b.setAttribute('aria-label',tr('close')));$('.prev').setAttribute('aria-label',tr('previous'));$('.next').setAttribute('aria-label',tr('next'));
@@ -342,6 +346,13 @@
     compactLists();
   }
 
+  let coverHeaderObserver;
+  function bindCoverHeader(){
+    coverHeaderObserver?.disconnect();const bar=$('.topbar'),cover=$('.atelier-cover');
+    bar.classList.remove('over-photo');if(!cover)return;
+    const update=()=>bar.classList.toggle('over-photo',cover.getBoundingClientRect().bottom>64&&cover.getBoundingClientRect().top<innerHeight);
+    update();coverHeaderObserver=new IntersectionObserver(update,{rootMargin:'-64px 0px 0px',threshold:[0,1]});coverHeaderObserver.observe(cover);
+  }
   function render(focus=false,restore=false){
     const galleryFilterOffset=$('.gallery-filters')?.scrollLeft||0;
     document.documentElement.lang={zh:'zh-CN',tw:'zh-TW'}[language]||language;
@@ -355,7 +366,7 @@
       if(selected&&selected.left<bounds.left)galleryFilters.scrollLeft+=selected.left-bounds.left;
       else if(selected&&selected.right>bounds.right)galleryFilters.scrollLeft+=selected.right-bounds.right;
     }
-    updateNavigation();bindDeviceCarousels();bindHomePhotoCarousels();if(focus)$('#main').focus({preventScroll:true});if(restore)window.scrollTo({top:scrolls.get(route)||0,behavior:'instant'});
+    updateNavigation();bindDeviceCarousels();bindHomePhotoCarousels();bindCoverHeader();if(focus)$('#main').focus({preventScroll:true});if(restore)window.scrollTo({top:scrolls.get(route)||0,behavior:'instant'});
   }
   function navigate(){const next=location.hash.slice(1)||'home',known=['home','gallery','guide','airport','transport','nearby','tours',...Object.keys(D.guides)];scrolls.set(route,window.scrollY);const resolved=known.includes(next)?next:'home';if(route!==resolved){localCategory='all';query='';}route=resolved;$$('dialog[open]').forEach(x=>x.close());render(true,true);}
   function showToast(message){clearTimeout(toastTimer);$('.toast').textContent=message;$('.toast').classList.add('visible');toastTimer=setTimeout(()=>$('.toast').classList.remove('visible'),3300);}
