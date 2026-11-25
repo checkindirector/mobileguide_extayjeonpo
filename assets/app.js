@@ -168,7 +168,8 @@
     return `
     <section class="cover atelier-cover" aria-label="${text(L('익스테이 전포의 첫 장면','Your first look at EXTAY JEONPO','EXTAY JEONPOの最初の風景','EXTAY JEONPO的第一印象','EXTAY JEONPO的第一印象'))}">
       ${homePhotoCarousel('hero')}
-      <div class="cover-title"><p class="cover-location">BUSAN · PRIVATE STAY</p><h1 aria-label="EXTAY JEONPO"><img class="cover-logo" src="assets/images/extay-logo.svg?v=20261113-logo1" width="518" height="155" alt="EXTAY"><span>JEONPO</span></h1><p class="cover-tagline">${text(L('부산 전포, 함께 머무는 우리만의 집.','Your private place, together in Jeonpo.','釜山・全浦、みんなで過ごす私たちの家。','釜山田浦，与旅伴共享的私人空间。','釜山田浦，與旅伴共享的私人空間。'))}</p></div>
+      <div class="cover-title"><p class="cover-location">BUSAN · PRIVATE STAY</p><h1 aria-label="EXTAY JEONPO"><img class="cover-logo" src="assets/images/extay-logo-white.svg?v=20261113-logo1" width="518" height="155" alt="EXTAY"><span>JEONPO</span></h1><p class="cover-tagline">${text(L('부산 전포, 함께 머무는 우리만의 집.','Your private place, together in Jeonpo.','釜山・全浦、みんなで過ごす私たちの家。','釜山田浦，与旅伴共享的私人空间。','釜山田浦，與旅伴共享的私人空間。'))}</p></div>
+      <button type="button" class="cover-scroll" data-cover-scroll aria-label="${text(L('아래 안내 보기','Scroll to the stay guide','下の滞在案内を見る','查看下方入住指南','查看下方入住指南'))}">SCROLL<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.55" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg></button>
     </section>
     <section class="essentials section" id="stay-essentials"><div class="section-heading"><div><p class="eyebrow">STAY ESSENTIALS</p><h2>${text(L('도착부터 퇴실까지.','From arrival to departure.','到着からチェックアウトまで。','从抵达到离开。','從抵達到離開。'))}</h2></div></div><div class="essential-grid">${quick.map(([r,k,v])=>`<a href="#${r}">${icon(r)}<span>${tr(k)}</span><strong>${v}</strong><i aria-hidden="true">↗</i></a>`).join('')}</div><a href="#transport" class="arrival-note"><strong>${tr('stairs')} · ${tr('noParking')}</strong><span>${text(D.home.floorBody)}</span><span aria-hidden="true">↗</span></a></section>
     <section class="intro section" id="introduction"><p class="eyebrow">THE JEONPO STAY</p><h2>${lines(L('부산 전포의 풍경을,\n우리만의 속도로.','A view of Jeonpo.\nA pace of your own.','釜山・全浦の風景を、\n自分たちのペースで。','以自己的节奏，\n看釜山田浦的风景。','以自己的節奏，\n看釜山田浦的風景。'))}</h2><div class="intro-copy"><p>${text(D.home.introBody)}</p>${stats()}</div></section>
@@ -376,6 +377,7 @@
 
   document.addEventListener('click',async e=>{
     if(e.target.closest('.skip-link')){e.preventDefault();$('#main').focus();return;}
+    if(e.target.closest('[data-cover-scroll]')){const target=$('#stay-essentials');if(target)window.scrollTo({top:target.getBoundingClientRect().top+scrollY-$('.topbar').offsetHeight+1,behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'instant':'smooth'});return;}
     const homePhoto=e.target.closest('[data-home-photo]');if(homePhoto){const[key,index]=homePhoto.dataset.homePhoto.split(':');lightboxItems=homePhotoSets[key].map(item=>item.id);lightboxIndex=Number(index);updatePhoto();$('#lightbox').showModal();requestAnimationFrame(fitPhoto);return;}
     const homeShift=e.target.closest('[data-home-shift]');if(homeShift){const root=homeShift.closest('[data-home-carousel]');moveHomePhotoCarousel(root,homePhotoIndices[root.dataset.homeCarousel]+Number(homeShift.dataset.homeShift));return;}
     const homeIndex=e.target.closest('[data-home-index]');if(homeIndex){moveHomePhotoCarousel(homeIndex.closest('[data-home-carousel]'),Number(homeIndex.dataset.homeIndex));return;}
