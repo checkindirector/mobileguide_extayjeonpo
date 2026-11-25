@@ -11,10 +11,13 @@
   const airportBus='https://www.airport.co.kr/gimhae/cms/frCon/index.do?MENU_ID=170&CONTENTS_NO=1';
   a.guide={
     title:L('김해공항 교통편','Gimhae Airport transfers','金海空港アクセス','金海机场交通','金海機場交通'),
-    lead:L('철도·리무진 버스·택시 경로를 확인하세요.','Rail, airport bus and taxi routes at a glance.','鉄道・空港バス・タクシーのルートをご案内。','查看轨道交通、机场巴士及出租车路线。','查看軌道交通、機場巴士及計程車路線。'),
+    lead:L('요금·시간을 비교하고, 경로 보기를 눌러 자세히 확인하세요.','Compare fares and times, then tap “View route” for details.','料金・時間を比べ、「ルートを見る」で詳細をご確認ください。','先比较费用与时间，再点“查看路线”了解详情。','先比較費用與時間，再點「查看路線」了解詳情。'),
     labels:{
       fromLabel:L('출발','From','出発','出发','出發'),
       toLabel:L('도착','To','到着','到达','抵達'),
+      routeShow:L('경로 보기','View route','ルートを見る','查看路线','查看路線'),
+      routeHide:L('경로 접기','Hide route','ルートを閉じる','收起路线','收起路線'),
+      routeClose:L('경로 접고 교통편 비교하기','Close route and compare options','ルートを閉じて交通手段を比較','收起路线并比较交通方式','收起路線並比較交通方式'),
       transportPreview:L('철도 · 리무진 버스 · 택시 경로 보기','Rail · airport bus · taxi routes','鉄道・空港バス・タクシーのルート','轨道交通·机场巴士·出租车路线','軌道交通・機場巴士・計程車路線'),
       closeDirection:L('이 방향의 안내 접기','Close this direction’s guide','この方向の案内を閉じる','收起此方向指南','收起此方向指南'),
       fareShort:L('요금','Fare','料金','费用','費用'),
