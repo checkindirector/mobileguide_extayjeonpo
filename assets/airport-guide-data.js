@@ -14,7 +14,7 @@
     lead:L('교통편의 ‘이용 방법 보기’를 누르면 바로 아래에 안내가 펼쳐집니다.','Tap “View instructions” on a transport option to read its guide directly below.','交通手段の「利用方法を見る」を押すと、すぐ下に案内が開きます。','点击交通方式下的“查看乘车指南”，说明会在下方展开。','點選交通方式下的「查看乘車指南」，說明會在下方展開。'),
     labels:{
       fareShort:L('요금','Fare','料金','费用','費用'),
-      timeShort:L('시간','Time','時間','时间','時間'),
+      timeShort:L('소요 시간','Travel time','所要時間','所需时间','所需時間'),
       arrivalGuide:L('공항에서 숙소로 가기','From the airport to the stay','空港から宿へ行く','从机场前往住宿','從機場前往住宿'),
       departureGuide:L('숙소에서 공항으로 가기','From the stay to the airport','宿から空港へ行く','从住宿前往机场','從住宿前往機場'),
       jumpGuide:L('안내로 바로 이동','Go to this guide','この案内へ移動','前往此指南','前往此指南'),
@@ -52,7 +52,7 @@
     },
     methods:{
       rail:{name:L('철도','Rail','鉄道','轨道交通','軌道交通'),time:L('60–80분 + 대기','60–80 min + wait','60～80分＋待ち','60–80分钟＋等候','60–80分鐘＋等候'),note:L('도보 포함 · 환승 2회','Includes walking · 2 changes','徒歩含む・乗換2回','含步行·换乘2次','含步行・轉乘2次')},
-      bus:{name:L('리무진','Limousine','リムジン','机场巴士','機場巴士'),time:L('60–70분 + 대기','60–70 min + wait','60～70分＋待ち','60–70分钟＋等候','60–70分鐘＋等候'),note:L('도보 포함 · 배차 약 60–80분','Walk included · buses every 60–80 min','徒歩込み・約60～80分間隔','含步行·约60–80分钟一班','含步行・約60–80分鐘一班')},
+      bus:{name:L('리무진 버스','Airport bus','空港リムジン','机场巴士','機場巴士'),time:L('60–70분 + 대기','60–70 min + wait','60～70分＋待ち','60–70分钟＋等候','60–70分鐘＋等候'),note:L('도보 포함 · 배차 약 60–80분','Walk included · buses every 60–80 min','徒歩込み・約60～80分間隔','含步行·约60–80分钟一班','含步行・約60–80分鐘一班')},
       taxi:{name:L('택시','Taxi','タクシー','出租车','計程車'),time:L('30–50분 + 대기','30–50 min + wait','30～50分＋待ち','30–50分钟＋等候','30–50分鐘＋等候'),note:L('인원·짐에 맞는 차량 선택','Fare per car · choose size for your group','1台の料金・人数と荷物に合う車を','按车收费·按人数行李选择车型','按車收費・依人數行李選擇車型')}
     },
     notices:{
