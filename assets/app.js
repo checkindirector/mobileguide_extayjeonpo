@@ -375,7 +375,10 @@
   document.addEventListener('toggle',e=>{
     const card=e.target;if(!card.matches?.('.airport-method'))return;
     if(card.open){
+      const summaryTop=card.getBoundingClientRect().top;
       $$('.airport-method',card.parentElement).filter(other=>other!==card&&other.open).forEach(other=>{other.open=false;airportOpenGuides.delete(other.dataset.airportGuide);});
+      const shift=card.getBoundingClientRect().top-summaryTop;
+      if(shift)window.scrollBy({top:shift,behavior:'instant'});
       airportOpenGuides.add(card.dataset.airportGuide);
       requestAnimationFrame(()=>$$('[data-device-track]',card).forEach(track=>{syncDeviceCarousel(track);fitDeviceTrack(track);}));
     }else airportOpenGuides.delete(card.dataset.airportGuide);
