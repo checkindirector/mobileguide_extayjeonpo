@@ -320,3 +320,18 @@ body[data-route="transport"] .address-section{padding-bottom:20px}
 .busan-intermediate[open] .busan-stops-hide{display:inline}
 .busan-intermediate[open]>summary>svg{transform:rotate(180deg)}
 .busan-intermediate>summary:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
+
+/* Photo-relative wayfinding graphics stay aligned in the carousel and zoom viewer. */
+.walking-photo-frame{position:relative;display:block;width:100%;line-height:0}
+.walking-photo-frame>img{display:block;width:100%;height:auto}
+.walking-directions{position:absolute;inset:0;display:block;width:100%;height:100%;max-width:none;pointer-events:none}
+.walking-route-halo,.walking-route-line{stroke-linecap:round;stroke-linejoin:round;vector-effect:non-scaling-stroke}
+.walking-route-halo{stroke:#fff;stroke-width:7px}
+.walking-route-line{stroke:#35332F;stroke-width:3px}
+.walking-route-number{fill:#35332F;stroke:#fff;stroke-width:2px;vector-effect:non-scaling-stroke}
+.walking-route-number-text{fill:#fff;font-family:var(--latin);font-size:40px;font-weight:800;line-height:1}
+.lightbox-photo{position:relative;flex:none}
+.lightbox-stage .lightbox-photo>img{display:block;width:100%;height:100%;margin:0;max-width:none;max-height:none}
+.lightbox-route-overlay{position:absolute;inset:0;display:block;pointer-events:none}
+
+.lightbox-stage.is-zoomed{place-items:normal}
