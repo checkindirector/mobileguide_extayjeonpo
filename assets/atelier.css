@@ -34,9 +34,9 @@ body[data-route="home"] #main{padding-top:0}
 .topbar .brand{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;min-width:0;padding:0;justify-self:center;color:inherit}
 .topbar .brand img{width:82px;height:auto}
 .topbar .brand>span{padding:0;border:0;margin:0;font-family:var(--latin);font-size:10px;font-weight:600;line-height:1.2;letter-spacing:.21em;color:inherit}
-.topbar .brand>.home-guide-label{display:none}
-body[data-route="home"] .topbar .brand img,body[data-route="home"] .topbar .brand>span:not(.home-guide-label){display:none}
-body[data-route="home"] .topbar .brand>.home-guide-label{display:block;font-family:var(--body);font-size:13px;font-weight:800;line-height:1.4;letter-spacing:0;color:inherit}
+body[data-route="home"] .topbar .brand img{display:block;width:110px}
+body[data-route="home"] .topbar .brand>span{display:block;font-size:10px;font-weight:600;letter-spacing:.28em}
+body[data-route="home"] .topbar.over-photo .brand img{filter:brightness(0) invert(1) drop-shadow(0 1px 4px #211a1480)}
 .topbar .desktop-nav,.topbar .header-book{display:none}
 .topbar .header-tools{justify-self:end;margin:0;gap:0;color:inherit}
 .language-label select{min-height:44px;max-width:48px;padding:6px 0;font-size:11px;font-weight:900;color:inherit;background:transparent}
@@ -56,7 +56,7 @@ body[data-route="home"] .atelier-cover .cover-title{position:absolute;inset:auto
 body[data-route="home"] .atelier-cover .cover-location{font-family:var(--latin);font-size:11px;font-weight:500;line-height:1.5;letter-spacing:.12em;margin:0 0 13px;color:inherit}
 body[data-route="home"] .atelier-cover .cover-title h1{display:flex;align-items:flex-start;flex-direction:column;gap:5px;margin:0;width:fit-content;line-height:1;color:inherit}
 body[data-route="home"] .atelier-cover .cover-title h1 .cover-logo{width:170px;max-width:100%;height:auto;margin:0;filter:none}
-body[data-route="home"] .atelier-cover .cover-title h1>span{font-family:var(--latin);font-size:17px;font-weight:400;line-height:1.2;letter-spacing:.28em;padding-left:0;color:inherit}
+body[data-route="home"] .atelier-cover .cover-title h1>span{font-family:var(--latin);font-size:25px;font-weight:500;line-height:1.1;letter-spacing:.23em;padding-left:0;color:inherit}
 body[data-route="home"] .atelier-cover .cover-tagline{max-width:290px;margin:14px 0 0;padding:0;font-family:var(--body);font-size:14px;font-weight:500;line-height:1.6;text-align:left;color:inherit}
 body[data-route="home"][data-hero="2"] .atelier-cover .cover-title{color:#fff;text-shadow:0 1px 8px #0008}
 body[data-route="home"][data-hero="2"] .atelier-cover .cover-title h1 .cover-logo{filter:brightness(0) invert(1)}
@@ -231,6 +231,7 @@ body[data-route="transport"] .travel-alert>strong{font-size:14px;font-weight:800
   :root{--gutter:20px}
   body[data-route="home"] .atelier-cover .cover-title{top:auto;left:20px;right:20px;bottom:calc(96px + var(--safe))}
   body[data-route="home"] .atelier-cover .cover-title h1 .cover-logo{width:154px}
+  body[data-route="home"] .atelier-cover .cover-title h1>span{font-size:23px}
   body[data-route="home"] .atelier-cover .cover-tagline{max-width:250px;font-size:13px}
   .page-heading h1,body[data-route="wifi"] .page-heading h1{font-size:30px}
   .menu-dialog{padding-inline:20px}
@@ -252,4 +253,17 @@ body[data-route="transport"] .travel-alert>strong{font-size:14px;font-weight:800
 @media(max-width:380px){
   .drawer-copy>strong{font-size:17px}
   .drawer-nav .drawer-subtitle{font-size:12px}
+}
+
+/* Show the choice criteria before guests expand a route. */
+.airport-method-heading>span:first-child{flex-wrap:wrap}
+.airport-recommendation{display:inline-block;flex:0 1 auto;padding:3px 6px;border:1px solid var(--line);border-radius:3px;background:var(--soft);color:var(--accent);font-size:11px;font-weight:800;line-height:1.35;white-space:normal;word-break:keep-all}
+.arrival-photo-guide{padding:25px 0;border-top:1px solid var(--line);scroll-margin-top:86px}
+.arrival-photo-heading{margin-bottom:18px}
+.arrival-photo-heading h2{font-size:20px;font-weight:700;line-height:1.4}
+.arrival-photo-heading p{margin-top:9px;font-size:15px;font-weight:600;line-height:1.62}
+.arrival-photo-guide .building-photo{margin:0}
+.arrival-photo-guide .walking-guide .device-visual{margin-top:0}
+@media(max-width:380px){
+  .airport-route-toggle .airport-route-show,.airport-route-toggle .airport-route-hide{position:absolute;width:1px;height:1px;margin:-1px;padding:0;overflow:hidden;clip-path:inset(50%);white-space:nowrap}
 }
