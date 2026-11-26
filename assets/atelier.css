@@ -296,3 +296,27 @@ body[data-route="transport"] .address-section{padding-bottom:20px}
 .busan-last-mile>strong{font-size:15px;font-weight:800;line-height:1.5}
 .busan-last-mile>span{font-size:13px;font-weight:600;line-height:1.5;color:var(--muted)}
 .busan-station-guide>.outline-button{display:flex;width:100%;margin-top:14px}
+
+/* Keep the trip facts visible; expand only the six intermediate stations. */
+.busan-line-heading{padding-bottom:12px}
+.busan-endpoints{display:grid;grid-template-columns:minmax(0,1fr) 42px minmax(0,1fr);align-items:center;gap:8px;margin:15px 0}
+.busan-endpoint{display:grid;justify-items:center;text-align:center;gap:4px;min-width:0}
+.busan-endpoint .busan-stop-code{margin:0}
+.busan-endpoint>strong{font-size:18px;font-weight:800;line-height:1.3;word-break:keep-all;overflow-wrap:anywhere}
+.busan-endpoint>small{font-size:11px;font-weight:600;line-height:1.3;color:var(--muted)}
+.busan-express-arrow{width:42px;height:20px;color:var(--metro-line)}
+.busan-trip-facts{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:1px;background:var(--line);border:1px solid var(--line)}
+.busan-trip-facts>div{display:grid;gap:2px;padding:9px 5px;background:var(--soft);text-align:center}
+.busan-trip-facts strong{font-size:20px;font-weight:800;line-height:1.3}
+.busan-trip-facts small{font-size:12px;font-weight:600;line-height:1.4;color:var(--muted)}
+.busan-time-note{margin-top:8px;font-size:12px;font-weight:600;line-height:1.55;color:var(--muted)}
+.busan-intermediate{margin:10px 0 14px;border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+.busan-intermediate>summary{display:flex;justify-content:space-between;align-items:center;gap:10px;min-height:44px;padding:10px 0;list-style:none;cursor:pointer;font-size:13px;font-weight:700;line-height:1.45}
+.busan-intermediate>summary::-webkit-details-marker{display:none}
+.busan-intermediate>summary::marker{content:''}
+.busan-intermediate>summary>svg{width:17px;height:17px;flex:none}
+.busan-stops-hide{display:none}
+.busan-intermediate[open] .busan-stops-show{display:none}
+.busan-intermediate[open] .busan-stops-hide{display:inline}
+.busan-intermediate[open]>summary>svg{transform:rotate(180deg)}
+.busan-intermediate>summary:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
