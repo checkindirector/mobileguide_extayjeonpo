@@ -267,3 +267,32 @@ body[data-route="transport"] .travel-alert>strong{font-size:14px;font-weight:800
 @media(max-width:380px){
   .airport-route-toggle .airport-route-show,.airport-route-toggle .airport-route-hide{position:absolute;width:1px;height:1px;margin:-1px;padding:0;overflow:hidden;clip-path:inset(50%);white-space:nowrap}
 }
+
+/* Photos first; one clear Line 1 route from Busan Station. */
+body[data-route="transport"] .address-section{padding-bottom:20px}
+.transport-section>.travel-alert{margin:0 0 28px}
+.busan-station-guide{padding:28px 0;border-top:1px solid var(--line)}
+.busan-station-guide>h2{font-size:20px;font-weight:800;line-height:1.4}
+.busan-station-lead{margin:12px 0 18px;font-size:15px;font-weight:600;line-height:1.62}
+.busan-line-map{--metro-line:#D94B00;padding:18px 16px;background:#fff;border:1px solid var(--line);border-radius:6px}
+.busan-line-heading{display:flex;align-items:center;gap:11px;padding-bottom:17px;border-bottom:1px solid var(--line)}
+.busan-line-symbol{display:grid;place-items:center;width:32px;height:32px;flex:none;border:3px solid var(--metro-line);border-radius:50%;font-size:17px;font-weight:800;line-height:1}
+.busan-line-heading>div{display:grid;gap:3px}
+.busan-line-heading strong{font-size:16px;font-weight:800;line-height:1.35}
+.busan-line-heading>div>span{font-size:13px;font-weight:600;line-height:1.4;color:var(--muted)}
+.busan-stops{position:relative;list-style:none;margin:18px 0;padding:0}
+.busan-stops::before{content:'';position:absolute;left:15px;top:22px;bottom:22px;width:3px;background:var(--metro-line)}
+.busan-stop{position:relative;display:grid;grid-template-columns:33px minmax(0,1fr) auto;align-items:center;gap:10px;min-height:35px;padding:3px 0}
+.busan-stop-code{z-index:1;display:grid;place-items:center;width:27px;height:27px;margin-left:3px;background:#fff;border:2px solid var(--metro-line);border-radius:50%;font-size:10px;font-weight:800;line-height:1}
+.busan-stop-name{display:flex;align-items:baseline;flex-wrap:wrap;gap:2px 7px;min-width:0}
+.busan-stop-name>strong{font-size:14px;font-weight:600;line-height:1.45}
+.busan-stop-name>small{font-size:11px;font-weight:600;line-height:1.45;color:var(--muted)}
+.busan-stop-key{min-height:48px}
+.busan-stop-key .busan-stop-code{width:33px;height:33px;margin-left:0;border-width:3px;font-size:11px}
+.busan-stop-key .busan-stop-name>strong{font-size:18px;font-weight:800}
+.busan-stop-action{padding:3px 6px;background:var(--soft);font-size:11px;font-weight:800;line-height:1.4}
+.busan-stay-on{padding:12px 0;border-top:1px solid var(--line);font-size:13px;font-weight:600;line-height:1.6}
+.busan-last-mile{display:grid;gap:5px;padding:14px;background:var(--soft)}
+.busan-last-mile>strong{font-size:15px;font-weight:800;line-height:1.5}
+.busan-last-mile>span{font-size:13px;font-weight:600;line-height:1.5;color:var(--muted)}
+.busan-station-guide>.outline-button{display:flex;width:100%;margin-top:14px}
