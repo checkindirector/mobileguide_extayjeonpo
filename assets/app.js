@@ -48,7 +48,7 @@
       if(reduced.matches||!root.classList.contains('brand-intro-pending')){finish();return;}
       intro.classList.add('is-running');
       try{sessionStorage.setItem('extay-jeonpo-brand-intro-v1','1');}catch{}
-      leaveTimer=setTimeout(()=>{root.classList.add('brand-intro-revealing');intro.classList.add('is-leaving');removeTimer=setTimeout(finish,640);},2916);
+      leaveTimer=setTimeout(()=>{root.classList.add('brand-intro-revealing');intro.classList.add('is-leaving');removeTimer=setTimeout(finish,290);},650);
     };
     reduced.addEventListener('change',onMotionChange);window.addEventListener('hashchange',finish,{once:true});
     if(logo.complete){if(logo.naturalWidth)start();else finish();}
