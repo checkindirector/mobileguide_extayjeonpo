@@ -415,3 +415,48 @@ body[data-route="transport"] .transport-notes>article{padding:0;border:0}
 .stay-checklist p,.stay-late-note p{margin-top:7px;font-size:15px;font-weight:600;line-height:1.65;color:var(--muted)}
 .stay-late-note{margin-top:14px;padding:18px 16px;background:var(--soft)}
 @media(max-width:359px){.stay-times>button{padding:0 13px}.stay-luggage-heading{grid-template-columns:86px minmax(0,1fr);gap:16px}.stay-luggage-heading h2{font-size:18px}}
+
+/* Choose a recognizable device first; its instructions have their own page. */
+.appliance-catalog{padding-top:0;padding-bottom:30px}
+.appliance-filters{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+.appliance-filters button{min-height:44px;padding:10px 8px;border:1px solid var(--line);background:transparent;color:var(--accent);font-size:14px;font-weight:800;line-height:1.5}
+.appliance-filters button[aria-pressed="true"]{background:var(--accent);border-color:var(--accent);color:var(--paper)}
+.appliance-result-count{margin:20px 0 16px;font-size:13px;font-weight:600;line-height:1.5;color:var(--muted)}
+.appliance-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:28px 14px}
+.appliance-card{display:flex;flex-direction:column;min-width:0;color:var(--ink);text-decoration:none}
+.appliance-thumbnail{display:grid;place-items:center;width:100%;aspect-ratio:1;background:var(--soft);overflow:hidden;margin-bottom:12px}
+.appliance-thumbnail>img,.appliance-thumbnail>svg{display:block;width:100%;height:100%;min-width:0;min-height:0;object-fit:contain}
+.appliance-thumbnail>img{padding:10px;background:#fff}
+.appliance-card h2{font-size:16px;font-weight:800;line-height:1.4}
+.appliance-card>p{margin-top:7px;margin-bottom:10px;font-size:13px;font-weight:600;line-height:1.5;color:var(--muted)}
+.appliance-card-open{display:flex;align-items:center;justify-content:space-between;gap:6px;min-height:44px;margin-top:auto;padding:9px 0;border-bottom:1px solid var(--oak);font-size:13px;font-weight:800;line-height:1.5;color:var(--accent)}
+.appliance-card-open>span{font-size:18px;font-weight:600}
+.appliance-card:focus-visible,.appliance-filters button:focus-visible,.appliance-back:focus-visible,.appliance-references summary:focus-visible{outline:2px solid var(--accent);outline-offset:4px}
+.appliance-detail-top{padding-top:22px;padding-bottom:24px}
+.appliance-back{display:inline-flex;align-items:center;gap:10px;min-height:44px;margin-bottom:20px;font-size:14px;font-weight:800;line-height:1.5;color:var(--accent)}
+.appliance-back>span{font-size:20px;font-weight:600}
+.appliance-detail-top>.eyebrow{margin-bottom:12px}
+.appliance-detail-top h1{font-size:32px;font-weight:600;line-height:1.25}
+.appliance-model{margin-top:12px;font-size:12px;font-weight:600;line-height:1.6;letter-spacing:.035em;color:var(--muted);overflow-wrap:anywhere}
+.appliance-full-location{margin-top:12px;font-size:15px;font-weight:600;line-height:1.6}
+.appliance-detail-body{padding-top:0;padding-bottom:28px}
+.appliance-visual .device-visual{margin:0;padding:0;border:0}
+.appliance-visual .device-dots{display:none}
+.appliance-visual .swipe-guide{margin-top:12px;font-size:13px}
+.appliance-visual+.remote-legend{margin-top:18px}
+.appliance-instructions{margin-top:28px;padding-top:26px;border-top:1px solid var(--line)}
+.appliance-instructions>h2{font-size:20px;font-weight:800;line-height:1.4}
+.appliance-intro{margin-top:14px;font-size:15px;font-weight:600;line-height:1.65}
+.appliance-instructions .steps{margin-top:20px}
+.appliance-instructions .steps>li{font-size:15px;font-weight:600;line-height:1.65}
+.appliance-references{margin-top:26px;border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+.appliance-references>summary{display:flex;align-items:center;justify-content:space-between;gap:12px;min-height:52px;padding:14px 0;list-style:none;font-size:14px;font-weight:800;line-height:1.5;color:var(--accent);cursor:pointer}
+.appliance-references>summary::-webkit-details-marker{display:none}
+.appliance-references>summary::marker{content:''}
+.appliance-references>summary>svg{width:18px;height:18px;flex:none}
+.appliance-references[open]>summary>svg{transform:rotate(180deg)}
+.appliance-references>.manual-links{margin:0;padding:4px 0 18px}
+.appliance-support{margin-top:26px;padding:18px 16px;background:var(--soft)}
+.appliance-support h2{font-size:18px;font-weight:800;line-height:1.4}
+.appliance-support p{margin:10px 0;font-size:15px;font-weight:600;line-height:1.65;color:var(--muted)}
+.appliance-list-return{display:flex;align-items:center;justify-content:center;gap:12px;width:100%;margin-top:18px}

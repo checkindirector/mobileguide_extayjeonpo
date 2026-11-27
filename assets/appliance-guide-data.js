@@ -77,4 +77,26 @@
     if(c.id==='water')slides.push({file:'assets/images/guide-water-official.webp',width:1000,height:1000,title:L('제조사 공식 제품 사진 · 출수 조작부','Official product image · dispensing controls','メーカー公式写真・出水操作部','厂商官方产品图・出水控制区','廠商官方產品圖・出水控制區'),source:c.links[0].url,keys:D.deviceDiagrams[c.id]});
     D.deviceMedia[c.id]=slides;
   }
+  D.applianceUI={
+    all:L('전체','All','すべて','全部','全部'),
+    lead:L('기기나 리모컨 사진을 누르면 사용법이 열립니다.','Tap a device or remote to see how to use it.','機器やリモコンの写真から使い方をご覧ください。','点击设备或遥控器照片，查看使用方法。','點選設備或遙控器照片，查看使用方法。'),
+    filter:L('기기 종류 고르기','Filter devices','機器の種類を選ぶ','选择设备类别','選擇設備類別'),
+    countUnit:L('개 기기',' devices','台の機器','件设备','項設備'),
+    open:L('사용법 보기','View instructions','使い方を見る','查看用法','查看用法'),
+    back:L('가전·시설 목록','All devices & facilities','機器・設備一覧','设备与设施列表','設備與設施列表'),
+    return:L('목록으로 돌아가기','Back to the device list','一覧に戻る','返回设备列表','返回設備列表'),
+    instructions:L('사용 순서','How to use it','使い方','使用步骤','使用步驟'),
+    references:L('공식 설명서·추가 자료','Official manuals & references','公式説明書・参考資料','官方说明书与参考资料','官方說明書與參考資料'),
+    support:L('작동이 어렵다면','Need help using it?','操作にお困りの場合','使用遇到问题？','使用遇到問題？')
+  };
+  // These are views of existing photographs; full photographs remain in the guides.
+  D.applianceCatalog={
+    'bedroom-ac':{photo:15,crop:[850,40,470,300]},
+    'floor':{photo:54,crop:[240,270,820,1150],location:L('거실 · 침실 1·2','Living room · bedrooms 1 & 2','リビング・寝室1・2','客厅 · 卧室1与2','客廳 · 臥室1與2')},
+    'mobile-tv':{photo:17,crop:[40,0,1100,960]},
+    'water':{photo:12,crop:[180,260,850,1290]},
+    'hot-water':{photo:32,crop:[450,920,480,440]}
+  };
+  D.deviceMedia['mobile-tv'].push({photo:17,title:D.captions[17]});
+  D.deviceMedia.water.push({photo:12,title:L('숙소에 설치된 정수기','The water dispenser in your stay','宿に設置された浄水器','住宿内的净水器','住宿內的淨水器')});
 })();

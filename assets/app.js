@@ -4,7 +4,7 @@
   const languages=['ko','en','ja','zh','tw'];
   const guideMediaUrl=file=>file.startsWith('assets/diagrams/')?`${file}?v=20261113-pine1`:file;
   let language='ko';try{const saved=localStorage.getItem('extayjeonpo-language');if(languages.includes(saved))language=saved;}catch{}
-  let route='home',category='all',localCategory='all',query='',lightboxItems=[],lightboxIndex=0,toastTimer,deviceResizeObserver;
+  let route='home',category='all',localCategory='all',query='',applianceCategory='all',applianceId='',lightboxItems=[],lightboxIndex=0,toastTimer,deviceResizeObserver;
   const heroPhotos=[1,9,8], scrolls=new Map();
   const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
   const t=v=>typeof v==='object'&&v!==null?(v[language]??v.en??v.ko??''):String(v??'');
@@ -228,6 +228,43 @@
     {id:'tv',title:L('TV · OTT','TV & streaming','TV・動画配信','电视与流媒体','電視與串流'),ids:['tv','mobile-tv']},
     {id:'kitchen',title:L('주방 · 온수','Kitchen & hot water','キッチン・お湯','厨房与热水','廚房與熱水'),ids:['hob','microwave','coffee','water','kettle','hot-water']}
   ];
+  const applianceGroup=id=>deviceGroups.find(group=>group.ids.includes(id));
+  const applianceCard=id=>D.guides.appliances.cards.find(card=>card.id===id);
+  const pageKey=()=>route==='appliances'&&applianceId?`appliances/${applianceId}`:route;
+  function resolvePage(hash){
+    const [base,id,...extra]=hash.split('/');
+    if(base==='appliances')return {route:base,id:!extra.length&&applianceCard(id)?id:''};
+    return {route:['home','gallery','guide','airport','transport','nearby','tours',...Object.keys(D.guides)].includes(hash)?hash:'home',id:''};
+  }
+  function applianceThumbnail(c){
+    const meta=D.applianceCatalog[c.id]||{},slide=meta.photo!==undefined?meta:D.deviceMedia[c.id][0];
+    const source=slide.photo!==undefined?`assets/images/photo-${String(slide.photo).padStart(2,'0')}.webp`:slide.file;
+    const [width,height]=slide.photo!==undefined?D.photoSizes[slide.photo]:[slide.width,slide.height];
+    return `<span class="appliance-thumbnail">${meta.crop?`<svg viewBox="${meta.crop.join(' ')}" aria-hidden="true" focusable="false"><image href="${esc(source)}" width="${width}" height="${height}"/></svg>`:`<img src="${esc(source)}" width="${width}" height="${height}" alt="" loading="lazy" decoding="async">`}</span>`;
+  }
+  function applianceCards(){
+    const cards=D.guides.appliances.cards.filter(c=>applianceCategory==='all'||applianceGroup(c.id).id===applianceCategory);
+    return cards.map(c=>`<a class="appliance-card" href="#appliances/${c.id}" data-appliance-id="${c.id}">${applianceThumbnail(c)}<h2>${text(c.title)}</h2><p>${text(D.applianceCatalog[c.id]?.location||c.location)}</p><span class="appliance-card-open">${text(D.applianceUI.open)}<span aria-hidden="true">↗</span></span></a>`).join('');
+  }
+  function applianceResultLabel(){
+    const count=D.guides.appliances.cards.filter(c=>applianceCategory==='all'||applianceGroup(c.id).id===applianceCategory).length;
+    return `${count}${text(D.applianceUI.countUnit)}`;
+  }
+  function applianceDetail(c){
+    const u=D.applianceUI,index=D.guides.appliances.cards.indexOf(c)+1;
+    return `<div class="appliance-detail"><header class="appliance-detail-top section"><a class="appliance-back" href="#appliances"><span aria-hidden="true">←</span>${text(u.back)}</a><p class="eyebrow">STAY ESSENTIALS / ${String(index).padStart(2,'0')}</p><h1>${text(c.title)}</h1><p class="appliance-model">${esc(c.model)}</p><p class="appliance-full-location">${tr('locationLabel')} · ${text(c.location)}</p></header>
+      <div class="appliance-detail-body section"><div class="appliance-visual">${deviceCarousel(c)}</div>
+      ${c.id==='living-ac'?`<div class="remote-legend"><span>01 · ${text(L('왼쪽 / TV','Left / TV','左／TV','左／电视','左／電視'))}</span><span>02 · ${text(L('가운데 / 에어컨','Middle / AC','中央／エアコン','中／空调','中／冷氣'))}</span><span>03 · ${text(L('오른쪽 / 팬','Right / fan','右／ファン','右／吊扇','右／吊扇'))}</span></div>`:''}
+      <section class="appliance-instructions" aria-labelledby="appliance-instructions-title"><h2 id="appliance-instructions-title">${text(u.instructions)}</h2><p class="appliance-intro">${text(c.text)}</p><ol class="steps">${c.steps.map(s=>`<li>${text(s)}</li>`).join('')}</ol></section>
+      ${c.caution?`<aside class="device-caution"><strong>${tr('guideCaution')}</strong><p>${text(c.caution)}</p></aside>`:''}
+      ${c.links?.length?`<details class="appliance-references"><summary>${text(u.references)}<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg></summary><div class="manual-links">${c.links.map(x=>ext(x.url,text(x.title))).join('')}</div></details>`:''}
+      <aside class="appliance-support"><h2>${text(u.support)}</h2><p>${tr('deviceHelp')}</p>${ext(D.bookingUrl,tr('ask'),'text-link')}</aside><a class="outline-button appliance-list-return" href="#appliances"><span aria-hidden="true">←</span>${text(u.return)}</a></div></div>${footer()}`;
+  }
+  function appliancesPage(){
+    const selected=applianceCard(applianceId);if(selected)return applianceDetail(selected);
+    const g=D.guides.appliances,u=D.applianceUI;
+    return `${heading(g.label,g.title,u.lead)}<section class="appliance-catalog section"><div class="appliance-filters" role="group" aria-label="${text(u.filter)}">${[{id:'all',title:u.all},...deviceGroups].map(group=>`<button type="button" data-appliance-filter="${group.id}" aria-pressed="${applianceCategory===group.id}">${text(group.title)}</button>`).join('')}</div><p class="appliance-result-count" role="status" aria-live="polite">${applianceResultLabel()}</p><div class="appliance-grid">${applianceCards()}</div></section>${help()}${footer()}`;
+  }
   const informationLabels={
     useShow:L('사용법 보기','View instructions','使い方を見る','查看用法','查看用法'),
     useHide:L('사용법 접기','Hide instructions','使い方を閉じる','收起用法','收起用法'),
@@ -415,9 +452,9 @@
   function render(focus=false,restore=false){
     const galleryFilterOffset=$('.gallery-filters')?.scrollLeft||0;
     document.documentElement.lang={zh:'zh-CN',tw:'zh-TW'}[language]||language;
-    const pages={home,gallery,guide:guideIndex,airport,transport,checkin:checkinPage,nearby,tours};
+    const pages={home,gallery,guide:guideIndex,airport,transport,checkin:checkinPage,appliances:appliancesPage,nearby,tours};
     $('#main').innerHTML=(pages[route]||guidePage)();
-    document.body.dataset.route=route;document.title=route==='home'?'EXTAY JEONPO — Busan Private Stay':`${tr(route)} · EXTAY JEONPO`;
+    document.body.dataset.route=route;document.title=route==='home'?'EXTAY JEONPO — Busan Private Stay':`${route==='appliances'&&applianceId?t(applianceCard(applianceId).title):tr(route)} · EXTAY JEONPO`;
     compactPage();const galleryFilters=$('.gallery-filters');
     if(galleryFilters){
       galleryFilters.scrollLeft=galleryFilterOffset;
@@ -425,15 +462,16 @@
       if(selected&&selected.left<bounds.left)galleryFilters.scrollLeft+=selected.left-bounds.left;
       else if(selected&&selected.right>bounds.right)galleryFilters.scrollLeft+=selected.right-bounds.right;
     }
-    updateNavigation();bindDeviceCarousels();bindHomePhotoCarousels();bindCoverHeader();if(focus)$('#main').focus({preventScroll:true});if(restore)window.scrollTo({top:scrolls.get(route)||0,behavior:'instant'});
+    updateNavigation();bindDeviceCarousels();bindHomePhotoCarousels();bindCoverHeader();if(focus)$('#main').focus({preventScroll:true});if(restore)window.scrollTo({top:scrolls.get(pageKey())||0,behavior:'instant'});
   }
-  function navigate(){const next=location.hash.slice(1)||'home',known=['home','gallery','guide','airport','transport','nearby','tours',...Object.keys(D.guides)];scrolls.set(route,window.scrollY);const resolved=known.includes(next)?next:'home';if(route!==resolved){localCategory='all';query='';}route=resolved;$$('dialog[open]').forEach(x=>x.close());render(true,true);}
+  function navigate(){const previousDevice=applianceId,next=resolvePage(location.hash.slice(1)||'home');scrolls.set(pageKey(),window.scrollY);if(route!==next.route){localCategory='all';query='';}route=next.route;applianceId=next.id;$$('dialog[open]').forEach(x=>x.close());render(true,true);if(previousDevice&&route==='appliances'&&!applianceId&&scrolls.has('appliances'))$(`[data-appliance-id="${previousDevice}"]`)?.focus({preventScroll:true});}
   function showToast(message){clearTimeout(toastTimer);$('.toast').textContent=message;$('.toast').classList.add('visible');toastTimer=setTimeout(()=>$('.toast').classList.remove('visible'),3300);}
   function openPhoto(id){lightboxItems=route==='gallery'?galleryItems().map(x=>x.id):route==='transport'?[36,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51,52,53]:D.guides[route]?[...new Set([D.guides[route].image,...D.guides[route].cards.flatMap(x=>[x.image,...(x.photos||[])]).filter(x=>x!==null)])]:D.gallery.map(x=>x.id);if(!lightboxItems.includes(id))lightboxItems.push(id);lightboxIndex=lightboxItems.indexOf(id);updatePhoto();$('#lightbox').showModal();requestAnimationFrame(fitPhoto);}
   function updatePhoto(){photoZoom=1;const item=lightboxItems[lightboxIndex],isFile=typeof item==='object';$('#lightboxImage').src=isFile?guideMediaUrl(item.file):`assets/images/photo-${String(item).padStart(2,'0')}.webp`;$('#lightboxImage').alt=isFile?item.caption:t(D.captions[item]);$('#lightboxRouteOverlay').innerHTML=isFile&&Number.isInteger(item.walkStep)?walkingDirections(item.walkStep):(isFile?item.file.endsWith('/photo-36.webp'):item===36)?entranceHighlight():'';$('#lightboxCaption').textContent=isFile?item.caption:t(D.captions[item]);$('#lightboxCaption').hidden=route==='gallery';$('.lightbox-counter').textContent=`${String(lightboxIndex+1).padStart(2,'0')} / ${String(lightboxItems.length).padStart(2,'0')}`;requestAnimationFrame(fitPhoto);}
   function shiftPhoto(n){lightboxIndex=(lightboxIndex+n+lightboxItems.length)%lightboxItems.length;updatePhoto();}
 
   document.addEventListener('click',async e=>{
+    const applianceFilter=e.target.closest('[data-appliance-filter]');if(applianceFilter){applianceCategory=applianceFilter.dataset.applianceFilter;$$('[data-appliance-filter]').forEach(button=>button.setAttribute('aria-pressed',String(button.dataset.applianceFilter===applianceCategory)));$('.appliance-grid').innerHTML=applianceCards();$('.appliance-result-count').innerHTML=applianceResultLabel();return;}
     if(e.target.closest('.skip-link')){e.preventDefault();$('#main').focus();return;}
     if(e.target.closest('[data-cover-scroll]')){const target=$('#stay-essentials');if(target)window.scrollTo({top:target.getBoundingClientRect().top+scrollY-$('.topbar').offsetHeight+1,behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'instant':'smooth'});return;}
     const homePhoto=e.target.closest('[data-home-photo]');if(homePhoto){const[key,index]=homePhoto.dataset.homePhoto.split(':');lightboxItems=homePhotoSets[key].map(item=>item.id);lightboxIndex=Number(index);updatePhoto();$('#lightbox').showModal();requestAnimationFrame(fitPhoto);return;}
@@ -505,5 +543,5 @@
   $('#lightboxStage').addEventListener('dblclick',()=>setPhotoZoom(photoZoom===1?2:1));
   $('#lightboxImage').addEventListener('load',fitPhoto);window.addEventListener('resize',()=>requestAnimationFrame(fitPhoto));
   document.addEventListener('keydown',e=>{if(!$('#lightbox').open)return;if(e.key==='+'||e.key==='='){e.preventDefault();setPhotoZoom(photoZoom+1)}if(e.key==='-'){e.preventDefault();setPhotoZoom(photoZoom-1)}if(e.key==='0'){e.preventDefault();setPhotoZoom(1)}});
-  window.addEventListener('hashchange',navigate);route=['home','gallery','guide','airport','transport','nearby','tours',...Object.keys(D.guides)].includes(location.hash.slice(1))?location.hash.slice(1):'home';render();
+  window.addEventListener('hashchange',navigate);const initialPage=resolvePage(location.hash.slice(1)||'home');route=initialPage.route;applianceId=initialPage.id;render();
 })();
