@@ -464,3 +464,25 @@ body[data-route="transport"] .transport-notes>article{padding:0;border:0}
 .appliance-support p{margin:10px 0;font-size:15px;font-weight:600;line-height:1.65;color:var(--muted)}
 .appliance-list-return{display:flex;align-items:center;justify-content:center;gap:12px;width:100%;margin-top:18px}
 @media(max-width:359px){.appliance-card{grid-template-columns:80px minmax(0,1fr);gap:14px}.appliance-thumbnail{width:80px;height:80px}}
+
+/* First-visit wordmark: the same reveal and dissolve timing as the reference guides. */
+.brand-intro{display:none;position:fixed;inset:0;z-index:1000;place-items:center;overflow:hidden;background:var(--paper);opacity:1}
+html.brand-intro-pending{overflow:hidden}
+.brand-intro-pending .brand-intro{display:grid}
+.brand-intro-pending body>:not(.brand-intro){visibility:hidden}
+.brand-intro-revealing body>:not(.brand-intro){visibility:visible}
+.brand-intro-mark{position:relative;display:block;width:min(88vw,374px)}
+.brand-intro-mark img{position:relative;z-index:1;display:block;width:100%;height:auto;opacity:0;transform:translateY(8px) scale(.965);filter:blur(3px);will-change:opacity,transform,filter}
+.brand-intro-pending .brand-intro img,.brand-intro.is-running img{animation:jeonpoBrandMarkSequence 3.24s cubic-bezier(.4,0,.2,1) both}
+.brand-intro-mark::before,.brand-intro-mark::after{content:"";position:absolute;inset:0;z-index:2;opacity:0;pointer-events:none;-webkit-mask:url('images/extay-logo.svg?v=20261113-logo1') center/contain no-repeat;mask:url('images/extay-logo.svg?v=20261113-logo1') center/contain no-repeat}
+.brand-intro-mark::before{background:repeating-linear-gradient(0deg,#15110f 0 1px,#FFFFFFEB 1px 2px,transparent 2px 4px),repeating-linear-gradient(90deg,#35332FEB 0 2px,#FFFFFFDB 2px 3px,#231D19C7 3px 5px,transparent 5px 8px);background-size:100% 7px,13px 100%;mix-blend-mode:multiply}
+.brand-intro-mark::after{background:repeating-linear-gradient(180deg,transparent 0 5%,#FFFFFFF5 5% 7%,#1D1714EB 7% 10%,transparent 10% 17%);mix-blend-mode:hard-light}
+.brand-intro.is-leaving{opacity:0;pointer-events:none;transition:opacity .54s cubic-bezier(.4,0,.2,1) .08s}
+.brand-intro.is-leaving .brand-intro-mark img{animation:jeonpoLogoDissolve .46s cubic-bezier(.4,0,.2,1) both}
+.brand-intro.is-leaving .brand-intro-mark::before{animation:jeonpoIntroGrain .46s ease-out both}
+.brand-intro.is-leaving .brand-intro-mark::after{animation:jeonpoIntroScan .46s ease-out both}
+@keyframes jeonpoBrandMarkSequence{0%{opacity:0;transform:translateY(8px) scale(.965);filter:blur(3px)}58.26%,100%{opacity:1;transform:translateY(0) scale(1);filter:none}}
+@keyframes jeonpoLogoDissolve{0%,34%{opacity:1;filter:none}68%{opacity:.78;filter:contrast(1.28) grayscale(.22) blur(.25px)}100%{opacity:0;filter:contrast(1.4) grayscale(.55) blur(1.4px)}}
+@keyframes jeonpoIntroGrain{0%{opacity:0}28%{opacity:.48}58%{opacity:.72}82%{opacity:.32}100%{opacity:0}}
+@keyframes jeonpoIntroScan{0%{opacity:0}36%{opacity:.32}64%{opacity:.58}100%{opacity:0}}
+@media(prefers-reduced-motion:reduce){.brand-intro{display:none!important}.brand-intro-pending body>:not(.brand-intro){visibility:visible}html.brand-intro-pending{overflow:visible}}

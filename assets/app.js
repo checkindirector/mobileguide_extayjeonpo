@@ -30,6 +30,30 @@
   const help=()=>`<aside class="help-block"><div><p class="eyebrow">HERE TO HELP</p><h2>${tr('guideCaption')}</h2><p>${tr('askBody')}</p></div>${ext(D.bookingUrl,tr('ask'),'primary-button')}</aside>`;
   const guideRows=()=>['airport','transport','checkin','wifi','appliances','laundry','rules'].map((r,i)=>`<a href="#${r}" class="guide-row"><span class="row-number">0${i+1}</span>${icon(r)}<span class="guide-row-copy"><strong>${tr(r)}</strong><small>${text(D.menuDescriptions[r])}</small></span><span aria-hidden="true">↗</span></a>`).join('');
   const visualSets={};
+  function playBrandIntro(){
+    const root=document.documentElement,intro=$('#brandIntro');
+    if(!intro||!root.classList.contains('brand-intro-pending')){intro?.remove();return;}
+    const reduced=matchMedia('(prefers-reduced-motion: reduce)'),logo=$('img',intro);
+    let leaveTimer,removeTimer,finished=false;
+    const finish=()=>{
+      if(finished)return;finished=true;clearTimeout(leaveTimer);clearTimeout(removeTimer);
+      const active=root.classList.contains('brand-intro-pending');
+      root.classList.remove('brand-intro-pending','brand-intro-revealing');intro.remove();
+      reduced.removeEventListener('change',onMotionChange);window.removeEventListener('hashchange',finish);
+      if(active)document.dispatchEvent(new Event('extay:intro-complete'));
+    };
+    const onMotionChange=event=>{if(event.matches)finish();};
+    const start=()=>{
+      if(finished)return;
+      if(reduced.matches||!root.classList.contains('brand-intro-pending')){finish();return;}
+      intro.classList.add('is-running');
+      try{sessionStorage.setItem('extay-jeonpo-brand-intro-v1','1');}catch{}
+      leaveTimer=setTimeout(()=>{root.classList.add('brand-intro-revealing');intro.classList.add('is-leaving');removeTimer=setTimeout(finish,640);},2916);
+    };
+    reduced.addEventListener('change',onMotionChange);window.addEventListener('hashchange',finish,{once:true});
+    if(logo.complete){if(logo.naturalWidth)start();else finish();}
+    else{logo.addEventListener('load',start,{once:true});logo.addEventListener('error',finish,{once:true});}
+  }
   const walkingDirectionMarks=[
     {height:1333.3333,start:[555,875],line:'M555 875 L555 1050',head:'M525 1014 L555 1050 L585 1014'},
     {height:1333.3333,start:[690,1220],line:'M690 1220 L650 1000 L610 810',head:'M586 851 L610 810 L640 844'},
@@ -129,7 +153,7 @@
     let timer=0,visible=false,disposed=false,visibilityObserver;
     const clear=()=>{clearTimeout(timer);timer=0;};
     const stop=()=>{homeHeroAutoComplete=true;clear();};
-    const canPlay=()=>!disposed&&!homeHeroAutoComplete&&visible&&!document.hidden&&!$('dialog[open]');
+    const canPlay=()=>!disposed&&!homeHeroAutoComplete&&visible&&!document.hidden&&!$('dialog[open]')&&!document.documentElement.classList.contains('brand-intro-pending');
     const schedule=()=>{
       clear();if(!canPlay())return;
       if(homePhotoIndices.hero>=last){stop();return;}
@@ -148,6 +172,7 @@
     root.addEventListener('wheel',event=>{if(event.deltaX||event.shiftKey)stop();},{passive:true,signal:events.signal});
     root.addEventListener('load',schedule,{capture:true,signal:events.signal});
     document.addEventListener('visibilitychange',schedule,{signal:events.signal});
+    document.addEventListener('extay:intro-complete',schedule,{signal:events.signal});
     document.addEventListener('close',schedule,{capture:true,signal:events.signal});
     if('IntersectionObserver' in window){
       visibilityObserver=new IntersectionObserver(entries=>{visible=entries[0].isIntersecting&&entries[0].intersectionRatio>=.35;schedule();},{threshold:[0,.35]});
@@ -542,5 +567,5 @@
   $('#lightboxStage').addEventListener('dblclick',()=>setPhotoZoom(photoZoom===1?2:1));
   $('#lightboxImage').addEventListener('load',fitPhoto);window.addEventListener('resize',()=>requestAnimationFrame(fitPhoto));
   document.addEventListener('keydown',e=>{if(!$('#lightbox').open)return;if(e.key==='+'||e.key==='='){e.preventDefault();setPhotoZoom(photoZoom+1)}if(e.key==='-'){e.preventDefault();setPhotoZoom(photoZoom-1)}if(e.key==='0'){e.preventDefault();setPhotoZoom(1)}});
-  window.addEventListener('hashchange',navigate);const initialPage=resolvePage(location.hash.slice(1)||'home');route=initialPage.route;applianceId=initialPage.id;render();
+  window.addEventListener('hashchange',navigate);const initialPage=resolvePage(location.hash.slice(1)||'home');route=initialPage.route;applianceId=initialPage.id;render();playBrandIntro();
 })();
