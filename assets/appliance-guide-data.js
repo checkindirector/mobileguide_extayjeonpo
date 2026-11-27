@@ -79,8 +79,8 @@
   }
   D.applianceUI={
     all:L('전체','All','すべて','全部','全部'),
-    lead:L('기기나 리모컨 사진을 누르면 사용법이 열립니다.','Tap a device or remote to see how to use it.','機器やリモコンの写真から使い方をご覧ください。','点击设备或遥控器照片，查看使用方法。','點選設備或遙控器照片，查看使用方法。'),
-    filter:L('기기 종류 고르기','Filter devices','機器の種類を選ぶ','选择设备类别','選擇設備類別'),
+    lead:L('기기를 누르면 사용 순서와 안내 그림이 열립니다.','Choose a device to see the steps and visual guide.','機器を選ぶと、使い方と案内図が開きます。','点击设备，查看使用步骤和图解。','點選設備，查看使用步驟和圖解。'),
+    filter:L('공간별로 찾기','Find by room','場所から探す','按空间查找','依空間尋找'),
     countUnit:L('개 기기',' devices','台の機器','件设备','項設備'),
     open:L('사용법 보기','View instructions','使い方を見る','查看用法','查看用法'),
     back:L('가전·시설 목록','All devices & facilities','機器・設備一覧','设备与设施列表','設備與設施列表'),
@@ -89,6 +89,11 @@
     references:L('공식 설명서·추가 자료','Official manuals & references','公式説明書・参考資料','官方说明书与参考资料','官方說明書與參考資料'),
     support:L('작동이 어렵다면','Need help using it?','操作にお困りの場合','使用遇到问题？','使用遇到問題？')
   };
+  D.applianceSpaces=[
+    {id:'living',title:L('거실·침실','Living & bedrooms','リビング・寝室','客厅·卧室','客廳·臥室'),ids:['living-ac','bedroom-ac','fan','floor','tv','mobile-tv']},
+    {id:'kitchen',title:L('주방','Kitchen','キッチン','厨房','廚房'),ids:['hob','microwave','coffee','water','kettle']},
+    {id:'bathroom',title:L('욕실','Bathroom','浴室','浴室','浴室'),ids:['hot-water']}
+  ];
   // These are views of existing photographs; full photographs remain in the guides.
   D.applianceCatalog={
     'bedroom-ac':{photo:15,crop:[850,40,470,300]},

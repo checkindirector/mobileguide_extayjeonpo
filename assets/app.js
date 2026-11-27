@@ -223,11 +223,7 @@
   function guideIndex(){return `${heading('YOUR STAY, MADE EASY',D.ui.guide,D.ui.infoBody)}<section class="guide-index section"><div class="guide-rows">${guideRows()}</div><div class="guide-message">${icon('checkin')}<p>${tr('message')}</p></div></section>${help()}${footer()}`;}
   const airportOpenGuides=new Set();
   const informationOpenGuides=new Set();
-  const deviceGroups=[
-    {id:'climate',title:L('냉난방 · 조명','Climate & lighting','空調・照明','空调与照明','空調與照明'),ids:['living-ac','bedroom-ac','fan','floor']},
-    {id:'tv',title:L('TV · OTT','TV & streaming','TV・動画配信','电视与流媒体','電視與串流'),ids:['tv','mobile-tv']},
-    {id:'kitchen',title:L('주방 · 온수','Kitchen & hot water','キッチン・お湯','厨房与热水','廚房與熱水'),ids:['hob','microwave','coffee','water','kettle','hot-water']}
-  ];
+  const deviceGroups=D.applianceSpaces;
   const applianceGroup=id=>deviceGroups.find(group=>group.ids.includes(id));
   const applianceCard=id=>D.guides.appliances.cards.find(card=>card.id===id);
   const pageKey=()=>route==='appliances'&&applianceId?`appliances/${applianceId}`:route;
@@ -244,19 +240,21 @@
   }
   function applianceCards(){
     const cards=D.guides.appliances.cards.filter(c=>applianceCategory==='all'||applianceGroup(c.id).id===applianceCategory);
-    return cards.map(c=>`<a class="appliance-card" href="#appliances/${c.id}" data-appliance-id="${c.id}">${applianceThumbnail(c)}<h2>${text(c.title)}</h2><p>${text(D.applianceCatalog[c.id]?.location||c.location)}</p><span class="appliance-card-open">${text(D.applianceUI.open)}<span aria-hidden="true">↗</span></span></a>`).join('');
+    return cards.map(c=>`<a class="appliance-card" href="#appliances/${c.id}" data-appliance-id="${c.id}">${applianceThumbnail(c)}<div class="appliance-card-copy"><h2>${text(c.title)}</h2><p>${text(D.applianceCatalog[c.id]?.location||c.location)}</p><span class="appliance-card-open">${text(D.applianceUI.open)}<span aria-hidden="true">→</span></span></div></a>`).join('');
   }
   function applianceResultLabel(){
     const count=D.guides.appliances.cards.filter(c=>applianceCategory==='all'||applianceGroup(c.id).id===applianceCategory).length;
-    return `${count}${text(D.applianceUI.countUnit)}`;
+    const space=deviceGroups.find(group=>group.id===applianceCategory);
+    return `${space?text(space.title)+' · ':''}${count}${text(D.applianceUI.countUnit)}`;
   }
   function applianceDetail(c){
     const u=D.applianceUI,index=D.guides.appliances.cards.indexOf(c)+1;
     return `<div class="appliance-detail"><header class="appliance-detail-top section"><a class="appliance-back" href="#appliances"><span aria-hidden="true">←</span>${text(u.back)}</a><p class="eyebrow">STAY ESSENTIALS / ${String(index).padStart(2,'0')}</p><h1>${text(c.title)}</h1><p class="appliance-model">${esc(c.model)}</p><p class="appliance-full-location">${tr('locationLabel')} · ${text(c.location)}</p></header>
-      <div class="appliance-detail-body section"><div class="appliance-visual">${deviceCarousel(c)}</div>
-      ${c.id==='living-ac'?`<div class="remote-legend"><span>01 · ${text(L('왼쪽 / TV','Left / TV','左／TV','左／电视','左／電視'))}</span><span>02 · ${text(L('가운데 / 에어컨','Middle / AC','中央／エアコン','中／空调','中／冷氣'))}</span><span>03 · ${text(L('오른쪽 / 팬','Right / fan','右／ファン','右／吊扇','右／吊扇'))}</span></div>`:''}
+      <div class="appliance-detail-body section">
       <section class="appliance-instructions" aria-labelledby="appliance-instructions-title"><h2 id="appliance-instructions-title">${text(u.instructions)}</h2><p class="appliance-intro">${text(c.text)}</p><ol class="steps">${c.steps.map(s=>`<li>${text(s)}</li>`).join('')}</ol></section>
       ${c.caution?`<aside class="device-caution"><strong>${tr('guideCaution')}</strong><p>${text(c.caution)}</p></aside>`:''}
+      <div class="appliance-visual">${deviceCarousel(c)}</div>
+      ${c.id==='living-ac'?`<div class="remote-legend"><span>01 · ${text(L('왼쪽 / TV','Left / TV','左／TV','左／电视','左／電視'))}</span><span>02 · ${text(L('가운데 / 에어컨','Middle / AC','中央／エアコン','中／空调','中／冷氣'))}</span><span>03 · ${text(L('오른쪽 / 팬','Right / fan','右／ファン','右／吊扇','右／吊扇'))}</span></div>`:''}
       ${c.links?.length?`<details class="appliance-references"><summary>${text(u.references)}<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg></summary><div class="manual-links">${c.links.map(x=>ext(x.url,text(x.title))).join('')}</div></details>`:''}
       <aside class="appliance-support"><h2>${text(u.support)}</h2><p>${tr('deviceHelp')}</p>${ext(D.bookingUrl,tr('ask'),'text-link')}</aside><a class="outline-button appliance-list-return" href="#appliances"><span aria-hidden="true">←</span>${text(u.return)}</a></div></div>${footer()}`;
   }
@@ -471,6 +469,7 @@
   function shiftPhoto(n){lightboxIndex=(lightboxIndex+n+lightboxItems.length)%lightboxItems.length;updatePhoto();}
 
   document.addEventListener('click',async e=>{
+    const applianceChoice=e.target.closest('[data-appliance-id]');if(applianceChoice&&!e.ctrlKey&&!e.metaKey&&!e.shiftKey)scrolls.delete('appliances/'+applianceChoice.dataset.applianceId);
     const applianceFilter=e.target.closest('[data-appliance-filter]');if(applianceFilter){applianceCategory=applianceFilter.dataset.applianceFilter;$$('[data-appliance-filter]').forEach(button=>button.setAttribute('aria-pressed',String(button.dataset.applianceFilter===applianceCategory)));$('.appliance-grid').innerHTML=applianceCards();$('.appliance-result-count').innerHTML=applianceResultLabel();return;}
     if(e.target.closest('.skip-link')){e.preventDefault();$('#main').focus();return;}
     if(e.target.closest('[data-cover-scroll]')){const target=$('#stay-essentials');if(target)window.scrollTo({top:target.getBoundingClientRect().top+scrollY-$('.topbar').offsetHeight+1,behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'instant':'smooth'});return;}
