@@ -335,3 +335,41 @@ body[data-route="transport"] .address-section{padding-bottom:20px}
 .lightbox-route-overlay{position:absolute;inset:0;display:block;pointer-events:none}
 
 .lightbox-stage.is-zoomed{place-items:normal}
+
+/* Arrival follows the guest's journey, with ABODE's consistent section rhythm. */
+body[data-route="transport"] .page-heading{padding-bottom:20px}
+body[data-route="transport"] .page-heading .lead{color:var(--ink);font-size:15px;font-weight:600;line-height:1.6}
+body[data-route="transport"] .transport-section{padding-top:0}
+.arrival-map-actions{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:7px}
+.arrival-map-actions :is(.outline-button,.copy-button){display:flex;align-items:center;justify-content:center;gap:5px;width:100%;min-height:46px;margin:0;padding:9px 5px;border:1px solid var(--accent);border-radius:2px;background:transparent;color:var(--accent);font-size:13px;font-weight:800;line-height:1.4;text-align:center}
+.arrival-map-actions a>span{display:none}
+.arrival-map-actions .copy-button{border-color:var(--line);background:var(--soft)}
+.arrival-essential-facts{margin-top:14px;font-size:13px;font-weight:600;line-height:1.6;color:var(--muted)}
+.arrival-index{display:flex;justify-content:space-between;gap:10px;padding:15px 0 12px}
+.arrival-index button{display:inline-flex;align-items:center;gap:7px;min-height:44px;padding:0;border-bottom:1px solid var(--line);font-size:13px;font-weight:700;line-height:1.5;text-align:left}
+.arrival-index button>span{font-size:15px;font-weight:600}
+.arrival-index button:focus-visible{outline:2px solid var(--accent);outline-offset:4px}
+.busan-station-guide,.arrival-photo-guide,.transport-notes{padding:30px 0;border-top:1px solid var(--line);scroll-margin-top:0}
+.busan-station-guide>.eyebrow,.arrival-photo-heading>.eyebrow{margin-bottom:10px}
+.arrival-photo-heading h2{font-size:20px;font-weight:800;line-height:1.4}
+.arrival-photo-heading>p:not(.eyebrow){margin-top:12px;font-size:15px;font-weight:600;line-height:1.62}
+.arrival-photo-heading{margin-bottom:20px}
+.arrival-photo-guide .walking-guide .device-visual{margin:0;padding:0;border:0}
+.busan-line-map{padding:6px 0 0;border:0;border-radius:0;background:transparent}
+.busan-trip-facts{gap:8px;border:0;background:transparent}
+.busan-trip-facts>div{padding:11px 6px}
+.busan-last-mile{padding:14px 0 0;border-top:1px solid var(--line);background:transparent}
+.busan-station-guide>.outline-button{min-height:44px;border-color:var(--line)}
+.transport-notes>h2{margin-bottom:18px;font-size:20px;font-weight:800;line-height:1.4}
+body[data-route="transport"] .transport-notes{margin-top:0;padding:30px 0;scroll-margin-top:0}
+body[data-route="transport"] .transport-notes>article{padding:0;border:0}
+.transport-notes>article+article{margin-top:24px}
+.transport-notes h3{font-size:16px;font-weight:800;line-height:1.5}
+.transport-notes p{margin-top:10px;font-size:15px;font-weight:600;line-height:1.65;color:var(--muted)}
+.entrance-crop{position:relative;display:block;width:100%;aspect-ratio:4/3;overflow:hidden}
+.entrance-photo-plane{position:absolute;left:0;bottom:0;display:block;width:100%;line-height:0}
+.entrance-photo-plane>img{display:block;width:100%;height:auto;max-height:none;min-height:0;padding:0}
+.entrance-highlight{position:absolute;inset:0;display:block;width:100%;height:100%;max-width:none;pointer-events:none}
+.entrance-ring-halo,.entrance-ring{vector-effect:non-scaling-stroke}
+.entrance-ring-halo{stroke:#35332F;stroke-width:9px;stroke-opacity:.7}
+.entrance-ring{stroke:#FFD400;stroke-width:5px}
