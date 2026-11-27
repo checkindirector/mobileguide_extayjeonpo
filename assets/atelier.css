@@ -373,3 +373,45 @@ body[data-route="transport"] .transport-notes>article{padding:0;border:0}
 .entrance-ring-halo,.entrance-ring{vector-effect:non-scaling-stroke}
 .entrance-ring-halo{stroke:#35332F;stroke-width:9px;stroke-opacity:.7}
 .entrance-ring{stroke:#FFD400;stroke-width:5px}
+
+/* Arrival and departure: visible essentials, photographs, then a short checklist. */
+.checkin-page{padding-top:0;padding-bottom:24px}
+.stay-times{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));padding:20px 0;background:var(--accent);color:var(--paper)}
+.stay-times>button{display:flex;flex-direction:column;align-items:flex-start;gap:8px;padding:0 18px;min-width:0;color:inherit;text-align:left;font-size:13px;font-weight:700;line-height:1.5}
+.stay-times>button+button{border-left:1px solid #FFFFFF35}
+.stay-times time{font-size:32px;font-weight:600;line-height:1.15;letter-spacing:-.03em}
+.stay-time-note{display:flex;justify-content:space-between;gap:8px;width:100%;font-size:12px;font-weight:600;line-height:1.5}
+.stay-times>button:focus-visible{outline:2px solid var(--paper);outline-offset:-4px}
+.stay-entry-note{display:flex;gap:12px;margin:16px 0 0;padding:18px 16px;background:var(--soft)}
+.stay-entry-note>svg{flex:0 0 22px;width:22px;height:22px;margin-top:2px;color:var(--accent)}
+.stay-entry-note h2{font-size:14px;font-weight:800;line-height:1.5}
+.stay-entry-note p{margin-top:7px;font-size:15px;font-weight:600;line-height:1.65}
+.stay-section{padding:30px 0;border-bottom:1px solid var(--line);scroll-margin-top:0}
+.stay-section:last-child{border-bottom:0;padding-bottom:0}
+.stay-section-heading{margin-bottom:20px}
+.stay-section .eyebrow{margin-bottom:10px}
+.stay-section h2{font-size:20px;font-weight:800;line-height:1.4}
+.checkin-entry-photos .device-visual{margin:0;padding:0;border:0}
+.checkin-entry-photos .device-media-button>img{width:100%;height:auto;aspect-ratio:3/4;min-height:0;max-height:none;padding:0;object-fit:contain;background:var(--soft)}
+.checkin-entry-photos .device-slide figcaption{padding-top:12px}
+.checkin-entry-photos .device-slide figcaption>p{font-size:13px;font-weight:600;line-height:1.6}
+.checkin-entry-photos .device-dots{display:none}
+.checkin-entry-photos .swipe-guide{margin-top:12px}
+.stay-arrival-steps{counter-reset:arrival;list-style:none;margin:22px 0 14px;padding:0}
+.stay-arrival-steps>li{counter-increment:arrival;position:relative;padding:0 0 14px 30px;font-size:15px;font-weight:600;line-height:1.65}
+.stay-arrival-steps>li::before{content:counter(arrival,decimal-leading-zero);position:absolute;left:0;top:1px;color:var(--muted);font-size:12px;font-weight:600;line-height:1.8}
+.stay-arrival-steps>li:last-child{padding-bottom:0}
+.stay-section>.text-link{font-size:13px;font-weight:800;line-height:1.5}
+.stay-luggage-heading{display:grid;grid-template-columns:100px minmax(0,1fr);gap:20px;align-items:center;margin:18px 0}
+.stay-luggage-heading .photo-button{position:relative;width:100%;display:block;line-height:0}
+.stay-luggage-heading img{width:100%;height:auto;aspect-ratio:3/4;object-fit:contain;display:block}
+.stay-luggage-heading .photo-button>span{position:absolute;right:6px;bottom:6px;display:grid;place-items:center;width:24px;height:24px;background:var(--paper);color:var(--accent);font-size:17px;line-height:1}
+.stay-luggage-heading p{margin-top:12px;color:var(--muted);font-size:13px;font-weight:600;line-height:1.6}
+.stay-body{font-size:15px;font-weight:600;line-height:1.7;color:var(--muted)}
+.stay-checklist{list-style:none;margin:0;padding:0}
+.stay-checklist>li{display:flex;align-items:flex-start;gap:14px;padding:17px 0;border-top:1px solid var(--line)}
+.stay-check-number{flex:0 0 26px;display:grid;place-items:center;min-height:26px;border:1px solid var(--oak);font-size:12px;font-weight:600;line-height:1.5;color:var(--accent)}
+.stay-checklist h3,.stay-late-note h3{font-size:16px;font-weight:800;line-height:1.5}
+.stay-checklist p,.stay-late-note p{margin-top:7px;font-size:15px;font-weight:600;line-height:1.65;color:var(--muted)}
+.stay-late-note{margin-top:14px;padding:18px 16px;background:var(--soft)}
+@media(max-width:359px){.stay-times>button{padding:0 13px}.stay-luggage-heading{grid-template-columns:86px minmax(0,1fr);gap:16px}.stay-luggage-heading h2{font-size:18px}}

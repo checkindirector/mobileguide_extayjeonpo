@@ -255,6 +255,40 @@
       ${c.steps.length?`<ol class="steps">${c.steps.map(s=>`<li>${text(s)}</li>`).join('')}</ol>`:''}${c.caution?`<aside class="device-caution"><strong>${tr('guideCaution')}</strong><p>${text(c.caution)}</p></aside>`:''}${c.links?.length?`<div class="manual-links">${c.links.map(x=>ext(x.url,text(x.title))).join('')}</div>`:''}</article>`;
     return folded?informationDisclosure(id,c.title,preview,body,{number:String(i+1).padStart(2,'0'),instructions:devices,kind:'guide-disclosure',checkout:route==='checkin'&&i===2}):body;
   }
+  function checkinPage(){
+    const g=D.guides.checkin,[arrival,luggage,departure]=g.cards;
+    const photos=[arrival.image,...arrival.photos].map(photo=>({photo,title:D.captions[photo]}));
+    const checklistTitles=[
+      L('식기 정리','Dishes','食器','餐具','餐具'),
+      L('분리배출','Sort waste','ゴミの分別','垃圾分类','垃圾分類'),
+      L('수건 모으기','Used towels','タオル','收好毛巾','收好毛巾'),
+      L('전원 · 문 확인','Power & doors','電源・戸締まり','电源与门窗','電源與門窗')
+    ];
+    return `${heading(g.label,g.title,g.lead)}
+      <div class="checkin-page section">
+        <div class="stay-times" aria-label="${text(L('입실·퇴실 시간','Arrival and departure times','チェックイン・アウト時間','入住与退房时间','入住與退房時間'))}">
+          <button type="button" data-scroll="checkin-arrival"><span>${tr('checkIn')}</span><time datetime="16:00">16:00</time><span class="stay-time-note">${text(L('이후 · 셀프 체크인','From · self check-in','以降・セルフチェックイン','起 · 自助入住','起 · 自助入住'))}<span aria-hidden="true">↓</span></span></button>
+          <button type="button" data-scroll="checkin-departure"><span>${tr('checkOut')}</span><time datetime="11:00">11:00</time><span class="stay-time-note">${text(L('까지 · 퇴실 준비','By · departure checklist','まで・出発の準備','前 · 退房准备','前 · 退房準備'))}<span aria-hidden="true">↓</span></span></button>
+        </div>
+        <aside class="stay-entry-note">${icon('checkin')}<div><h2>${text(L('출입번호 안내','Your entry code','入室コード','门锁密码','門鎖密碼'))}</h2><p>${text(arrival.text)}</p></div></aside>
+        <section class="stay-section" id="checkin-arrival" aria-labelledby="checkin-arrival-title">
+          <header class="stay-section-heading"><p class="eyebrow">01 / ARRIVAL</p><h2 id="checkin-arrival-title">${text(L('입실하기','Settling in','チェックイン','办理入住','辦理入住'))}</h2></header>
+          <div class="checkin-entry-photos">${deviceCarousel(arrival,photos,'checkin-entry')}</div>
+          <ol class="stay-arrival-steps">${arrival.steps.map(s=>`<li>${text(s)}</li>`).join('')}</ol>
+          <a class="text-link" href="#transport">${text(L('건물까지 찾아오는 길','Directions to the building','建物へのアクセス','前往大楼的路线','前往大樓的路線'))}<span aria-hidden="true">↗</span></a>
+        </section>
+        <section class="stay-section" id="checkin-luggage" aria-labelledby="checkin-luggage-title">
+          <p class="eyebrow">02 / LUGGAGE</p>
+          <div class="stay-luggage-heading"><button class="photo-button" data-photo="${luggage.image}" aria-label="${text(luggage.title)} · ${tr('zoomIn')}">${img(luggage.image,'loading="lazy"')}<span aria-hidden="true">↗</span></button><div><h2 id="checkin-luggage-title">${text(L('짐은 가볍게,\n머무름은 편하게.','Leave your bags.\nEnjoy your day.','荷物を預けて、\n身軽な滞在を。','放下行李，\n轻松入住。','放下行李，\n輕鬆入住。')).replace(/\n/g,'<br>')}</h2><p>${text(L('1층 계단 옆 · 무료 짐 보관','Free storage · beside the 1F stairs','1階の階段横・無料荷物預かり','1楼楼梯旁 · 免费寄存','1樓樓梯旁 · 免費寄存'))}</p></div></div>
+          <p class="stay-body">${text(luggage.text)}</p>
+        </section>
+        <section class="stay-section" id="checkin-departure" aria-labelledby="checkin-departure-title">
+          <header class="stay-section-heading"><p class="eyebrow">03 / DEPARTURE</p><h2 id="checkin-departure-title">${text(L('떠나기 전, 네 가지만.','Four things before you go.','出発前に、4つだけ。','离开前，做好这四件事。','離開前，做好這四件事。'))}</h2></header>
+          <ol class="stay-checklist">${departure.steps.map((s,i)=>`<li><span class="stay-check-number" aria-hidden="true">${String(i+1).padStart(2,'0')}</span><div><h3>${text(checklistTitles[i])}</h3><p>${text(s)}</p></div></li>`).join('')}</ol>
+          <aside class="stay-late-note"><h3>${text(L('조금 더 머물고 싶다면','Need a little longer?','もう少し滞在したい場合','想多住一会儿？','想多住一會兒？'))}</h3><p>${text(departure.text)}</p></aside>
+        </section>
+      </div>${help()}${footer()}`;
+  }
   function guidePage(){
     const g=D.guides[route],devices=['appliances','laundry'].includes(route),appliances=route==='appliances';
     const overview=appliances?`<nav class="guide-contents" aria-label="${tr('deviceJump')}"><p class="eyebrow">STAY ESSENTIALS / 12 GUIDES</p><div>${deviceGroups.map(group=>`<button type="button" data-scroll="group-${group.id}">${text(group.title)}<span aria-hidden="true">↓</span></button>`).join('')}</div></nav>`:['checkin','laundry'].includes(route)?'':`<nav class="guide-contents" aria-label="${tr('guide')}"><p class="eyebrow">IN THIS GUIDE</p><div>${g.cards.map((c,i)=>`<button type="button" data-scroll="${c.id?'device-'+c.id:'guide-'+route+'-'+i}">${text(c.title)}<span aria-hidden="true">↓</span></button>`).join('')}</div></nav>`;
@@ -381,7 +415,7 @@
   function render(focus=false,restore=false){
     const galleryFilterOffset=$('.gallery-filters')?.scrollLeft||0;
     document.documentElement.lang={zh:'zh-CN',tw:'zh-TW'}[language]||language;
-    const pages={home,gallery,guide:guideIndex,airport,transport,nearby,tours};
+    const pages={home,gallery,guide:guideIndex,airport,transport,checkin:checkinPage,nearby,tours};
     $('#main').innerHTML=(pages[route]||guidePage)();
     document.body.dataset.route=route;document.title=route==='home'?'EXTAY JEONPO — Busan Private Stay':`${tr(route)} · EXTAY JEONPO`;
     compactPage();const galleryFilters=$('.gallery-filters');
